@@ -38,7 +38,7 @@ const CameraScreen = ({navigation}) => {
     <View style={styles.container}>
       <Camera style={styles.camera} type={type} ref = {camRef}>
         
-          {/* <TouchableOpacity
+          <TouchableOpacity
             style={styles.button}
             onPress={() => {
               setType(
@@ -47,8 +47,8 @@ const CameraScreen = ({navigation}) => {
                   : Camera.Constants.Type.back
               );
             }}>
-            <Icon name ="repeat" size ={30} color= "white" />
-          </TouchableOpacity> */}
+            {/* <Icon name ="repeat" size ={30} color= "white" /> */}
+          </TouchableOpacity>
           <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.capture} onPress = {takePicture}>
             <View style = {styles.snapButton}>
@@ -113,25 +113,12 @@ const styles = StyleSheet.create({
     alignItems:'flex-end',
     justifyContent: 'center',
     padding:20,
-    // height:60,
-    
   },
   button:{
-  //   flex:0.1,
-    // margin:10,
     paddingRight: 50,
-  //   alignItems:'baseline',
-    
   },
   capture:{
-    // flex:0.1,
-    // height:58,
-    // width:55,
     alignSelf: 'flex-end',
-    
-    // margin:10,
-    // paddingBottom: 10,
-    // alignSelf:'center',
     justifyContent: 'center',
   },
   icon:{

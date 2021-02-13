@@ -4,7 +4,7 @@ import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity, ScrollView,
 export default class Splash extends Component {
     componentDidMount() {
         setTimeout(() => {
-            this.props.navigation.navigate('Home');
+            this.props.navigation.navigate('On');
         }, 2000)
     }
 
