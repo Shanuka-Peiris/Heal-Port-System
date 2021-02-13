@@ -12,7 +12,7 @@ const Done = ({...props}) => (
 );
 
 const OnBoardingScreen = ({ navigation }) => {
-    return (
+    return ( 
         <OnBoarding
             DoneButtonComponent = {Done}
             OnSkip={() => navigation.replace("Home")}

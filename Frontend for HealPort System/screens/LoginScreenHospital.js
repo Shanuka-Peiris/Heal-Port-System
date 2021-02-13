@@ -45,7 +45,7 @@ const LoginScreenHospital = ({ navigation }) => {
                     onChangeText={(text) => setPassword(text)}
                 />
             </View>
-
+ 
             <TouchableOpacity 
                 activeOpacity={0.5} 
                 style={styles.buttonLogin}

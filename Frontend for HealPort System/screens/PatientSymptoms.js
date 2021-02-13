@@ -1,16 +1,16 @@
 import React from 'react'
 import { StyleSheet, Text, View, Button, TouchableOpacity } from 'react-native'
 
-const AdmissionOfficer = ({ navigation }) => {
+const PatientSymptoms = ({ navigation }) => {
 
     return (
         <View style={styles.Container}>
-            <Text>Search</Text>
+            <Text>Symptoms</Text>
         </View>
     )
-} 
+}
 
-export default AdmissionOfficer
+export default PatientSymptoms
 
 const styles = StyleSheet.create({
     Container: {

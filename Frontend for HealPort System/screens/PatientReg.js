@@ -12,7 +12,7 @@ const PatientReg = ({ navigation }) => {
 
   const pressHandler = () => {
     navigation.push('Patient Login')
-    }
+    } 
   
       return (
         <View style={styles.PatientReg}>

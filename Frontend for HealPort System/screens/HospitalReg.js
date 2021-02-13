@@ -105,7 +105,7 @@ const HospitalReg = ({ navigation }) => {
       </View>
     );
 }
-
+ 
 export default HospitalReg
 
 const styles = StyleSheet.create({

@@ -18,7 +18,7 @@ const Radiographer = ({ navigation }) => {
           </TouchableOpacity>
 
         </View>
-    )
+    ) 
 }
 
 export default Radiographer

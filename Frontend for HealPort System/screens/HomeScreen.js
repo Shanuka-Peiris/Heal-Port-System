@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView } from 'react-native';
 
 const HomeScreen = ({ navigation }) => {
-  
+   
   const pressHandler1 = () => {
     navigation.push('Patient Login')
   }
@@ -22,7 +22,7 @@ const HomeScreen = ({ navigation }) => {
         />
 
         <TouchableOpacity style={styles.button} onPress = { pressHandler1}>
-            <Text style={styles.btntext}>Patient Login </Text>
+            <Text style={styles.btntext}>Patient Login</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.button} onPress = { pressHandler}>

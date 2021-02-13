@@ -7,7 +7,7 @@ const Xray = ({ navigation }) => {
     }
     const pressHandler2 = () => {
         navigation.push('Gallery')
-      }
+      } 
 
     return (
       <View style={styles.Container}>

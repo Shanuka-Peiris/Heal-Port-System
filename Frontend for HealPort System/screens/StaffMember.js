@@ -13,7 +13,7 @@ const StaffMember = ({ navigation }) => {
 
   const pressHandler3 = () => {
     navigation.push('Admission Officer')
-  }
+  } 
 
     return (
       <View style={styles.StaffMember}>

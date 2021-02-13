@@ -110,4 +110,4 @@ const styles = StyleSheet.create({
         color: '#6e6570',
         fontWeight: 'bold',
     }
-});
+}); 
