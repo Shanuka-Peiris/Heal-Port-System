@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView } from 'react-native';
 
 const HomeScreen = ({ navigation }) => {
-   
+  
   const pressHandler1 = () => {
     navigation.push('Patient Login')
   }
@@ -44,12 +44,14 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   tinyLogo: {
-    width: 340,
+    width: 300,
     height: 200,
     marginBottom: 100,
     marginTop: 50,
     paddingBottom: 5,
     justifyContent: 'center',
+    alignSelf: 'center',
+    alignItems: 'center',
   },
   button: {
     alignSelf: 'stretch',

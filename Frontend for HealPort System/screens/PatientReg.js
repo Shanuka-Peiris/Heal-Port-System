@@ -7,12 +7,13 @@ const PatientReg = ({ navigation }) => {
   const [lastName, setLastName] = useState('');
   const [userName, setUserName] = useState('');
   const [nic, setNic] = useState('');
+  const [reg, setReg] = useState('');
   const [password, setPassword] = useState('');
   const [contactNo, setContactNo] = useState('');
 
   const pressHandler = () => {
     navigation.push('Patient Login')
-    } 
+    }
   
       return (
         <View style={styles.PatientReg}>
@@ -57,6 +58,16 @@ const PatientReg = ({ navigation }) => {
               type="text"
               value={nic}
               onChangeText={(text) => setNic(text)}
+            />
+
+            <TextInput
+              style={styles.textInput}
+              placeholder="Registration Number"
+              placeholderTextColor="black"
+              underlineColorAndroid={'black'}
+              type="text"
+              value={reg}
+              onChangeText={(text) => setReg(text)}
             />
   
             <TextInput
