@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, Text, View , Button,TouchableOpacity} from 'react-native'
+import { StyleSheet, Text, View , TouchableOpacity} from 'react-native'
 
 const Xray = ({ navigation }) => {
     const pressHandler1 = () => {
@@ -7,7 +7,7 @@ const Xray = ({ navigation }) => {
     }
     const pressHandler2 = () => {
         navigation.push('Gallery')
-      } 
+    }
 
     return (
       <View style={styles.Container}>

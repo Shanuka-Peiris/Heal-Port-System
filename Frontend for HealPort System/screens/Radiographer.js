@@ -1,5 +1,6 @@
 import React from 'react'
-import { StyleSheet, Text, View , Button,TouchableOpacity} from 'react-native'
+import { StyleSheet, Text, View , Button,TouchableOpacity,FlatList,Image} from 'react-native'
+
 
 const Radiographer = ({ navigation }) => {
 
@@ -7,9 +8,10 @@ const Radiographer = ({ navigation }) => {
       navigation.push('X-ray')
     }
     
+    
     return (
         <View style={styles.Container}>
-
+            
             <TouchableOpacity 
               style={styles.button} 
               onPress = { pressHandler}
@@ -18,7 +20,8 @@ const Radiographer = ({ navigation }) => {
           </TouchableOpacity>
 
         </View>
-    ) 
+        
+    )
 }
 
 export default Radiographer
@@ -44,4 +47,13 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 25,    
   },
+  pic1:{
+    width:100,
+    height:100,
+  },
+  image:{
+    height:50,
+    width:50,
+  },
+
 })

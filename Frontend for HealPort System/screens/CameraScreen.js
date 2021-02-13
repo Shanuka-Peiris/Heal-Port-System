@@ -4,7 +4,7 @@ import { Camera } from 'expo-camera';
 import{Feather as Icon } from '@expo/vector-icons';
 
 
-const CameraScreen = (navigation) => {
+const CameraScreen = ({navigation}) => {
   const camRef = useRef (null);
   const [hasPermission, setHasPermission] = useState(null);
   const [capturedPhoto, setCapturedPhoto] = useState(null);
@@ -37,7 +37,7 @@ const CameraScreen = (navigation) => {
   return (
     <View style={styles.container}>
       <Camera style={styles.camera} type={type} ref = {camRef}>
-        <View style={styles.buttonContainer}>
+        
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
@@ -47,16 +47,19 @@ const CameraScreen = (navigation) => {
                   : Camera.Constants.Type.back
               );
             }}>
-            <Icon name ="repeat" size ={30} color= "white" />
+            {/* <Icon name ="repeat" size ={30} color= "white" /> */}
+          </TouchableOpacity>
+          <View style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.capture} onPress = {takePicture}>
+            <View style = {styles.snapButton}>
+              <View style = {styles.innerButton} >
+                <Icon name ="camera" size ={30} color= "white" />
+              </View>
+            </View>
+          {/* <Icon name ="aperture" size ={70} color= "white" /> */}
           </TouchableOpacity>
         </View>
-        <TouchableOpacity style={styles.capture} onPress = {takePicture}>
         
-            <Icon name ="camera" size ={30} color= "white" />
-            
-        </TouchableOpacity>
-           
-
       </Camera>
       
         {capturedPhoto && 
@@ -64,19 +67,16 @@ const CameraScreen = (navigation) => {
             animationType = 'slide'
             transparent = {false}
             visible = {open}
-            
           >
             <View style = {{ flex: 1, justifyContent: 'center', alignItems: 'center', margin: 20 }}>
-              
-                <Image
-                  style= {{
-                    width: '100%',
-                    height:'100%',
-                    borderRadius:20,
-                  }}
-                  source = {{uri: capturedPhoto}}
-                />
-              
+              <Image
+                style= {{
+                  width: '100%',
+                  height:'100%',
+                  borderRadius:20,
+                }}
+                source = {{uri: capturedPhoto}}
+              />
             </View>
             <View style = {{margin:10, flexDirection:'row',alignSelf:'center'}}>
               <TouchableOpacity style= {{marginRight: 60, alignSelf:'center',}} onPress = {() => setOpen (false)}>
@@ -98,7 +98,6 @@ export default CameraScreen
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-   
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -110,22 +109,17 @@ const styles = StyleSheet.create({
   buttonContainer:{
     flex:1,
     backgroundColor:'transparent',
-    flexDirection: 'column'
+    flexDirection: 'row',
+    alignItems:'flex-end',
+    justifyContent: 'center',
+    padding:20,
   },
   button:{
-    flex:0.1,
-    
-    margin:10,
-    paddingBottom: 10,
-    alignItems:'baseline',
-    
+    paddingRight: 50,
   },
   capture:{
-    flex:0.1,
     alignSelf: 'flex-end',
-    margin:10,
-    paddingBottom: 10,
-    alignSelf:'center',
+    justifyContent: 'center',
   },
   icon:{
     alignSelf:'center',
@@ -142,6 +136,25 @@ const styles = StyleSheet.create({
     fontSize:20,
     marginBottom:10,
     color:'white',
+
+  },
+  snapButton:{
+    width:58,
+    height: 56,
+    borderRadius: 32,
+    borderWidth:3,
+    borderColor:'white',
+    justifyContent:'center',
+    alignItems:'center',
+  },
+  innerButton:{
+    backgroundColor: '#578e91',
+    width:52.8,
+    height:52,
+    borderRadius:32,
+    justifyContent:'center',
+    alignItems:'center',
+
 
   },
 })
