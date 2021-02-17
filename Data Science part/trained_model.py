@@ -1,5 +1,5 @@
 import warnings
-warnings.filterwarnings("ignore")
+warnings.filterwarnings('ignore')
 
 import keras
 from keras.models import Model
@@ -10,11 +10,12 @@ from keras.preprocessing.image import ImageDataGenerator
 from keras.applications.vgg16 import VGG16
 from keras.callbacks import ModelCheckpoint, EarlyStopping
 from glob import glob
+import matplotlib.pyplot as plt
 
 
-training_dataset = "F:/Jupyter/pneumonia_detection/train"
-testing_dataset = "F:/Jupyter/pneumonia_detection/test"
-training_folders = glob("F:/Jupyter/pneumonia_detection/train/*")
+training_dataset = '/content/drive/MyDrive/Datasets/train'
+testing_dataset = '/content/drive/MyDrive/Datasets/test'
+training_folders = glob('/content/drive/MyDrive/Datasets/train/*')
 
 x_ray_width = 224
 x_ray_height = 224
@@ -92,7 +93,7 @@ previous = EarlyStopping(
 final_model = vgg_network_final.fit_generator(
         generator = train_datagen, 
         steps_per_epoch = len(train_datagen), 
-        epochs = 5, 
+        epochs = 500, 
         validation_data = test_datagen, 
         validation_steps = len(test_datagen), 
         callbacks = [model_check, previous]
@@ -100,3 +101,14 @@ final_model = vgg_network_final.fit_generator(
 
 vgg_network_final.save("modelSave.h5")
 
+
+plt.plot(final_model.history["accuracy"])
+plt.plot(final_model.history["val_accuracy"])
+plt.plot(final_model.history["loss"])
+plt.plot(final_model.history["val_loss"])
+plt.title("Accuracy of the Trained Model")
+plt.ylabel("Accuracy")
+plt.xlabel("Epoch")
+plt.legend(["Accuracy","Validation Accuracy","loss","Validation Loss"])
+plt.savefig("model.png")
+plt.savefig("model.pdf")
