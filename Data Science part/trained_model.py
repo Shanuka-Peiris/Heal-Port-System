@@ -1,5 +1,5 @@
 import warnings
-warnings.filterwarnings('ignore')
+warnings.filterwarnings("ignore")
 
 import keras
 from keras.models import Model
@@ -13,9 +13,9 @@ from glob import glob
 import matplotlib.pyplot as plt
 
 
-training_dataset = '/content/drive/MyDrive/Datasets/train'
-testing_dataset = '/content/drive/MyDrive/Datasets/test'
-training_folders = glob('/content/drive/MyDrive/Datasets/train/*')
+training_dataset = "/content/drive/MyDrive/Datasets/train"
+testing_dataset = "/content/drive/MyDrive/Datasets/test"
+training_folders = glob("/content/drive/MyDrive/Datasets/train/*")
 
 x_ray_width = 224
 x_ray_height = 224
