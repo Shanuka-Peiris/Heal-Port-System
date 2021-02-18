@@ -85,7 +85,7 @@ model_check = ModelCheckpoint(
 previous = EarlyStopping(
         monitor = "val_accuracy", 
         min_delta = 0, 
-        patience = 40, 
+        patience = 20, 
         verbose = 1, 
         mode = "auto"
         )
@@ -112,3 +112,4 @@ plt.xlabel("Epoch")
 plt.legend(["Accuracy","Validation Accuracy","loss","Validation Loss"])
 plt.savefig("model.png")
 plt.savefig("model.pdf")
+
