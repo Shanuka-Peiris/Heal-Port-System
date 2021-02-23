@@ -8,6 +8,10 @@ const app = express();
 // Server Running port number
 const PORT = 3000;
 
+// Requiring model
+require('./Models/Patient');
+require('./Models/staff');
+
 app.use(bodyParser.json());
 
 
