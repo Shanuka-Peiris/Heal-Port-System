@@ -30,13 +30,11 @@ const staffSchema = new mongoose.Schema ({
 });
 
 staffSchema.pre('save', function(next) {
-
     const staff = this;
     
     if (!staff.isModified('password')) {
         return next()
     }
-
     bcrypt.genSalt(10, (err, salt) => {
         if (err) {
             return next(err)
@@ -48,7 +46,7 @@ staffSchema.pre('save', function(next) {
             }
 
             staff.password = hash;
-            next();
+            next()
         })
     });
 });
@@ -65,7 +63,6 @@ staffSchema.methods.comparePassword = function(candidatePassword) {
             if (!isMatch) {
                 return reject(err);
             }
-
             resolve(true)
         });
     });

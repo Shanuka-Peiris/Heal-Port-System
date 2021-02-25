@@ -10,13 +10,11 @@ const jwtKey = "asadsafwafa";
 router.post('/staff/signUp', async (req, res) => {
     console.log(req.body);
 
-    const { firstName, lastName, userName, registrationNum, password, contactNum } = req.body;
+    const { firstName, lastName, userName, registrationNum, password, contactNumber } = req.body;
 
     try {
-
-        const staff = new Staff({ firstName, lastName, userName, registrationNum, password, contactNum });
+        const staff = new Staff({ firstName, lastName, userName, registrationNum, password, contactNumber });
         await staff.save();
-
         const token = jwt.sign({ userId: staff._id}, jwtKey)
         res.send({ token });
     } catch (err) {
@@ -40,13 +38,11 @@ router.post('/staff/signIn', async (req, res) => {
 
     try {
         await staff.comparePassword(password);
-
         const token = jwt.sign({ userId:staff._id}, jwtKey);
         res.send({ token });
     } catch (err) {
         return res.status(422).send({ error: "Username or password is not valid" });
     }
-
 });
 
 module.exports = router;

@@ -9,15 +9,12 @@ const jwtKey = "asadsafwafa";
 
 router.post('/patient/signUp', async (req, res) => {
     console.log(req.body);
-
-    const { firstName, lastName, userName, nicNumber, password, contactNum } = req.body;
+    const { firstName, lastName, userName, nicNumber, password, contactNumber } = req.body;
 
     try {
-
-        const patient = new Patient({ firstName, lastName, userName, nicNumber, password, contactNum });
+        const patient = new Patient({ firstName, lastName, userName, nicNumber, password, contactNumber });
         await patient.save();
-
-        const token = jwt.sign({ userId: patient._id}, jwtKey)
+        const token = jwt.sign({ userId:patient._id}, jwtKey)
         res.send({ token });
     } catch (err) {
         return res.status(422).send(err.message);
@@ -40,13 +37,11 @@ router.post('/patient/signIn', async (req, res) => {
 
     try {
         await patient.comparePassword(password);
-
         const token = jwt.sign({ userId:patient._id}, jwtKey);
         res.send({ token });
     } catch (err) {
         return res.status(422).send({ error: "Username or password is not valid" });
     }
-
 });
 
 module.exports = router;

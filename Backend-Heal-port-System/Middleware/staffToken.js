@@ -23,7 +23,7 @@ module.exports = (req, res, next) => {
 
         const { userId } = payload;
         const staff = await Staff.findById(userId);
-        req.Staff = staff;
+        req.staff = staff;
         next();
     });
 }

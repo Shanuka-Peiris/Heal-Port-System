@@ -7,7 +7,6 @@ const Patient = mongoose.model('Patient');
 const jwtKey = "asadsafwafa";
 
 module.exports = (req, res, next) => {
-
     const { authorization } = req.headers;
 
     if (!authorization) {
@@ -23,7 +22,7 @@ module.exports = (req, res, next) => {
 
         const { userId } = payload;
         const patient = await Patient.findById(userId);
-        req.Patient = patient;
+        req.patient = patient;
         next();
     });
 }

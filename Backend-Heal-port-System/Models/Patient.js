@@ -65,7 +65,6 @@ patientSchema.methods.comparePassword = function(candidatePassword) {
             if (!isMatch) {
                 return reject(err);
             }
-
             resolve(true)
         });
     });
