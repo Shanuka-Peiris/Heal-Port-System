@@ -23,13 +23,13 @@ export default class Splash extends Component {
             </View>
         );
     }
-} 
+}
 
 const styles = StyleSheet.create({
     header: {
         fontSize: 70,
         textAlign: 'center',
-        color: '#fff',
+        color: '#000',
         marginBottom: 250,
         marginTop: 180,
         fontWeight: 'bold',
@@ -43,6 +43,6 @@ const styles = StyleSheet.create({
         // marginTop: 50,
         paddingLeft: 30,
         paddingRight: 30,
-        backgroundColor: 'blue',
+        backgroundColor: '#E9E8E2',
     },
 });
