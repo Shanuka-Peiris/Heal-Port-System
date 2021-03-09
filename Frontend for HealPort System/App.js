@@ -10,11 +10,16 @@ import LoginScreenPatient from './screens/LoginScreenPatient';
 import PatientReg from './screens/PatientReg';
 import HospitalReg from './screens/HospitalReg';
 import StaffMember from './screens/StaffMember';
+import Doctor from './screens/Doctor';
+import PneumoniaList from './screens/PneumoniaList';
+import NonPneumoniaList from './screens/NonPneumoniaList';
 import Radiographer from './screens/Radiographer';
 import Xray from './screens/Xray';
 import CameraScreen from './screens/CameraScreen';
 import GalleryScreen from './screens/GalleryScreen';
 import AdmissionOfficer from './screens/AdmissionOfficer';
+import Discharge from './screens/Discharge';
+
 
 
 const Stack = createStackNavigator();
@@ -50,6 +55,18 @@ export default function App() {
         name="Staff" 
         component={ StaffMember } />
       <Stack.Screen 
+        name="Doctor" 
+        component={ Doctor } 
+        options={{headerMode: 'none'}}/>
+      <Stack.Screen 
+        name="PneumoniaList" 
+        component={ PneumoniaList } 
+        />  
+        <Stack.Screen 
+        name="NonList" 
+        component={ NonPneumoniaList } 
+        />
+      <Stack.Screen 
         name="Radiographer" 
         component={ Radiographer } />
       <Stack.Screen 
@@ -61,6 +78,9 @@ export default function App() {
       <Stack.Screen 
         name="Camera" component={ CameraScreen } 
         options={{headerShown: false}} />
+      <Stack.Screen 
+        name="Discharge" 
+        component={Discharge} />
       <Stack.Screen 
         name="Gallery" 
         component={ GalleryScreen }  />

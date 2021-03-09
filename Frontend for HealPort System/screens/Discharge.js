@@ -40,9 +40,9 @@ const DATA = [
     tel: '071-74748388237'
   },
 ];
-const AdmissionOfficer = ({ navigation }) => {
+const Discharge = ({ navigation }) => {
   const pressHandler = () => {
-    navigation.push('Discharge')
+    navigation.push('X-ray')
   }
     return (
         <View style = {{flex:1 ,backgroundColor:'white'}}>
@@ -66,7 +66,7 @@ const AdmissionOfficer = ({ navigation }) => {
                       StyleSheet.absoluteFillObject,
                       {backgroundColor:'#b4d8ed', borderRadius:16,}
                     ]}/>
-                  <Image source={require('../Images/AO-1.png')}  style = {styles.image} />
+                  <Image source={require('../Images/AO-3.png')}  style = {styles.image} />
                   <Text style = {styles.name} > {item.name} </Text>
                   <Text style = {styles.num} > Reg Number - {item.id} </Text>
                   <Text style = {styles.nic} > NIC - {item.nic} </Text>
@@ -74,7 +74,7 @@ const AdmissionOfficer = ({ navigation }) => {
                 
                   <TouchableOpacity 
                     style={styles.button} onPress={pressHandler}>
-                    <Text style={styles.buttonText} >Admit</Text>
+                    <Text style={styles.buttonText} >Discharge</Text>
                   </TouchableOpacity>
                     
                 </View>
@@ -86,7 +86,7 @@ const AdmissionOfficer = ({ navigation }) => {
     )
 }
 
-export default AdmissionOfficer
+export default Discharge
 
 const styles = StyleSheet.create({
   Container:{
@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: 'white',
-    fontSize: 20, 
+    fontSize: 18, 
     fontWeight: '700',   
   },
   pic1:{
