@@ -12,14 +12,17 @@ const PORT = 3000;
 require('./Models/Patient');
 require('./Models/staff');
 
+// Tokens for patient and staff
 const patientToken = require('./Middleware/patientToken');
 const staffToken = require('./Middleware/staffToken');
 
+// Routing for patient and staff
 const patientRoute = require('./Routes/patientRoutes');
 const staffRoute = require('./Routes/staffRoutes');
 
 app.use(bodyParser.json());
 
+// using routes of patients and staff
 app.use(patientRoute);
 app.use(staffRoute);
 
