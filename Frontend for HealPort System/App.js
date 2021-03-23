@@ -19,6 +19,7 @@ import CameraScreen from './screens/CameraScreen';
 import GalleryScreen from './screens/GalleryScreen';
 import AdmissionOfficer from './screens/AdmissionOfficer';
 import Discharge from './screens/Discharge';
+import CheckXray from './screens/CheckXray';
 
 
 
@@ -84,6 +85,9 @@ export default function App() {
       <Stack.Screen 
         name="Gallery" 
         component={ GalleryScreen }  />
+      <Stack.Screen 
+        name="check" 
+        component={ CheckXray }  />
 
       </Stack.Navigator>
     </NavigationContainer>
