@@ -1,5 +1,5 @@
 import React,  { useState, useLayoutEffect } from 'react';
-import { KeyboardAvoidingView, StyleSheet, Text, View } from 'react-native'
+import { Alert, KeyboardAvoidingView, StyleSheet, Text, View } from 'react-native'
 import { StatusBar } from 'expo-status-bar';
 import { Image, Input, Button } from 'react-native-elements';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -28,9 +28,10 @@ const LoginScreenPatient = ({ navigation }) => {
         .then(async (data)=>{
             try {
                 await AsyncStorage.setItem('token',data.token)
-                navigation.replace("X-ray")
+                navigation.replace("symptoms")
             } catch (e) {
                 console.log("Error",e)
+                Alert.alert("Username or password is incorrect")
             }
         })
     }

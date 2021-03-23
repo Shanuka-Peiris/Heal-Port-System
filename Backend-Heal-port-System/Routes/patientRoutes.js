@@ -8,7 +8,9 @@ const Patient = mongoose.model('Patient');
 const jwtKey = "asadsafwafa";
 
 router.post('/patient/signUp', async (req, res) => {
-    console.log(req.body);
+    // console.log(req.body);
+    data = req.body;
+    console.log(data)
     const { firstName, lastName, userName, nicNumber, password, contactNumber } = req.body;
 
     try {
@@ -24,6 +26,8 @@ router.post('/patient/signUp', async (req, res) => {
 router.post('/patient/signIn', async (req, res) => {
 
     const { userName, password } = req.body;
+    data = req.body;
+    console.log(data)
 
     if (!userName || !password) {
         return res.status(422).send({ error: "Username or password is not valid" });  

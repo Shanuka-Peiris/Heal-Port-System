@@ -30,7 +30,7 @@ const LoginScreenHospital = ({ navigation }) => {
                 navigation.replace('Staff')
             } catch (e) {
                 console.log("Error", e)
-                Alert(e)
+                Alert.alert(e)
             }
         })
 
