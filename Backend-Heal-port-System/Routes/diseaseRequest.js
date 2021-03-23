@@ -27,3 +27,5 @@ router.post('/postDataToFlask', async function(req, res) {
 
     res.send(returnData);
 })
+
+module.exports = router;

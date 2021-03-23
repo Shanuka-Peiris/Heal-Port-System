@@ -57,3 +57,8 @@ app.get('/staff', staffToken, (req, res) => {
 app.listen(PORT, () => {
     console.log("Server running on " + PORT);
 });
+
+
+// "Symptoms":["itchinig", "acidity", "vomiting", "irritability", "restlessness" , "skin_peeling", "dehydration", "phlegn", "back_pain", "bloody_stool", "sweating", "malaise", "phlegn"]
+// "Symptoms":["chills", "fatigue", "cough", "high_fever", "breathlness" , "sweating", "malaise", "phlegn", "chest_pain", "fast_heart_rate", "rusty_sputum"]
+// "Symptoms": ["chills", "fatigue", "cough", "high_fever", "breathlness" , "sweating", "malaise", "phlegn", "chest_pain", "fast_heart_rate"]

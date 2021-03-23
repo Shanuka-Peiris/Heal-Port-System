@@ -4,15 +4,15 @@ import { StyleSheet, Text, View, TextInput, TouchableOpacity,Image, ScrollView }
 const StaffMember = ({ navigation }) => {
 
   const pressHandler1 = () => {
-    navigation.push('Doctor')
+    navigation.replace('Doctor')
   }
 
   const pressHandler2 = () => {
-    navigation.push('Radiographer')
+    navigation.replace('Radiographer')
   }
 
   const pressHandler3 = () => {
-    navigation.push('Admission Officer')
+    navigation.replace('Admission Officer')
   } 
 
     return (

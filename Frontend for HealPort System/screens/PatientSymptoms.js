@@ -1,7 +1,9 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useEffect, useState } from 'react'
 import { Alert, Button, SafeAreaView, StyleSheet, Text, View } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler';
 import MultiSelect from 'react-native-multiple-select';
+// import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const items = [
     { id: 0, name: 'itching' },
@@ -155,7 +157,7 @@ const PatientSymptoms = () => {
         .then (res => res.json())
         .then (async (data) => {
             try {
-                console.log(data)
+                console.log(res.json)
             } catch (e) {
                 console.log(e)
                 Alert.alert("Please try again!")
