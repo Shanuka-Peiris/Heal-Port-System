@@ -2,6 +2,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
+const request = require('request-promise');
+
 // Express app
 const app = express();
 
@@ -21,6 +23,7 @@ const patientRoute = require('./Routes/patientRoutes');
 const staffRoute = require('./Routes/staffRoutes');
 
 app.use(bodyParser.json());
+var jsonParser = bodyParser.json()
 
 // using routes of patients and staff
 app.use(patientRoute);
@@ -51,6 +54,39 @@ app.get('/patient', patientToken, (req, res) => {
 app.get('/staff', staffToken, (req, res) => {
     res.send('Your username is ' + req.staff.userName + " Your password is " + req.staff.password);
 });
+
+app.post('/getSymptoms', jsonParser, async (req, res) => {
+    console.log("req.body : ", req.body)
+    
+    var userName = req.body.userName
+    var symptoms = req.body.symptoms
+
+    var sendingData = {
+      Symptoms: symptoms
+    }
+
+    console.log(userName)
+    console.log(symptoms)
+
+    var options = {
+      method: 'POST',
+      uri: 'http://127.0.0.1:5000/sendDisease',
+      body: sendingData,
+      json: true
+    }
+
+    var returnData;
+    var sendRequest = await request(options)
+    .then(function (parserBody) {
+      console.log(parserBody)
+      returnData = parserBody;
+    })
+    .catch (function (err) {
+      console.log(err)
+    })
+
+    res.send(returnData);
+})
 
 
 // Notifying that server is listing on port 3000...

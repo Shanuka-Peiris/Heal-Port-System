@@ -12,7 +12,7 @@ app = Flask(__name__)
 def index():
     return "Flask server"
 
-@app.route('/getDisease', methods = ['POST'])
+@app.route('/sendDisease', methods = ['POST'])
 def postData():
     data = request.get_json()
     print(data)
@@ -120,7 +120,7 @@ def postData():
                         realSymptoms.append(duplicateSymptoms)
                         
     print('Diseases that may you have - ', realSymptoms)    
-    return json.dumps({"Disease": realSymptoms})
+    return json.dumps(realSymptoms)
 
 if __name__ == '__main__':
     app.run(port=5000)
