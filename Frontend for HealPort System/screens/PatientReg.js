@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, ScrollView  } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, ScrollView, Alert  } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const PatientReg = ({ navigation }) => {
@@ -33,8 +33,9 @@ const PatientReg = ({ navigation }) => {
     .then(async (data) => {
       try {
         await AsyncStorage.setItem('token',data.token)
-        navigation.push('Patient Login')
+        navigation.replace('Patient Login')
       } catch (e) {
+        Alert.alert("Required fields are not filed...")
         console.log("Error", e)
       }
     })

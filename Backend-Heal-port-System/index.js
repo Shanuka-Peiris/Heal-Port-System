@@ -1,8 +1,9 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-
 const request = require('request-promise');
+const multer = require('multer');
+const upload = multer({dest: __dirname + '/uploads/images'});
 
 // Express app
 const app = express();
@@ -23,6 +24,7 @@ const patientRoute = require('./Routes/patientRoutes');
 const staffRoute = require('./Routes/staffRoutes');
 
 app.use(bodyParser.json());
+app.use(express.static('public'));
 var jsonParser = bodyParser.json()
 
 // using routes of patients and staff
@@ -44,7 +46,7 @@ mongoose.connection.on('connected', () => {
 
 // Error massage when connected to database
 mongoose.connection.on('error', () => {
-    console.log('An  error has occurred', err);
+  console.log('An  error has occurred', err);
 });
 
 app.get('/patient', patientToken, (req, res) => {
@@ -54,6 +56,10 @@ app.get('/patient', patientToken, (req, res) => {
 app.get('/staff', staffToken, (req, res) => {
     res.send('Your username is ' + req.staff.userName + " Your password is " + req.staff.password);
 });
+
+app.get('/special', (req, res) => {
+  res.send("You have received...");
+})
 
 app.post('/getSymptoms', jsonParser, async (req, res) => {
     console.log("req.body : ", req.body)
@@ -86,6 +92,49 @@ app.post('/getSymptoms', jsonParser, async (req, res) => {
     })
 
     res.send(returnData);
+})
+
+app.post('/upload', upload.single('upload'),  async (req, res) => {
+  // if (req.file) {
+    // res.json(req.file);
+
+    // var options = {
+    //   method: 'POST',
+    //   uri: 'http://localhost:8080/api/v1/resources/x-ray/image',
+    //   body: res.file,
+    //   json: true
+    // }
+
+    // var returnInfo;
+    // var sendRequest = await request(options)
+    // .then(function (parserBody) {
+    //   console.log(parserBody)
+    //   returnInfo = parserBody;
+    // })
+    // .catch(function (err) {
+    //   console.log(err)
+    // })
+
+    // res.send(returnInfo)
+
+  // }
+  // else throw 'error'
+
+  try {
+    const incident = await Incident.findById(req.body.id)
+
+    const buffer = await sharp(req.file.buffer).resize({ width: 500, height: 500}).jpeg().toBuffer()
+
+    incident.image = buffer
+
+    incident.save()
+
+    res.send()
+  } catch (e) {
+    res.status(400).send(e)
+  } (error, req, res, next) => {
+    res.status(400).send({error: error.message})
+  }
 })
 
 

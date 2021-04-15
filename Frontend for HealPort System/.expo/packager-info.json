@@ -4,7 +4,7 @@
   "packagerPort": 19000,
   "webpackServerPort": null,
   "packagerPid": null,
-  "expoServerNgrokUrl": null,
-  "packagerNgrokUrl": null,
-  "ngrokPid": null
+  "expoServerNgrokUrl": "https://fm-5zu.anonymous.frontend-for-healport-system.exp.direct",
+  "packagerNgrokUrl": "https://packager.fm-5zu.anonymous.frontend-for-healport-system.exp.direct",
+  "ngrokPid": 11304
 }

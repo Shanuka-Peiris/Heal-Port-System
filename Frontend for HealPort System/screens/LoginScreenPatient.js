@@ -28,7 +28,9 @@ const LoginScreenPatient = ({ navigation }) => {
         .then(async (data)=>{
             try {
                 await AsyncStorage.setItem('token',data.token)
-                navigation.replace("symptoms")
+                navigation.replace('symptoms', {
+                    USERNAME: userName,
+                })
             } catch (e) {
                 console.log("Error", e)
                 Alert.alert("Username or password is incorrect")

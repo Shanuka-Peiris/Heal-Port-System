@@ -1,5 +1,5 @@
 import React, { useState, useEffect, setServerData } from 'react';
-import { SafeAreaView, StyleSheet, View, Button, Alert } from 'react-native';
+import { SafeAreaView, StyleSheet, View, Button, Alert, Text } from 'react-native';
 import MultiSelect from 'react-native-multiple-select';
 
 const items = [
@@ -129,7 +129,7 @@ const items = [
     { id: "123", name: 'blister' }
 ];
 
-const PatientSymptoms = ({ navigation }) => {
+const PatientSymptoms = ({ route, navigation }) => {
     // Data Source for the SearchableDropdown
     const [selectedItems, setSelectedItems] = useState([]);
 
@@ -158,13 +158,13 @@ const PatientSymptoms = ({ navigation }) => {
         })
         .catch((error) => {
             console.log(error)
+            Alert.alert("Something went wrong. Please try again!")
         })
     }
 
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.container}>
-
                 <MultiSelect
                     hideTags
                     items={items}
