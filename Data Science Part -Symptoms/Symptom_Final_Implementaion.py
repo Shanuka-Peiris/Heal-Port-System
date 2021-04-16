@@ -6,6 +6,7 @@ import pandas as pd
 import numpy as np
 import json
 
+#Implementing flask 
 app = Flask(__name__)
 
 @app.route('/')
@@ -14,8 +15,9 @@ def index():
 
 @app.route('/sendDisease', methods = ['POST'])
 def postData():
+    #Get symptoms from front end
     data = request.get_json()
-    print(data)
+    #List of symptoms
     l1=['itching','skin_rash','nodal_skin_eruptions','continuous_sneezing','shivering','chills','joint_pain',
     'stomach_pain','acidity','ulcers_on_tongue','muscle_wasting','vomiting','burning_micturition','spotting_ urination',
     'fatigue','weight_gain','anxiety','cold_hands_and_feets','mood_swings','weight_loss','restlessness','lethargy',
@@ -40,6 +42,7 @@ def postData():
     PredictedSymptoms = []
     addSymptoms = []
     realSymptoms = []
+    #List of diseases 
     disease=['Fungal infection','Allergy','GERD','Chronic cholestasis','Drug Reaction',
     'Peptic ulcer diseae','AIDS','Diabetes','Gastroenteritis','Bronchial Asthma','Hypertension',
     ' Migraine','Cervical spondylosis',
@@ -54,6 +57,7 @@ def postData():
     for x in range(0,len(l1)):
         l2.append(0)
 
+    #Training dataset path 
     df=pd.read_csv(r"D:\IIT Files\Projects\Git Cloned Projects\Heal-Port-System\Data Science Part -Symptoms\Training.csv")
 
     df.replace({'prognosis':{'Fungal infection':0,'Allergy':1,'GERD':2,'Chronic cholestasis':3,'Drug Reaction':4,
@@ -71,8 +75,7 @@ def postData():
     y = df[["prognosis"]]
     np.ravel(y)
        
-
-    
+    #Testing dataset path    
     tr=pd.read_csv(r"D:\IIT Files\Projects\Git Cloned Projects\Heal-Port-System\Data Science Part -Symptoms\Testing.csv")
     tr.replace({'prognosis':{'Fungal infection':0,'Allergy':1,'GERD':2,'Chronic cholestasis':3,'Drug Reaction':4,
         'Peptic ulcer diseae':5,'AIDS':6,'Diabetes ':7,'Gastroenteritis':8,'Bronchial Asthma':9,'Hypertension ':10,
@@ -89,18 +92,19 @@ def postData():
     np.ravel(y_test)
     # ------------------------------------------------------------------------------------------------------
     x = 1;
+    #Predicting disease and printing 
     while x < 150:
-
-    
+        
+        #Using decisiontreeclassifie for prediction 
         clf3 = tree.DecisionTreeClassifier()   
         clf3 = clf3.fit(X,y)
     
         y_pred=clf3.predict(X_test)
     
-
     # psymptoms = ['chills', 'fatigue', 'cough', 'high_fever', 'breathlness' , 'sweating', 'malaise', 'phlegn', 'chest_pain', 'fast_heart_rate', 'rusty_sputum']
     # psymptoms = ['chills', 'fatigue', 'cough', 'high_fever', 'breathlness' , 'sweating', 'malaise', 'phlegn', 'chest_pain', 'fast_heart_rate']
     # psymptoms = ['itchinig', 'acidity', 'vomiting', 'irritability', 'restlessness' , 'skin_peeling', 'dehydration', 'phlegn', 'back_pain', 'bloody_stool', 'sweating', 'malaise', 'phlegn']
+
 
         for k in range(0,len(l1)):
             for z in data['Symptoms']:
