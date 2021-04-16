@@ -15,7 +15,7 @@ const OnBoardingScreen = ({ navigation }) => {
     return ( 
         <OnBoarding
             DoneButtonComponent = {Done}
-            OnSkip={() => navigation.replace("Home")}
+            // OnSkip={() => navigation.replace("Home")}
             onDone={() => navigation.navigate("Home")}
                 pages={[
                     {

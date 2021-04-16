@@ -13,7 +13,8 @@ export default class Splash extends Component {
             <View style={styles.container}>
                 <Image
                 style={styles.tinyLogo}
-                source={{uri: 'https://cesie.org/media/heal-logo.jpg'}}
+                // source={{uri: 'https://cesie.org/media/heal-logo.jpg'}}
+                source={require('../Images/logo-3.png')}
                 />
             </View>
         );
@@ -24,13 +25,14 @@ const styles = StyleSheet.create({
     container:{
         flex: 1,
         justifyContent: 'center',
+        alignItems: "center",
         paddingLeft: 30,
         paddingRight: 30,
-        backgroundColor: 'white',
+        backgroundColor: '#79f2ca',
     },
     tinyLogo:{
         height:200,
         width:300,
-        
+        justifyContent: 'center',
     }
 });

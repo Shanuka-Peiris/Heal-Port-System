@@ -2,6 +2,8 @@ import React, { useState, useEffect , useRef} from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Modal, Image} from 'react-native';
 import { Camera } from 'expo-camera';
 import{Feather as Icon } from '@expo/vector-icons';
+import * as Permissions from 'expo-permissions';
+import * as MediaLibrary from 'expo-media-library';
 
 
 const CameraScreen = ({navigation}) => {
@@ -14,6 +16,12 @@ const CameraScreen = ({navigation}) => {
   useEffect(() => {
     (async () => {
       const { status } = await Camera.requestPermissionsAsync();
+      setHasPermission(status === 'granted');
+    })();
+
+    
+    (async () => {
+      const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
       setHasPermission(status === 'granted');
     })();
   }, []);
@@ -34,21 +42,19 @@ const CameraScreen = ({navigation}) => {
     }
   }
 
+  async function savePicture(){
+    const asset = await MediaLibrary.createAssetAsync(capturedPhoto)
+    .then(()=>{
+      alert('Your photo was successfully saved in the gallery !')
+    })
+    .catch(error =>{
+      console.log('err', error);
+    })
+  }
+
   return (
     <View style={styles.container}>
       <Camera style={styles.camera} type={type} ref = {camRef}>
-        
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => {
-              setType(
-                type === Camera.Constants.Type.back
-                  ? Camera.Constants.Type.front
-                  : Camera.Constants.Type.back
-              );
-            }}>
-            {/* <Icon name ="repeat" size ={30} color= "white" /> */}
-          </TouchableOpacity>
           <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.capture} onPress = {takePicture}>
             <View style = {styles.snapButton}>
@@ -56,10 +62,8 @@ const CameraScreen = ({navigation}) => {
                 <Icon name ="camera" size ={30} color= "white" />
               </View>
             </View>
-          {/* <Icon name ="aperture" size ={70} color= "white" /> */}
           </TouchableOpacity>
-        </View>
-        
+        </View> 
       </Camera>
       
         {capturedPhoto && 
@@ -112,7 +116,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems:'flex-end',
     justifyContent: 'center',
-    padding:20,
+    padding:20,   
   },
   button:{
     paddingRight: 50,

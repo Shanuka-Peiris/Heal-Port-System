@@ -22,9 +22,7 @@ const LoginScreenHospital = ({ navigation }) => {
         <KeyboardAvoidingView behavior="padding" style={styles.container}>
            <StatusBar style={"light"} />
            <Image 
-                source={{
-                    uri: 'https://cesie.org/media/heal-logo.jpg', 
-                }}
+                source={require('../Images/logo-3.png')}
                 style={{ width: 300, height: 200 }}
             />
 
@@ -73,7 +71,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: 'center',
         padding: 10,
-        backgroundColor: 'white',
+        backgroundColor: '#79f2ca',
     },
     inputContainer: {
         width: 300,

@@ -16,9 +16,7 @@ const HomeScreen = ({ navigation }) => {
         <ScrollView showsVerticalScrollIndicator={false}>
         <Image
           style={styles.tinyLogo}
-          source={{
-            uri: 'https://cesie.org/media/heal-logo.jpg',
-          }}
+          source={require('../Images/logo-3.png')}
         />
 
         <TouchableOpacity style={styles.button} onPress = { pressHandler1}>
@@ -44,11 +42,11 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   tinyLogo: {
-    width: 300,
-    height: 200,
+    width: 400,
+    height: 300,
     marginBottom: 100,
     marginTop: 50,
-    paddingBottom: 5,
+    // paddingBottom: 5,
     justifyContent: 'center',
     alignSelf: 'center',
     alignItems: 'center',
