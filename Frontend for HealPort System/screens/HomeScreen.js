@@ -16,17 +16,19 @@ const HomeScreen = ({ navigation }) => {
         <ScrollView showsVerticalScrollIndicator={false}>
         <Image
           style={styles.tinyLogo}
-          source={{
-            uri: 'https://cesie.org/media/heal-logo.jpg',
-          }}
+          // source={{
+          //   uri: 'https://cesie.org/media/heal-logo.jpg',
+          // }}
+            source={require('../Images/logo-3.png')}
+
         />
 
         <TouchableOpacity style={styles.button} onPress = { pressHandler1}>
-            <Text style={styles.btntext}>Patient Login</Text>
+            <Text style={styles.btntext}>Patient</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.button} onPress = { pressHandler}>
-            <Text style={styles.btntext}>Staff Login</Text>
+            <Text style={styles.btntext}>Staff</Text>
         </TouchableOpacity>
 
         </ScrollView>
@@ -54,15 +56,19 @@ const styles = StyleSheet.create({
   button: {
     alignSelf: 'stretch',
     alignItems: 'center',
-    padding: 12,
-    backgroundColor: '#6e6570',
-    marginTop: 10,
-    marginBottom: 50,
-    borderRadius: 200,
+    padding: 6,
+    backgroundColor: '#2CFBD1',
+    marginTop: 50,
+    marginBottom: 10,
+    borderRadius: 15,
+    borderColor: "black",
+    borderWidth: 3,
+    width: 270,
+    marginLeft: 35,
   },
   btntext: {
-    color: 'white',
-    // fontWeight: 'bold',
+    color: 'black',
+    fontWeight: 'bold',
     fontSize: 25, 
   },
 });

@@ -98,12 +98,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingLeft: 30,
     paddingRight: 30,
-    backgroundColor: '#eee9f0',
+    backgroundColor: '#DFF8FB',
   },
   header: {
     fontSize: 35,
     textAlign: 'center',
-    color: '#6e6570',
+    color: 'black',
     // paddingBottom: 5,
     marginBottom: 40,
     marginTop:35,
@@ -116,16 +116,21 @@ const styles = StyleSheet.create({
   patientSignUp: {
     alignSelf: 'stretch',
     alignItems: 'center',
-    padding: 12,
-    backgroundColor: '#6e6570',
+    padding: 6,
+    backgroundColor: '#2CFBD1',
     marginTop: 10,
     marginBottom: 10,
-    borderRadius: 200,
+    borderRadius: 15,
+    borderColor: "black",
+    borderWidth: 3,
+    width: 200,
+    marginLeft: 60,
   },
   patientText: {
-    color: '#fff',
+    color: 'black',
     fontWeight: 'bold',
     fontSize: 25,
+    fontWeight: 'bold'
   },
 });
     

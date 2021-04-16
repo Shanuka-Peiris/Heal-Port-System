@@ -22,11 +22,12 @@ const LoginScreenHospital = ({ navigation }) => {
         <KeyboardAvoidingView behavior="padding" style={styles.container}>
            <StatusBar style={"light"} />
            <Image 
-                source={{
-                    uri: 'https://cesie.org/media/heal-logo.jpg', 
-                }}
-                style={{ width: 300, height: 200 }}
-            />
+                // source={{
+                //     uri: 'https://cesie.org/media/heal-logo.jpg', 
+                // }}
+                source={require('../Images/logo-3.png')}
+
+                style={{ width: 350, height: 200, marginBottom: 100 }}            />
 
             <View style={styles.inputContainer}>
                 <Input 
@@ -85,8 +86,8 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         padding: 10,
         borderWidth: 3,
-        borderColor: "#6e6570",
-        backgroundColor: '#6e6570',
+        borderColor: "black",
+        backgroundColor: '#2CFBD1',
     },
     buttonRegister: {
         width: 200,
@@ -101,7 +102,7 @@ const styles = StyleSheet.create({
     buttonTextLogin: {
         textAlign: 'center',
         fontSize: 15,
-        color: 'white',
+        color: 'black',
         fontWeight: 'bold',
     },
     buttonTextRegister: {
