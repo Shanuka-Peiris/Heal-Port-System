@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity, ScrollView, ImageBackground } from 'react-native';
+import SplashScreen from 'react-native-splash-screen';
 
 export default class Splash extends Component {
     componentDidMount() {
@@ -13,8 +14,7 @@ export default class Splash extends Component {
             <View style={styles.container}>
                 <Image
                     style={styles.tinyLogo}
-                    // source={{uri: 'https://cesie.org/media/heal-logo.jpg'}}
-                    source={require('../Images/logo-3.png')}
+                    source={require('../Images/logo-4.png')}
                 />
             </View>
         );
@@ -28,11 +28,14 @@ const styles = StyleSheet.create({
         alignItems: "center",
         paddingLeft: 30,
         paddingRight: 30,
-        backgroundColor: '#79f2ca',
+        backgroundColor: 'white',
+        
     },
     tinyLogo: {
-        height: 200,
+        height: 250,
         width: 300,
         justifyContent: 'center',
+        alignItems: "center",
+        position: 'absolute'
     }
 });

@@ -1,6 +1,21 @@
 import React, { useState, useEffect, setServerData } from 'react';
 import { SafeAreaView, StyleSheet, Text, View, FlatList, TouchableOpacity, Button } from 'react-native';
 import MultiSelect from 'react-native-multiple-select';
+import * as Font from 'expo-font';
+import AppLoading from 'expo-app-loading';
+
+
+const fetchFont = () => {
+  return Font.loadAsync({
+    "Ledger-Regular" : require("../assets/fonts/Ledger-Regular.ttf"),
+    "Sacramento" :  require("../assets/fonts/Sacramento-Regular.ttf"),
+    "Vidaloka-Regular" :  require("../assets/fonts/Vidaloka-Regular.ttf"),
+    "YuseiMagic-Regular" :  require("../assets/fonts/YuseiMagic-Regular.ttf"),
+
+
+  });
+};
+
 
 const items = [
     { id: "itching", name: 'Itching' },
@@ -152,6 +167,8 @@ const DATA = [
 ];
 
 const PatientSymptoms = ({ route, navigation }) => {
+    
+   
     // Data Source for the SearchableDropdown
     const [selectedItems, setSelectedItems] = useState([]);
 
@@ -182,6 +199,17 @@ const PatientSymptoms = ({ route, navigation }) => {
                 console.log(error)
                 Alert.alert("Something went wrong. Please try again!")
             })
+    }
+
+    const [fontLoaded, setfontLoaded] = useState(false);
+
+    if(!fontLoaded){
+        return <AppLoading startAsync = {fetchFont} 
+        onError = {() => console.log("ERROR")}
+        onFinish = {() => {
+            setfontLoaded(true);
+        }}
+        />;
     }
 
     const pressHandler = () => {
@@ -265,10 +293,12 @@ const styles = StyleSheet.create({
         padding: 8,
         fontSize: 16,
         textAlign: 'center',
-        fontWeight: 'bold',
+        //fontWeight: 'bold',
+        fontFamily:"YuseiMagic-Regular",
     },
     headingText: {
         padding: 8,
+        fontFamily:"YuseiMagic-Regular",
     },
     button: {
         alignSelf: 'stretch',
@@ -287,15 +317,17 @@ const styles = StyleSheet.create({
     buttonText: {
         color: 'white',
         fontSize: 20,
-        fontWeight: '700',
+        //fontWeight: '700',
+        fontFamily:"YuseiMagic-Regular",
     },
     name: {
-        fontWeight: '700',
+        //fontWeight: '700',
         fontSize: 18,
         left: 60,
+        fontFamily:"YuseiMagic-Regular",
     },
     heading: {
-        fontWeight: 'bold',
+        //fontWeight: 'bold',
         fontSize: 20,
         textAlign: 'center',
         marginTop: 50,

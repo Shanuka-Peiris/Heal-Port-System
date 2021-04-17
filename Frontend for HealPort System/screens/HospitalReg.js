@@ -1,6 +1,20 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, ScrollView  } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, ScrollView, Modal  } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
+import * as Font from 'expo-font';
+import AppLoading from 'expo-app-loading';
+
+
+const fetchFont = () => {
+  return Font.loadAsync({
+    "Ledger-Regular" : require("../assets/fonts/Ledger-Regular.ttf"),
+    "Sacramento" :  require("../assets/fonts/Sacramento-Regular.ttf"),
+    "Vidaloka-Regular" :  require("../assets/fonts/Vidaloka-Regular.ttf"),
+    "YuseiMagic-Regular" :  require("../assets/fonts/YuseiMagic-Regular.ttf"),
+
+
+  });
+};
 
 const HospitalReg = ({ navigation }) => {
 
@@ -10,6 +24,16 @@ const HospitalReg = ({ navigation }) => {
   const [registrationNo, setRegistrationNo] = useState('');
   const [password, setPassword] = useState('');
   const [contactNo, setContactNo] = useState('');
+  const [fontLoaded, setfontLoaded] = useState(false);
+  
+    if(!fontLoaded){
+        return <AppLoading startAsync = {fetchFont} 
+        onError = {() => console.log("ERROR")}
+        onFinish = {() => {
+            setfontLoaded(true);
+        }}
+        />;
+    }
 
   const pressHandler = () => {
     navigation.push('Staff Login')
@@ -21,11 +45,13 @@ const HospitalReg = ({ navigation }) => {
           <Text style={styles.header}>REGISTRATION</Text>
 
           <View style={styles.container}>
-             <Text>Select Your Profession</Text>
+             <Text style={styles.profession}>Select Your Profession</Text>
              <RNPickerSelect
-                 placeholder={{ label: "Select your Profession" ,value: null}}
+             style={styles.label}
+                 placeholder={{ label: "Select your Profession" ,value: null, color:'black'}}
                  onValueChange={(value) => console.log(value)}
                  placeholderTextColor = "black"
+                 
                  items={[
                      { label: "Doctor", value: "Doctor" },
                      { label: "Radiographer", value: "Radiographer" },
@@ -34,7 +60,7 @@ const HospitalReg = ({ navigation }) => {
                  ]}
              />
          </View>
-
+         
           <TextInput 
             style={styles.textInput}   
             placeholder="First Name" 
@@ -114,38 +140,64 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingLeft: 30,
     paddingRight: 30,
-    backgroundColor: '#DFF8FB',
+    backgroundColor: '#CAE0DB',
   },
   header: {
     fontSize: 35,
     textAlign: 'center',
     color: 'black',
-    marginBottom: 30,
-    marginTop:20,
+    marginBottom: 40,
+    marginTop:35,
+    color: "#004644",
+    fontFamily:"YuseiMagic-Regular",
   },
   textInput: {
-    // alignSelf: 'stretch',
     height: 40,
     marginBottom: 30,
-    color: 'black', 
+    color: 'black',
+    fontSize: 18,
+    fontFamily:"YuseiMagic-Regular",
+  },
+  profession:{
+    height: 40,
+    marginBottom: 30,
+    color: 'black',
+    fontSize: 18,
+    fontFamily:"YuseiMagic-Regular",
   },
   staffSignUp: {
     alignSelf: 'stretch',
     alignItems: 'center',
-    padding: 6,
-    backgroundColor: '#2CFBD1',
+    padding: 10,
     marginTop: 10,
     marginBottom: 10,
-    borderRadius: 15,
-    borderColor: "black",
-    borderWidth: 3,
+    borderWidth: 2,
     width: 200,
     marginLeft: 60,
+    textAlign: "center",
+    borderRadius: 10,
+    borderColor: "black",
+    backgroundColor: '#fdeb93',
   },
   staffText: {
-    color: 'black',
-    fontWeight: 'bold',
-    fontSize: 25,
-    fontWeight: 'bold'
+    textAlign: 'center',
+    fontSize: 20,
+    color: "black",
+    fontFamily:"YuseiMagic-Regular",
   },
+
+
+
+  label:{
+    marginVertical:20,
+    fontSize:18,
+    color:'black',
+    fontFamily:"YuseiMagic-Regular",
+    backgroundColor:'black'
+  },
+  // selection:{
+  //   backgroundColor:"black",
+  //   alignSelf:'stretch',
+  //   paddingHorizontal:20,
+  // },
 });

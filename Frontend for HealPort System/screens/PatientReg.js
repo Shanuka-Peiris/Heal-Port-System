@@ -1,5 +1,19 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, ScrollView  } from 'react-native';
+import * as Font from 'expo-font';
+import AppLoading from 'expo-app-loading';
+
+
+const fetchFont = () => {
+  return Font.loadAsync({
+    "Ledger-Regular" : require("../assets/fonts/Ledger-Regular.ttf"),
+    "Sacramento" :  require("../assets/fonts/Sacramento-Regular.ttf"),
+    "Vidaloka-Regular" :  require("../assets/fonts/Vidaloka-Regular.ttf"),
+    "YuseiMagic-Regular" :  require("../assets/fonts/YuseiMagic-Regular.ttf"),
+
+
+  });
+};
 
 const PatientReg = ({ navigation }) => {
 
@@ -9,6 +23,16 @@ const PatientReg = ({ navigation }) => {
   const [nic, setNic] = useState('');
   const [password, setPassword] = useState('');
   const [contactNo, setContactNo] = useState('');
+  const [fontLoaded, setfontLoaded] = useState(false);
+
+    if(!fontLoaded){
+        return <AppLoading startAsync = {fetchFont} 
+        onError = {() => console.log("ERROR")}
+        onFinish = {() => {
+            setfontLoaded(true);
+        }}
+        />;
+    }
 
   const pressHandler = () => {
     navigation.push('Patient Login')
@@ -98,39 +122,43 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingLeft: 30,
     paddingRight: 30,
-    backgroundColor: '#DFF8FB',
+    backgroundColor: '#CAE0DB',
   },
   header: {
     fontSize: 35,
     textAlign: 'center',
     color: 'black',
-    // paddingBottom: 5,
     marginBottom: 40,
     marginTop:35,
+    color: "#004644",
+    fontFamily:"YuseiMagic-Regular",
   },
   textInput: {
     height: 40,
     marginBottom: 30,
     color: 'black',
+    fontSize: 18,
+    fontFamily:"YuseiMagic-Regular",
   },
   patientSignUp: {
     alignSelf: 'stretch',
     alignItems: 'center',
-    padding: 6,
-    backgroundColor: '#2CFBD1',
+    padding: 10,
     marginTop: 10,
     marginBottom: 10,
-    borderRadius: 15,
-    borderColor: "black",
-    borderWidth: 3,
+    borderWidth: 2,
     width: 200,
     marginLeft: 60,
+    textAlign: "center",
+    borderRadius: 10,
+    borderColor: "black",
+    backgroundColor: '#fdeb93',
   },
   patientText: {
-    color: 'black',
-    fontWeight: 'bold',
-    fontSize: 25,
-    fontWeight: 'bold'
+    textAlign: 'center',
+    fontSize: 20,
+    color: "black",
+    fontFamily:"YuseiMagic-Regular",
   },
 });
     
