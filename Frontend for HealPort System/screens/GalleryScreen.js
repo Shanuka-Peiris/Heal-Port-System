@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View, Alert } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import{Feather as Icon } from '@expo/vector-icons';
 
@@ -18,8 +18,33 @@ const GalleryScreen = () => {
         return;
       }
   
-      setSelectedImage({ localUri: pickerResult.uri });
+      setSelectedImage({ Location: pickerResult.uri });
     };
+
+    var myJson = JSON.stringify(selectedImage)
+    // console.log(myJson)
+
+    const submitImage = () => {
+      console.log(myJson)
+      // navigation.push('Admission Officer')
+      fetch('http://10.0.2.2:3000/upload', {
+          method: 'Post',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body :JSON.stringify({
+              selectedImage
+          }) 
+      })
+      .then((response) => response.json())
+      .then((responseData) => {
+          console.log(responseData)
+      })
+      .catch((error) => {
+          console.log(error)
+          Alert.alert("Something went wrong. Please try again!")
+      })
+  }
     
     if (selectedImage !== null) {
       return (
@@ -33,7 +58,7 @@ const GalleryScreen = () => {
               <Icon name ="repeat" size ={30} color= "#578e91" />
               <Text style={styles.buttonText}>Again</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={openImagePickerAsync} style={styles.button}>
+            <TouchableOpacity onPress={ submitImage } style={styles.button}>
               <Icon name ="upload" size ={30} color= "#578e91" />
               <Text style={styles.buttonText}>Upload</Text>
             </TouchableOpacity>

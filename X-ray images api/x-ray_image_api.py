@@ -1,13 +1,13 @@
-import flask
-from flask import request, render_template
+from flask import Flask, request
 from werkzeug.utils import secure_filename
 from keras.models import load_model
 from keras.preprocessing import image
 import numpy as np
 import matplotlib.pyplot as plt
+import json
 
 #Create the Flask application object
-application = flask.Flask(__name__)
+application = Flask(__name__)
 #Start the debugger
 application.config["DEBUG"] = True
 
@@ -16,13 +16,22 @@ application.config["DEBUG"] = True
 @application.route("/api/v1/resources/x-ray/image", methods = ["GET", "POST"])
 def upload_file():
 	if request.method == "POST":
+
+		# data = request.get_json()
+		# location = str(data["location"])
+		# print(location)
+
 		#Declare temp_img using POST request file
-		temp_img = request.files["file"]
+		# temp_img = request.files["file"]
 		#Save the image as jpeg
-		temp_img.save(secure_filename("temp_image.jpeg"))  
+		# temp_img.save(secure_filename("temp_image.jpeg")) 
+
+		locationData = request.get_json(); 
 		
+		location = locationData['Location']
+
 		#Declare img by loading an image
-		img = image.load_img("temp_image.jpeg",target_size=(224,224))
+		img = image.load_img(location, target_size=(224,224))
 		#Pre-process the image
 		img = np.asarray(img)
 		plt.imshow(img)

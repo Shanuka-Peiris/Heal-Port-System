@@ -1,137 +1,169 @@
 import React, { useState, useEffect, setServerData } from 'react';
-import { SafeAreaView, StyleSheet, View, Button, Alert, Text } from 'react-native';
+import { SafeAreaView, 
+    StyleSheet, 
+    Text, 
+    View, 
+    FlatList, 
+    TouchableOpacity, 
+    Button,
+    Alert } from 'react-native';
 import MultiSelect from 'react-native-multiple-select';
 
 const items = [
-    { id: "0", name: 'itching' },
-    { id: "1", name: 'skin_rash' },
-    { id: "2", name: 'nodal_skin_eruptions' },
-    { id: "3", name: 'continuous_sneezing' },
-    { id: "4", name: 'shivering' },
-    { id: "5", name: 'chills' },
-    { id: "6", name: 'joint_pain' },
-    { id: "7", name: 'stomach_pain' },
-    { id: "8", name: 'acidity' },
-    { id: "9", name: 'ulcers_on_tongue' },
-    { id: "10", name: 'muscle_wasting' },
-    { id: "11", name: 'vomiting' },
-    { id: "12", name: 'burning_micturition' },
-    { id: "13", name: 'spotting_ urination' },
-    { id: "14", name: 'fatigue' },
-    { id: "15", name: 'weight_gain' },
-    { id: "16", name: 'anxiety' },
-    { id: "17", name: 'cold_hands_and_feets' },
-    { id: "18", name: 'mood_swings' },
-    { id: "19", name: 'weight_loss' },
-    { id: "20", name: 'restlessness' },
-    { id: "21", name: 'lethargy' },
-    { id: "22", name: 'patches_in_throat' },
-    { id: "23", name: 'cough' },
-    { id: "24", name: 'high_fever' },
-    { id: "25", name: 'sunken_eyes' },
-    { id: "26", name: 'breathlessness' },
-    { id: "27", name: 'sweating' },
-    { id: "28", name: 'dehydration' },
-    { id: "29", name: 'indigestion' },
-    { id: "30", name: 'headache' },
-    { id: "31", name: 'yellowish_skin' },
-    { id: "32", name: 'dark_urine' },
-    { id: "33", name: 'nausea' },
-    { id: "34", name: 'loss_of_appetite' },
-    { id: "35", name: 'pain_behind_the_eyes' },
-    { id: "36", name: 'back_pain' },
-    { id: "37", name: 'constipation' },
-    { id: "38", name: 'abdominal_pain' },
-    { id: "39", name: 'diarrhoea' },
-    { id: "40", name: 'mild_fever' },
-    { id: "41", name: 'yellow_urine' },
-    { id: "42", name: 'yellowing_of_eyes' },
-    { id: "43", name: 'acute_liver_failure' },
-    { id: "44", name: 'fluid_overload' },
-    { id: "45", name: 'swelling_of_stomach' },
-    { id: "46", name: 'swelled_lymph_nodes' },
-    { id: "47", name: 'malaise' },
-    { id: "48", name: 'blurred_and_distorted_vision' },
-    { id: "49", name: 'phlegm' },
-    { id: "50", name: 'throat_irritation' },
-    { id: "51", name: 'redness_of_eyes' },
-    { id: "52", name: 'sinus_pressure' },
-    { id: "53", name: 'runny_nose' },
-    { id: "54", name: 'congestion' },
-    { id: "55", name: 'chest_pain' },
-    { id: "56", name: 'weakness_in_limbs' },
-    { id: "57", name: 'fast_heart_rate' },
-    { id: "58", name: 'pain_during_bowel_movements' },
-    { id: "59", name: 'pain_in_anal_region' },
-    { id: "60", name: 'bloody_stool' },
-    { id: "61", name: 'irritation_in_anus' },
-    { id: "62", name: 'neck_pain' },
-    { id: "63", name: 'dizziness' },
-    { id: "64", name: 'cramps' },
-    { id: "65", name: 'obesity' },
-    { id: "66", name: 'swollen_legs' },
-    { id: "67", name: 'puffy_face_and_eyes' },
-    { id: "68", name: 'enlarged_thyroid' },
-    { id: "69", name: 'brittle_nails' },
-    { id: "70", name: 'swollen_extremeties' },
-    { id: "71", name: 'excessive_hunger' },
-    { id: "72", name: 'drying_and_tingling_lips' },
-    { id: "73", name: 'slurred_speech' },
-    { id: "74", name: 'knee_pain' },
-    { id: "75", name: 'hip_joint_pain' },
-    { id: "76", name: 'muscle_weakness' },
-    { id: "77", name: 'stiff_neck' },
-    { id: "78", name: 'swelling_joints' },
-    { id: "79", name: 'movement_stiffness' },
-    { id: "80", name: 'spinning_movements' },
-    { id: "81", name: 'loss_of_balance' },
-    { id: "82", name: 'unsteadiness' },
-    { id: "83", name: 'weakness_of_one_body_side' },
-    { id: "84", name: 'loss_of_smell' },
-    { id: "85", name: 'bladder_discomfort' },
-    { id: "86", name: 'foul_smell_of urine' },
-    { id: "87", name: 'continuous_feel_of_urine' },
-    { id: "88", name: 'passage_of_gases' },
-    { id: "89", name: 'yellow_crust_ooze' },
-    { id: "90", name: 'toxic_look_(typhos)' },
-    { id: "91", name: 'depression' },
-    { id: "92", name: 'irritability' },
-    { id: "93", name: 'muscle_pain' },
-    { id: "94", name: 'altered_sensorium' },
-    { id: "95", name: 'red_spots_over_body' },
-    { id: "96", name: 'belly_pain' },
-    { id: "97", name: 'abnormal_menstruation' },
-    { id: "98", name: 'dischromic _patches' },
-    { id: "99", name: 'watering_from_eyes' },
-    { id: "100", name: 'increased_appetite' },
-    { id: "101", name: 'polyuria' },
-    { id: "102", name: 'family_history' },
-    { id: "103", name: 'mucoid_sputum' },
-    { id: "104", name: 'rusty_sputum' },
-    { id: "105", name: 'lack_of_concentration' },
-    { id: "106", name: 'visual_disturbances' },
-    { id: "107", name: 'receiving_blood_transfusion' },
-    { id: "108", name: 'receiving_unsterile_injections' },
-    { id: "109", name: 'coma' },
-    { id: "110", name: 'stomach_bleeding' },
-    { id: "111", name: 'distention_of_abdomen' },
-    { id: "112", name: 'history_of_alcohol_consumption' },
-    { id: "113", name: 'red_sore_around_nose' },
-    { id: "114", name: 'blood_in_sputum' },
-    { id: "115", name: 'prominent_veins_on_calf' },
-    { id: "116", name: 'palpitations' },
-    { id: "117", name: 'painful_walking' },
-    { id: "118", name: 'pus_filled_pimples' },
-    { id: "119", name: 'blackheads' },
-    { id: "120", name: 'silver_like_dusting' },
-    { id: "121", name: 'small_dents_in_nails' },
-    { id: "122", name: 'inflammatory_nails' },
-    { id: "123", name: 'blister' }
+    { id: "itching", name: 'Itching' },
+    { id: "skin_rash", name: 'Skin Rash' },
+    { id: "nodal_skin_eruptions", name: 'Nodal Skin Eruptions' },
+    { id: "continuous_sneezing", name: 'Continuous Sneezing' },
+    { id: "shivering", name: 'Shivering' },
+    { id: "chills", name: 'Chills' },
+    { id: "joint_pain", name: 'Joint Pain' },
+    { id: "stomach_pain", name: 'Stomach Pain' },
+    { id: "acidity", name: 'Acidity' },
+    { id: "ulcers_on_tongue", name: 'Ulcers On Tongue' },
+    { id: "muscle_wasting", name: 'Muscle Wasting' },
+    { id: "vomiting", name: 'Vomiting' },
+    { id: "burning_micturition", name: 'Burning Micturition' },
+    { id: "spotting_ urination", name: 'Spotting Urination' },
+    { id: "fatigue", name: 'Fatigue' },
+    { id: "weight_gain", name: 'Weight Gain' },
+    { id: "anxiety", name: 'Anxiety' },
+    { id: "cold_hands_and_feets", name: 'Cold Hands And Feet' },
+    { id: "mood_swings", name: 'Mood Swings' },
+    { id: "weight_loss", name: 'Weight Loss' },
+    { id: "restlessness", name: 'Restlessness' },
+    { id: "lethargy", name: 'Lethargy' },
+    { id: "patches_in_throat", name: 'Patches In Throat' },
+    { id: "cough", name: 'Cough' },
+    { id: "high_fever", name: 'High Fever' },
+    { id: "sunken_eyes", name: 'Sunken Eyes' },
+    { id: "breathlessness", name: 'Breathlessness' },
+    { id: "sweating", name: 'Sweating' },
+    { id: "dehydration", name: 'Dehydration' },
+    { id: "indigestion", name: 'Indigestion' },
+    { id: "headache", name: 'Headache' },
+    { id: "yellowish_skin", name: 'Yellowish Skin' },
+    { id: "dark_urine", name: 'Dark Urine' },
+    { id: "nausea", name: 'Nausea' },
+    { id: "loss_of_appetite", name: 'Loss Of Appetite' },
+    { id: "pain_behind_the_eyes", name: 'Pain Behind The Eyes' },
+    { id: "back_pain", name: 'Back Pain' },
+    { id: "constipation", name: 'Constipation' },
+    { id: "abdominal_pain", name: 'Abdominal Pain' },
+    { id: "diarrhoea", name: 'Diarrhoea' },
+    { id: "mild_fever", name: 'Mild Fever' },
+    { id: "yellow_urine", name: 'Yellow Urine' },
+    { id: "yellowing_of_eyes", name: 'Yellowing Of Eyes' },
+    { id: "acute_liver_failure", name: 'Acute Liver Failure' },
+    { id: "fluid_overload", name: 'Fluid Overload' },
+    { id: "swelling_of_stomach", name: 'Swelling Of Stomach' },
+    { id: "swelled_lymph_nodes", name: 'Swelled Lymph Nodes' },
+    { id: "malaise", name: 'Malaise' },
+    { id: "blurred_and_distorted_vision", name: 'Blurred And Distorted Vision' },
+    { id: "phlegm", name: 'Phlegm' },
+    { id: "throat_irritation", name: 'Throat Irritation' },
+    { id: "redness_of_eyes", name: 'Redness Of Eyes' },
+    { id: "sinus_pressure", name: 'Sinus Pressure' },
+    { id: "runny_nose", name: 'Runny Nose' },
+    { id: "5congestion4", name: 'Congestion' },
+    { id: "chest_pain", name: 'Chest Pain' },
+    { id: "weakness_in_limbs", name: 'Weakness In Limbs' },
+    { id: "fast_heart_rate", name: 'Fast Heart Rate' },
+    { id: "pain_during_bowel_movements", name: 'Pain During Bowel_Movements' },
+    { id: "pain_in_anal_region", name: 'Pain In Anal Region' },
+    { id: "bloody_stool", name: 'Bloody Stool' },
+    { id: "irritation_in_anus", name: 'Irritation In Anus' },
+    { id: "neck_pain", name: 'Neck Pain' },
+    { id: "dizziness", name: 'Dizziness' },
+    { id: "cramps", name: 'Cramps' },
+    { id: "obesity", name: 'Obesity' },
+    { id: "swollen_legs", name: 'Swollen Legs' },
+    { id: "puffy_face_and_eyes", name: 'Puffy Face And Eyes' },
+    { id: "enlarged_thyroid", name: 'Enlarged Thyroid' },
+    { id: "brittle_nails", name: 'Brittle Nails' },
+    { id: "swollen_extremeties", name: 'Swollen Extremeties' },
+    { id: "excessive_hunger", name: 'Excessive Hunger' },
+    { id: "drying_and_tingling_lips", name: 'Drying And Tingling Lips' },
+    { id: "slurred_speech", name: 'Slurred Speech' },
+    { id: "knee_pain", name: 'Knee Pain' },
+    { id: "hip_joint_pain", name: 'Hip Joint Pain' },
+    { id: "muscle_weakness", name: 'Muscle Weakness' },
+    { id: "stiff_neck", name: 'Stiff Neck' },
+    { id: "swelling_joints", name: 'Swelling Joints' },
+    { id: "movement_stiffness", name: 'Movement Stiffness' },
+    { id: "spinning_movements", name: 'Spinning Movements' },
+    { id: "loss_of_balance", name: 'Loss Of Balance' },
+    { id: "unsteadiness", name: 'Unsteadiness' },
+    { id: "weakness_of_one_body_side", name: 'Weakness Of One Body Side' },
+    { id: "loss_of_smell", name: 'Loss Of Smell' },
+    { id: "bladder_discomfort", name: 'Bladder Discomfort' },
+    { id: "foul_smell_of urine", name: 'Foul Smell Of Urine' },
+    { id: "continuous_feel_of_urine", name: 'Continuous Feel Of Urine' },
+    { id: "passage_of_gases", name: 'Passage Of Gases' },
+    { id: "yellow_crust_ooze", name: 'Yellow Crust Ooze' },
+    { id: "toxic_look_(typhos)", name: 'Toxic Look' },
+    { id: "depression", name: 'Depression' },
+    { id: "irritability", name: 'Irritability' },
+    { id: "muscle_pain", name: 'Muscle Pain' },
+    { id: "altered_sensorium", name: 'Altered Sensorium' },
+    { id: "red_spots_over_body", name: 'Red Spots Over Body' },
+    { id: "belly_pain", name: 'Belly Pain' },
+    { id: "abnormal_menstruation", name: 'Abnormal Menstruation' },
+    { id: "dischromic _patches", name: 'Dischromic Patches' },
+    { id: "watering_from_eyes", name: 'Watering From Eyes' },
+    { id: "increased_appetite", name: 'Increased Appetite' },
+    { id: "polyuria", name: 'Polyuria' },
+    { id: "family_history", name: 'Family History' },
+    { id: "mucoid_sputum", name: 'Mucoid Sputum' },
+    { id: "rusty_sputum", name: 'Rusty Sputum' },
+    { id: "lack_of_concentration", name: 'Lack Of Concentration' },
+    { id: "visual_disturbances", name: 'Visual Disturbances' },
+    { id: "receiving_blood_transfusion", name: 'Receiving Blood Transfusion' },
+    { id: "receiving_unsterile_injections", name: 'Receiving Unsterile Injections' },
+    { id: "coma", name: 'Coma' },
+    { id: "stomach_bleeding", name: 'Stomach Bleeding' },
+    { id: "distention_of_abdomen", name: 'Distention Of Abdomen' },
+    { id: "history_of_alcohol_consumption", name: 'History Of Alcohol Consumption' },
+    { id: "red_sore_around_nose", name: 'Red Sore Around Nose' },
+    { id: "blood_in_sputum", name: 'Blood In Sputum' },
+    { id: "prominent_veins_on_calf", name: 'Prominent Veins On Calf' },
+    { id: "palpitations", name: 'Palpitations' },
+    { id: "painful_walking", name: 'Painful Walking' },
+    { id: "pus_filled_pimples", name: 'Pus Filled Pimples' },
+    { id: "blackheads", name: 'Blackheads' },
+    { id: "silver_like_dusting", name: 'Silver Like Dusting' },
+    { id: "small_dents_in_nails", name: 'Small Dents In Nails' },
+    { id: "inflammatory_nails", name: 'Inflammatory Nails' },
+    { id: "blister", name: 'Blister' }
 ];
 
-const PatientSymptoms = ({ route, navigation }) => {
+const DATA = [
+
+    {
+        name: "aaa"
+    },
+    {
+        name: "bbb ",
+    },
+    {
+        name: "Pneumonia",
+    },
+    {
+        name: "ccc",
+    },
+    {
+        name: "ddd",
+    },
+    {
+        name: "eee",
+    },
+];
+
+const PatientSymptoms = ({ route }) => {
     // Data Source for the SearchableDropdown
     const [selectedItems, setSelectedItems] = useState([]);
+    const [ diseaseList, setDiseaseList ] = useState([]);
+
+    var name = route.params.paramKey
 
     const onSelectedItemsChange = (selectedItems) => {
         // Set Selected Items
@@ -141,54 +173,164 @@ const PatientSymptoms = ({ route, navigation }) => {
 
     const submitSymptoms = () => {
         // navigation.push('Admission Officer')
-        fetch('http://10.0.2.2:3000/getSymptoms', {
+        
+        if (selectedItems.length != 0) {
+            console.log("is not empty")
+
+            fetch('http://10.0.2.2:3000/getSymptoms', {
+                method: 'Post',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body :JSON.stringify({
+                    userName: name,
+                    symptoms: selectedItems
+                }) 
+            })
+            .then((response) => response.json())
+            .then((responseData) => {
+                // setDiseaseList(responseData)
+                saveSymptoms();
+            })
+            .catch((error) => {
+                console.log(error)
+                Alert.alert("Something went wrong. Please try again!")
+            })
+        } else {
+            console.log("is empty")
+            Alert.alert("Please add symptoms before click submit")
+
+        }
+    }
+
+    const saveSymptoms = () => {
+        fetch("http://10.0.2.2:3000/save/Symptoms",{
+            method:"post",
+            headers:{
+                'Content-Type': 'application/json'
+            },
+        body:JSON.stringify({
+                userName: name,
+                symptoms: selectedItems
+            })
+        })
+        .then(res=>res.json())
+        .then(data=>{
+            Alert.alert("Data saved successfully")
+            navigation.navigate("Home")
+        })
+        .catch(err=>{
+            Alert.alert("Something went wrong")
+        })
+    }
+
+    const getUserDetails = () => {
+        fetch('http://10.0.2.2:3000/retrieve/information/patientInfo', {
             method: 'Post',
             headers: {
                 'Content-Type': 'application/json',
             },
             body :JSON.stringify({
-                userName: "Test123",
-                symptoms: selectedItems
+                userName: name,
+                
             }) 
         })
         .then((response) => response.json())
         .then((responseData) => {
+            // setDiseaseList(responseData)
             console.log(responseData)
-            
+            // admitUser(responseData)
+            admitPatient(responseData)
         })
         .catch((error) => {
             console.log(error)
-            Alert.alert("Something went wrong. Please try again!")
+            Alert.alert("Something went wrong while retreving data")
         })
+
+
+        const admitPatient = (responseData) => {
+            fetch("http://10.0.2.2:3000/save/admitPatient", {
+                method:"post",
+                headers:{
+                    'Content-Type': 'application/json'
+                },
+                body:JSON.stringify({
+                    userName: name,
+                    firstName: responseData.firstName,
+                    lastName: responseData.lastName,
+                    nicNumber: responseData.niceNumber,
+                    contactNumber: responseData.contactNumber
+                })
+            })
+            .then((response) => response.json())
+            .then((responseData) => {
+                console.log(responseData)
+                if (responseData == "Successful") {
+                    Alert.alert("Admission successful")
+                } 
+            })
+            .catch((error) => {
+                Alert.alert("Error while admitting patient")
+            })
+        }
     }
 
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.container}>
+
                 <MultiSelect
                     hideTags
                     items={items}
-                    uniqueKey="name"
+                    uniqueKey="id"
                     onSelectedItemsChange={onSelectedItemsChange}
                     selectedItems={selectedItems}
                     selectText="Select Symptoms"
-                    searchInputPlaceholderText="Search Symptoms..."
+                    searchInputPlaceholderText="Search Symptoms...."
                     onChangeInput={(text) => console.log(text)}
                     tagRemoveIconColor="#CCC"
                     tagBorderColor="#CCC"
                     tagTextColor="#CCC"
-                    selectedItemTextColor="#CCC"
-                    selectedItemIconColor="#CCC"
-                    itemTextColor="#000"
+                    selectedItemTextColor="#FF0000"
+                    selectedItemIconColor="#FF0000"
+                    itemTextColor="#0000ff"
                     displayKey="name"
-                    searchInputStyle={{ color: '#CCC' }}
+                    searchInputStyle={{ color: '#000' }}
+                    hideSubmitButton
                 />
 
                 <Button
                     title="Submit"
                     onPress={submitSymptoms}
                 />
+                <Text style={styles.heading}>Diseases</Text>
+
+                <FlatList
+                    data={DATA}
+                    keyExtractor={item => item.name}
+                    renderItem={({ item }) => {
+                        return <TouchableOpacity style={{ margin: 10, margin: 5 }}>
+                            <View style={{ flex: 1, padding: 5 }}>
+
+                                <View
+                                    style={[
+                                        StyleSheet.absoluteFillObject,
+                                        { backgroundColor: '#b4d8ed', borderRadius: 16, }
+                                    ]} />
+                                <Text style={styles.name} > {item.name} </Text>
+                            </View>
+                        </TouchableOpacity>
+                    }}
+                />
+                
+
             </View>
+
+            <TouchableOpacity
+                style={styles.button} 
+                onPress={getUserDetails}>
+                <Text style={styles.buttonText} >Admit</Text>
+            </TouchableOpacity>
         </SafeAreaView>
     );
 };
@@ -201,6 +343,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         padding: 10,
         marginTop: 30,
+        marginBottom: 40
     },
     titleText: {
         padding: 8,
@@ -220,8 +363,8 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         borderRadius: 200,
         position: 'absolute',
-        top: 0,
-        right: 0,
+        top: 570,
+        right: 150,
         borderColor: 'white',
         borderWidth: 2,
     },

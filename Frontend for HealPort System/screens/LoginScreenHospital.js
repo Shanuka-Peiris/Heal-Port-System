@@ -27,14 +27,15 @@ const LoginScreenHospital = ({ navigation }) => {
         .then(async (data) => {
             try {
                 await AsyncStorage.setItem('token', data.token)
-                navigation.replace('Staff')
+                console.log(data.token)
+                navigation.replace('Staff', {
+                    paramKey: userName,
+                })
             } catch (e) {
                 console.log("Error", e)
                 Alert.alert(e)
             }
         })
-
-        // navigation.push('Staff')
     }
 
     const pressHandler1 = () => {

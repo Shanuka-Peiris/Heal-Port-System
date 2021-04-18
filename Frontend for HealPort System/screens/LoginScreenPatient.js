@@ -28,8 +28,9 @@ const LoginScreenPatient = ({ navigation }) => {
         .then(async (data)=>{
             try {
                 await AsyncStorage.setItem('token',data.token)
+                console.log(data.token)
                 navigation.replace('symptoms', {
-                    USERNAME: userName,
+                    paramKey: userName,
                 })
             } catch (e) {
                 console.log("Error", e)
