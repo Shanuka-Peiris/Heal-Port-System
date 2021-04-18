@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, ScrollView  } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, ScrollView, Alert  } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const PatientReg = ({ navigation }) => {
 
@@ -12,8 +13,33 @@ const PatientReg = ({ navigation }) => {
   const [contactNo, setContactNo] = useState('');
 
   const pressHandler = () => {
-    navigation.push('Patient Login')
-    }
+    // navigation.push('Patient Login')
+
+    fetch('http://10.0.2.2:3000/patient/signUp', {
+      method:"POST",
+      headers: {
+          'Content-Type': 'application/json'
+      },
+      body:JSON.stringify({
+          "firstName":firstName,
+          "lastName":lastName,
+          "userName":userName,
+          "nicNumber":nic,
+          "password":password,
+          "contactNumber":contactNo
+      })
+    })
+    .then(res => res.json())
+    .then(async (data) => {
+      try {
+        await AsyncStorage.setItem('token',data.token)
+        navigation.replace('Patient Login')
+      } catch (e) {
+        Alert.alert("Required fields are not filed...")
+        console.log("Error", e)
+      }
+    })
+  }
   
       return (
         <View style={styles.PatientReg}>

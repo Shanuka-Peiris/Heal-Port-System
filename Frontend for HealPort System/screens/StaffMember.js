@@ -1,18 +1,20 @@
 import React from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity,Image, ScrollView } from 'react-native';
 
-const StaffMember = ({ navigation }) => {
+const StaffMember = ({ route, navigation }) => {
+
+  console.log(route.params.paramKey)
 
   const pressHandler1 = () => {
-    navigation.push('Doctor')
+    navigation.replace('Doctor')
   }
 
   const pressHandler2 = () => {
-    navigation.push('Radiographer')
+    navigation.replace('Radiographer')
   }
 
   const pressHandler3 = () => {
-    navigation.push('Admission Officer')
+    navigation.replace('Admission Officer')
   } 
 
     return (

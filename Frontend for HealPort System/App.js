@@ -15,6 +15,8 @@ import Xray from './screens/Xray';
 import CameraScreen from './screens/CameraScreen';
 import GalleryScreen from './screens/GalleryScreen';
 import AdmissionOfficer from './screens/AdmissionOfficer';
+import PatientSymptoms from './screens/PatientSymptoms';
+import Doctor from './screens/Doctor';
 
 
 const Stack = createStackNavigator();
@@ -64,6 +66,12 @@ export default function App() {
       <Stack.Screen 
         name="Gallery" 
         component={ GalleryScreen }  />
+      <Stack.Screen 
+        name="symptoms" 
+        component={ PatientSymptoms }  />
+      <Stack.Screen 
+        name="Doctor" 
+        component={ Doctor }  />
 
       </Stack.Navigator>
     </NavigationContainer>

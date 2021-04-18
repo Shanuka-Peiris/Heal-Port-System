@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, ScrollView  } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const HospitalReg = ({ navigation }) => {
 
@@ -12,7 +13,31 @@ const HospitalReg = ({ navigation }) => {
   const [contactNo, setContactNo] = useState('');
 
   const pressHandler = () => {
-    navigation.push('Staff Login')
+    // navigation.push('Staff Login')
+
+    fetch('http://10.0.2.2:3000/staff/signUp', {
+            method:"POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body:JSON.stringify({
+                "firstName":firstName,
+                "lastName":lastName,
+                "userName":userName,
+                "registrationNum":registrationNo,
+                "password":password,
+                "contactNumber":contactNo
+            })
+        })
+        .then(res => res.json())
+        .then(async (data) => {
+          try {
+            await AsyncStorage.setItem('token',data.token)
+            navigation.push('Staff Login')
+          } catch (e) {
+            console.log("Error", e)
+          }
+        })
   }
 
     return (

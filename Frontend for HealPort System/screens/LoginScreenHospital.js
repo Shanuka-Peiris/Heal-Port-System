@@ -1,8 +1,10 @@
 import React,  { useState, useLayoutEffect } from 'react'
-import { KeyboardAvoidingView, StyleSheet, Text, View } from 'react-native'
+import { Alert, KeyboardAvoidingView, StyleSheet, Text, View } from 'react-native'
 import { StatusBar } from 'expo-status-bar';
 import { Image, Input, Button } from 'react-native-elements';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 
 const LoginScreenHospital = ({ navigation }) => {
@@ -11,7 +13,29 @@ const LoginScreenHospital = ({ navigation }) => {
     const [password, setPassword] = useState('');
 
     const pressHandler = () => {
-        navigation.push('Staff')
+        fetch('http://10.0.2.2:3000/staff/signIn', {
+            method:"POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body:JSON.stringify({
+                "userName":userName,
+                "password":password
+            })
+        })
+        .then(res=>res.json())
+        .then(async (data) => {
+            try {
+                await AsyncStorage.setItem('token', data.token)
+                console.log(data.token)
+                navigation.replace('Staff', {
+                    paramKey: userName,
+                })
+            } catch (e) {
+                console.log("Error", e)
+                Alert.alert(e)
+            }
+        })
     }
 
     const pressHandler1 = () => {

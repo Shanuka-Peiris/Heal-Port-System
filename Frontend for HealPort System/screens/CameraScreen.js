@@ -29,6 +29,7 @@ const CameraScreen = ({navigation}) => {
     if(camRef){
       const data = await camRef.current.takePictureAsync();
       setCapturedPhoto(data.uri);
+      console.log(capturedPhoto)
       setOpen(true);
       console.log(data);
     }
