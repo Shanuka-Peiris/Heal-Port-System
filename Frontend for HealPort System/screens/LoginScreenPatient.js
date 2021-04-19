@@ -3,13 +3,40 @@ import { Alert, KeyboardAvoidingView, StyleSheet, Text, View } from 'react-nativ
 import { StatusBar } from 'expo-status-bar';
 import { Image, Input, Button } from 'react-native-elements';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+<<<<<<< HEAD
 import AsyncStorage from '@react-native-async-storage/async-storage';
+=======
+import * as Font from 'expo-font';
+import AppLoading from 'expo-app-loading';
+>>>>>>> Frontend-development-Chandu
 
+
+const fetchFont = () => {
+  return Font.loadAsync({
+    "Ledger-Regular" : require("../assets/fonts/Ledger-Regular.ttf"),
+    "Sacramento" :  require("../assets/fonts/Sacramento-Regular.ttf"),
+    "Vidaloka-Regular" :  require("../assets/fonts/Vidaloka-Regular.ttf"),
+    "YuseiMagic-Regular" :  require("../assets/fonts/YuseiMagic-Regular.ttf"),
+
+
+  });
+};
 
 const LoginScreenPatient = ({ navigation }) => {
 
     const [userName, setUserName] = useState('');
     const [password, setPassword] = useState('');
+    const [fontLoaded, setfontLoaded] = useState(false);
+
+    if(!fontLoaded){
+        return <AppLoading startAsync = {fetchFont} 
+        onError = {() => console.log("ERROR")}
+        onFinish = {() => {
+            setfontLoaded(true);
+        }}
+        />;
+    }
+   
 
     const pressHandler1 = () => {
         // navigation.push('Symptoms')
@@ -47,14 +74,13 @@ const LoginScreenPatient = ({ navigation }) => {
         <KeyboardAvoidingView behavior="padding" style={styles.container}>
            <StatusBar style={"light"} />
            <Image 
-                source={{
-                    uri: 'https://cesie.org/media/heal-logo.jpg', 
-                }}
-               style={{ width: 300, height: 200 }}
+                source={require('../Images/logo-4.png')}
+               style={{ width: 350, height: 250, marginBottom: 40 }}
             />
 
             <View style={styles.inputContainer}>
                 <Input 
+                    style={styles.input}
                     placeholder="User Name"
                     autoFocus
                     type="text"
@@ -63,6 +89,7 @@ const LoginScreenPatient = ({ navigation }) => {
                 />
 
                 <Input 
+                    style={styles.input}
                     placeholder="Password" 
                     secureTextEntry={true}
                     type="password"
@@ -110,8 +137,8 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         padding: 10,
         borderWidth: 3,
-        borderColor: "#6e6570",
-        backgroundColor: '#6e6570',
+        borderColor: "#004644",
+        backgroundColor: '#CAE0DB',
     },
     buttonRegister: {
         width: 200,
@@ -121,18 +148,22 @@ const styles = StyleSheet.create({
         padding: 10,
         backgroundColor: "#fff",
         borderWidth: 3,
-        borderColor: '#6e6570',
+        borderColor: "#004644",
     },
     buttonTextLogin: {
         textAlign: 'center',
-        fontSize: 15,
-        color: 'white',
-        fontWeight: 'bold',
+        fontSize: 20,
+        color: "#004644",
+        fontFamily:"YuseiMagic-Regular",
     },
     buttonTextRegister: {
         textAlign: 'center',
-        fontSize: 15,
-        color: '#6e6570',
-        fontWeight: 'bold',
-    }
+        fontSize: 20,
+        color: "#004644",
+        fontFamily:"YuseiMagic-Regular",
+    },
+    input: {
+        fontFamily:"YuseiMagic-Regular",
+        color:'black'
+    },
 }); 

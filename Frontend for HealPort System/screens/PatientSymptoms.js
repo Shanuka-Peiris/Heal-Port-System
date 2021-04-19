@@ -1,13 +1,21 @@
 import React, { useState, useEffect, setServerData } from 'react';
-import { SafeAreaView, 
-    StyleSheet, 
-    Text, 
-    View, 
-    FlatList, 
-    TouchableOpacity, 
-    Button,
-    Alert } from 'react-native';
+import { SafeAreaView, StyleSheet, Text, View, FlatList, TouchableOpacity, Button } from 'react-native';
 import MultiSelect from 'react-native-multiple-select';
+import * as Font from 'expo-font';
+import AppLoading from 'expo-app-loading';
+
+
+const fetchFont = () => {
+  return Font.loadAsync({
+    "Ledger-Regular" : require("../assets/fonts/Ledger-Regular.ttf"),
+    "Sacramento" :  require("../assets/fonts/Sacramento-Regular.ttf"),
+    "Vidaloka-Regular" :  require("../assets/fonts/Vidaloka-Regular.ttf"),
+    "YuseiMagic-Regular" :  require("../assets/fonts/YuseiMagic-Regular.ttf"),
+
+
+  });
+};
+
 
 const items = [
     { id: "itching", name: 'Itching' },
@@ -158,12 +166,11 @@ const DATA = [
     },
 ];
 
-const PatientSymptoms = ({ route }) => {
+const PatientSymptoms = ({ route, navigation }) => {
+    
+   
     // Data Source for the SearchableDropdown
     const [selectedItems, setSelectedItems] = useState([]);
-    const [ diseaseList, setDiseaseList ] = useState([]);
-
-    var name = route.params.paramKey
 
     const onSelectedItemsChange = (selectedItems) => {
         // Set Selected Items
@@ -173,106 +180,40 @@ const PatientSymptoms = ({ route }) => {
 
     const submitSymptoms = () => {
         // navigation.push('Admission Officer')
-        
-        if (selectedItems.length != 0) {
-            console.log("is not empty")
-
-            fetch('http://10.0.2.2:3000/getSymptoms', {
-                method: 'Post',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body :JSON.stringify({
-                    userName: name,
-                    symptoms: selectedItems
-                }) 
+        fetch('http://10.0.2.2:3000/getSymptoms', {
+            method: 'Post',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                userName: "Test123",
+                symptoms: selectedItems
             })
+        })
             .then((response) => response.json())
             .then((responseData) => {
-                // setDiseaseList(responseData)
-                saveSymptoms();
+                console.log(responseData)
+
             })
             .catch((error) => {
                 console.log(error)
                 Alert.alert("Something went wrong. Please try again!")
             })
-        } else {
-            console.log("is empty")
-            Alert.alert("Please add symptoms before click submit")
-
-        }
     }
 
-    const saveSymptoms = () => {
-        fetch("http://10.0.2.2:3000/save/Symptoms",{
-            method:"post",
-            headers:{
-                'Content-Type': 'application/json'
-            },
-        body:JSON.stringify({
-                userName: name,
-                symptoms: selectedItems
-            })
-        })
-        .then(res=>res.json())
-        .then(data=>{
-            Alert.alert("Data saved successfully")
-            navigation.navigate("Home")
-        })
-        .catch(err=>{
-            Alert.alert("Something went wrong")
-        })
+    const [fontLoaded, setfontLoaded] = useState(false);
+
+    if(!fontLoaded){
+        return <AppLoading startAsync = {fetchFont} 
+        onError = {() => console.log("ERROR")}
+        onFinish = {() => {
+            setfontLoaded(true);
+        }}
+        />;
     }
 
-    const getUserDetails = () => {
-        fetch('http://10.0.2.2:3000/retrieve/information/patientInfo', {
-            method: 'Post',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body :JSON.stringify({
-                userName: name,
-                
-            }) 
-        })
-        .then((response) => response.json())
-        .then((responseData) => {
-            // setDiseaseList(responseData)
-            console.log(responseData)
-            // admitUser(responseData)
-            admitPatient(responseData)
-        })
-        .catch((error) => {
-            console.log(error)
-            Alert.alert("Something went wrong while retreving data")
-        })
-
-
-        const admitPatient = (responseData) => {
-            fetch("http://10.0.2.2:3000/save/admitPatient", {
-                method:"post",
-                headers:{
-                    'Content-Type': 'application/json'
-                },
-                body:JSON.stringify({
-                    userName: name,
-                    firstName: responseData.firstName,
-                    lastName: responseData.lastName,
-                    nicNumber: responseData.niceNumber,
-                    contactNumber: responseData.contactNumber
-                })
-            })
-            .then((response) => response.json())
-            .then((responseData) => {
-                console.log(responseData)
-                if (responseData == "Successful") {
-                    Alert.alert("Admission successful")
-                } 
-            })
-            .catch((error) => {
-                Alert.alert("Error while admitting patient")
-            })
-        }
+    const pressHandler = () => {
+        navigation.push('Admission Officer')
     }
 
     return (
@@ -318,7 +259,9 @@ const PatientSymptoms = ({ route }) => {
                                         { backgroundColor: '#b4d8ed', borderRadius: 16, }
                                     ]} />
                                 <Text style={styles.name} > {item.name} </Text>
+
                             </View>
+
                         </TouchableOpacity>
                     }}
                 />
@@ -328,7 +271,7 @@ const PatientSymptoms = ({ route }) => {
 
             <TouchableOpacity
                 style={styles.button} 
-                onPress={getUserDetails}>
+                onPress={pressHandler}>
                 <Text style={styles.buttonText} >Admit</Text>
             </TouchableOpacity>
         </SafeAreaView>
@@ -349,10 +292,12 @@ const styles = StyleSheet.create({
         padding: 8,
         fontSize: 16,
         textAlign: 'center',
-        fontWeight: 'bold',
+        //fontWeight: 'bold',
+        fontFamily:"YuseiMagic-Regular",
     },
     headingText: {
         padding: 8,
+        fontFamily:"YuseiMagic-Regular",
     },
     button: {
         alignSelf: 'stretch',
@@ -371,15 +316,17 @@ const styles = StyleSheet.create({
     buttonText: {
         color: 'white',
         fontSize: 20,
-        fontWeight: '700',
+        //fontWeight: '700',
+        fontFamily:"YuseiMagic-Regular",
     },
     name: {
-        fontWeight: '700',
+        //fontWeight: '700',
         fontSize: 18,
         left: 60,
+        fontFamily:"YuseiMagic-Regular",
     },
     heading: {
-        fontWeight: 'bold',
+        //fontWeight: 'bold',
         fontSize: 20,
         textAlign: 'center',
         marginTop: 50,

@@ -1,5 +1,9 @@
 import React from 'react';
+<<<<<<< HEAD
 import { Image, StyleSheet, Text, TouchableOpacity, View, Alert } from 'react-native';
+=======
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+>>>>>>> Frontend-development-Chandu
 import * as ImagePicker from 'expo-image-picker';
 import{Feather as Icon } from '@expo/vector-icons';
 
@@ -18,6 +22,7 @@ const GalleryScreen = () => {
         return;
       }
   
+<<<<<<< HEAD
       setSelectedImage({ Location: pickerResult.uri });
     };
 
@@ -45,6 +50,10 @@ const GalleryScreen = () => {
           Alert.alert("Something went wrong. Please try again!")
       })
   }
+=======
+      setSelectedImage({ localUri: pickerResult.uri });
+    };
+>>>>>>> Frontend-development-Chandu
     
     if (selectedImage !== null) {
       return (
@@ -58,7 +67,11 @@ const GalleryScreen = () => {
               <Icon name ="repeat" size ={30} color= "#578e91" />
               <Text style={styles.buttonText}>Again</Text>
             </TouchableOpacity>
+<<<<<<< HEAD
             <TouchableOpacity onPress={ submitImage } style={styles.button}>
+=======
+            <TouchableOpacity onPress={openImagePickerAsync} style={styles.button}>
+>>>>>>> Frontend-development-Chandu
               <Icon name ="upload" size ={30} color= "#578e91" />
               <Text style={styles.buttonText}>Upload</Text>
             </TouchableOpacity>

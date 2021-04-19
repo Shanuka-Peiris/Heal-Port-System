@@ -1,11 +1,18 @@
-import React, { useState, useEffect , useRef} from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Modal, Image} from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, Modal, Image } from 'react-native';
 import { Camera } from 'expo-camera';
-import{Feather as Icon } from '@expo/vector-icons';
+import { Feather as Icon } from '@expo/vector-icons';
+import * as Permissions from 'expo-permissions';
+import * as MediaLibrary from 'expo-media-library';
 
 
+<<<<<<< HEAD
 const CameraScreen = ({navigation}) => {
   const camRef = useRef (null);
+=======
+const CameraScreen = ({ navigation }) => {
+  const camRef = useRef(null);
+>>>>>>> Frontend-development-Chandu
   const [hasPermission, setHasPermission] = useState(null);
   const [capturedPhoto, setCapturedPhoto] = useState(null);
   const [open, setOpen] = useState(false);
@@ -14,6 +21,12 @@ const CameraScreen = ({navigation}) => {
   useEffect(() => {
     (async () => {
       const { status } = await Camera.requestPermissionsAsync();
+      setHasPermission(status === 'granted');
+    })();
+
+
+    (async () => {
+      const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
       setHasPermission(status === 'granted');
     })();
   }, []);
@@ -25,8 +38,8 @@ const CameraScreen = ({navigation}) => {
     return <Text>No access to camera</Text>;
   }
 
-  async function takePicture(){
-    if(camRef){
+  async function takePicture() {
+    if (camRef) {
       const data = await camRef.current.takePictureAsync();
       setCapturedPhoto(data.uri);
       console.log(capturedPhoto)
@@ -35,8 +48,19 @@ const CameraScreen = ({navigation}) => {
     }
   }
 
+  async function savePicture() {
+    const asset = await MediaLibrary.createAssetAsync(capturedPhoto)
+      .then(() => {
+        alert('Your photo was successfully saved in the gallery !')
+      })
+      .catch(error => {
+        console.log('err', error);
+      })
+  }
+
   return (
     <View style={styles.container}>
+<<<<<<< HEAD
       <Camera style={styles.camera} type={type} ref = {camRef}>
         
           <TouchableOpacity
@@ -90,6 +114,47 @@ const CameraScreen = ({navigation}) => {
             </View>
           </Modal>
        }
+=======
+      <Camera style={styles.camera} type={type} ref={camRef}>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.capture} onPress={takePicture}>
+            <View style={styles.snapButton}>
+              <View style={styles.innerButton} >
+                <Icon name="camera" size={30} color="white" />
+              </View>
+            </View>
+          </TouchableOpacity>
+        </View>
+      </Camera>
+
+      {capturedPhoto &&
+        <Modal
+          animationType='slide'
+          transparent={false}
+          visible={open}
+        >
+          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', margin: 20 }}>
+            <Image
+              style={{
+                width: '100%',
+                height: '100%',
+                borderRadius: 20,
+              }}
+              source={{ uri: capturedPhoto }}
+            />
+          </View>
+          <View style={{ margin: 10, flexDirection: 'row', alignSelf: 'center' }}>
+            <TouchableOpacity style={{ marginRight: 60, alignSelf: 'center', }} onPress={() => setOpen(false)}>
+              <Icon name="x-circle" size={30} color="black" />
+            </TouchableOpacity>
+
+            <TouchableOpacity style={{ margin: 10, alignSelf: 'center', }} onPress={() => savePicture(false)}>
+              <Icon name="upload" size={30} color="black" />
+            </TouchableOpacity>
+          </View>
+        </Modal>
+      }
+>>>>>>> Frontend-development-Chandu
     </View>
   );
 }
@@ -103,10 +168,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   camera: {
-    flex:1,
-    height:'100%',
-    width:'100%'
+    flex: 1,
+    height: '100%',
+    width: '100%'
   },
+<<<<<<< HEAD
   buttonContainer:{
     flex:1,
     backgroundColor:'transparent',
@@ -121,22 +187,57 @@ const styles = StyleSheet.create({
   capture:{
     alignSelf: 'flex-end',
     justifyContent: 'center',
+=======
+  buttonContainer: {
+    flex: 1,
+    backgroundColor: 'transparent',
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    justifyContent: 'center',
+    padding: 20,
   },
-  icon:{
-    alignSelf:'center',
-    alignItems:'center',
+  button: {
+    paddingRight: 50,
   },
-  icon1:{
-    alignSelf:'auto',
-    alignItems:'baseline',
-    
+  capture: {
+    alignSelf: 'flex-end',
+    justifyContent: 'center',
   },
-  text:{
-    alignSelf:'center',
-    alignItems:'center',
-    fontSize:20,
-    marginBottom:10,
-    color:'white',
+  icon: {
+    alignSelf: 'center',
+    alignItems: 'center',
+  },
+  icon1: {
+    alignSelf: 'auto',
+    alignItems: 'baseline',
+
+>>>>>>> Frontend-development-Chandu
+  },
+  text: {
+    alignSelf: 'center',
+    alignItems: 'center',
+    fontSize: 20,
+    marginBottom: 10,
+    color: 'white',
+
+  },
+  snapButton: {
+    width: 58,
+    height: 56,
+    borderRadius: 32,
+    borderWidth: 3,
+    borderColor: 'white',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  innerButton: {
+    backgroundColor: '#578e91',
+    width: 52.8,
+    height: 52,
+    borderRadius: 32,
+    justifyContent: 'center',
+    alignItems: 'center',
+
 
   },
   snapButton:{

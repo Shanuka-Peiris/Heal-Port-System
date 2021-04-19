@@ -22,9 +22,12 @@ const StaffMember = ({ route, navigation }) => {
         <ScrollView showsVerticalScrollIndicator={false}>
         <Image
             style={styles.tinyLogo}
-            source={{
-              uri: 'https://cesie.org/media/heal-logo.jpg',
-            }}
+            // source={{
+            //   uri: 'https://cesie.org/media/heal-logo.jpg',
+            // }}
+            source={require('../Images/logo-3.png')}
+
+            style={{ width: 350, height: 200, marginBottom: 100 }}
         />
 
         <TouchableOpacity 
@@ -72,15 +75,20 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   button: {
-    alignSelf: 'stretch',
-    alignItems: 'center',
-    padding: 12,
-    backgroundColor: '#6e6570',
-    marginBottom: 50,
-    borderRadius: 200,
+    width: 300,
+    marginTop: 30,
+    textAlign: "center",
+    borderRadius: 10,
+    padding: 8,
+    borderWidth: 3,
+    borderColor: "black",
+    backgroundColor: '#2CFBD1',
+    marginLeft: 15
   },
   buttonText: {
-    color: 'white',
-    fontSize: 25,   
+    color: 'black',
+    fontSize: 25,  
+    textAlign: 'center',
+    fontWeight: 'bold'
   },
 });
