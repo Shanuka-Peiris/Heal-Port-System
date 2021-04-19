@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, ScrollView  } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, ScrollView } from 'react-native';
 import * as Font from 'expo-font';
 import AppLoading from 'expo-app-loading';
+import * as Animatable from 'react-native-animatable';
 
 
 const fetchFont = () => {
   return Font.loadAsync({
-    "Ledger-Regular" : require("../assets/fonts/Ledger-Regular.ttf"),
-    "Sacramento" :  require("../assets/fonts/Sacramento-Regular.ttf"),
-    "Vidaloka-Regular" :  require("../assets/fonts/Vidaloka-Regular.ttf"),
-    "YuseiMagic-Regular" :  require("../assets/fonts/YuseiMagic-Regular.ttf"),
+    "Ledger-Regular": require("../assets/fonts/Ledger-Regular.ttf"),
+    "Sacramento": require("../assets/fonts/Sacramento-Regular.ttf"),
+    "Vidaloka-Regular": require("../assets/fonts/Vidaloka-Regular.ttf"),
+    "YuseiMagic-Regular": require("../assets/fonts/YuseiMagic-Regular.ttf"),
 
 
   });
@@ -22,97 +23,114 @@ const PatientReg = ({ navigation }) => {
   const [userName, setUserName] = useState('');
   const [nic, setNic] = useState('');
   const [password, setPassword] = useState('');
-  const [contactNo, setContactNo] = useState('');
+  const [contactNo, setContactNo] = useState({
+    isValidContact: true,
+  });
   const [fontLoaded, setfontLoaded] = useState(false);
 
-    if(!fontLoaded){
-        return <AppLoading startAsync = {fetchFont} 
-        onError = {() => console.log("ERROR")}
-        onFinish = {() => {
-            setfontLoaded(true);
-        }}
-        />;
-    }
+  if (!fontLoaded) {
+    return <AppLoading startAsync={fetchFont}
+      onError={() => console.log("ERROR")}
+      onFinish={() => {
+        setfontLoaded(true);
+      }}
+    />;
+  }
 
   const pressHandler = () => {
     navigation.push('Patient Login')
-    } 
-  
-      return (
-        <View style={styles.PatientReg}>
-          <ScrollView showsVerticalScrollIndicator={false}>
-            <Text style={styles.header}>REGISTRATION</Text>
-  
-            <TextInput
-              style={styles.textInput}
-              placeholder="First Name"
-              placeholderTextColor="black"
-              underlineColorAndroid={'black'}
-              type="text"
-              value={firstName}
-              onChangeText={(text) => setFirstName(text)}
-            />
-
-            <TextInput
-              style={styles.textInput}
-              placeholder="Last Name"
-              placeholderTextColor="black"
-              underlineColorAndroid={'black'}
-              type="text"
-              value={lastName}
-              onChangeText={(text) => setLastName(text)}
-            />
-
-            <TextInput
-              style={styles.textInput}
-              placeholder="User Name"
-              placeholderTextColor="black"
-              underlineColorAndroid={'black'}
-              type="text"
-              value={userName}
-              onChangeText={(text) => setUserName(text)}
-            /> 
-  
-            <TextInput
-              style={styles.textInput}
-              placeholder="NIC"
-              placeholderTextColor="black"
-              underlineColorAndroid={'black'}
-              type="text"
-              value={nic}
-              onChangeText={(text) => setNic(text)}
-            />
-  
-            <TextInput
-              style={styles.textInput}
-              placeholder="Password"
-              placeholderTextColor="black"
-              secureTextEntry={true}
-              underlineColorAndroid={'black'}
-              type="text"
-              value={password}
-              onChangeText={(text) => setPassword(text)}
-            />
-
-            <TextInput
-              style={styles.textInput}
-              keyboardType='numeric'
-              placeholder="Contact No"
-              placeholderTextColor="black"
-              underlineColorAndroid={'black'}
-              type="number"
-              value={contactNo}
-              onChangeText={(text) => setContactNo(text)}
-            />
-  
-            <TouchableOpacity style={styles.patientSignUp}>
-                <Text style={styles.patientText} onPress={pressHandler}>Sign up</Text>
-            </TouchableOpacity>
-  
-          </ScrollView>
-        </View>
-      );
   }
+
+  const handleValidContact = (val) => {
+    if (val.length == 10) {
+      setContactNo({
+        ...contactNo,
+        isValidContact: true
+      });
+    } else {
+      setContactNo({
+        ...contactNo,
+        isValidContact: false
+      });
+    }
+  }
+
+  return (
+    <View style={styles.PatientReg}>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <Text style={styles.header}>REGISTRATION</Text>
+
+        <TextInput
+          style={styles.textInput}
+          placeholder="First Name"
+          underlineColorAndroid={'black'}
+          type="text"
+          value={firstName}
+          onChangeText={(text) => setFirstName(text)}
+        />
+
+        <TextInput
+          style={styles.textInput}
+          placeholder="Last Name"
+          underlineColorAndroid={'black'}
+          type="text"
+          value={lastName}
+          onChangeText={(text) => setLastName(text)}
+        />
+
+        <TextInput
+          style={styles.textInput}
+          placeholder="User Name"
+          underlineColorAndroid={'black'}
+          type="text"
+          value={userName}
+          onChangeText={(text) => setUserName(text)}
+        />
+
+        <TextInput
+          style={styles.textInput}
+          placeholder="NIC"
+          underlineColorAndroid={'black'}
+          type="text"
+          value={nic}
+          onChangeText={(text) => setNic(text)}
+        />
+
+        <TextInput
+          style={styles.textInput}
+          placeholder="Password"
+          secureTextEntry={true}
+          underlineColorAndroid={'black'}
+          type="text"
+          value={password}
+          onChangeText={(text) => setPassword(text)}
+        />
+
+        <TextInput
+          style={styles.textInput}
+          keyboardType='numeric'
+          placeholder="Contact No"
+          underlineColorAndroid={'black'}
+          type="number"
+          onChangeText={(val) => setContactNo(val)}
+          onEndEditing={(e) => handleValidContact(e.nativeEvent.text)}
+        />
+
+        {contactNo.isValidContact ? null :
+          <Animatable.View animation="fadeInLeft" duration={500}>
+            <Text style={styles.errorMsg}>Contact number should have 10 digits.</Text>
+          </Animatable.View>
+        }
+
+
+        <TouchableOpacity style={styles.patientSignUp}>
+          <Text style={styles.patientText} onPress={pressHandler}>Sign up</Text>
+        </TouchableOpacity>
+
+      </ScrollView>
+    </View>
+  );
+}
 
 export default PatientReg
 
@@ -129,22 +147,23 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: 'black',
     marginBottom: 40,
-    marginTop:35,
+    marginTop: 35,
     color: "#004644",
-    fontFamily:"YuseiMagic-Regular",
+    fontFamily: "YuseiMagic-Regular",
   },
   textInput: {
     height: 40,
-    marginBottom: 30,
+    marginBottom: 3,
+    marginTop: 22,
     color: 'black',
     fontSize: 18,
-    fontFamily:"YuseiMagic-Regular",
+    fontFamily: "YuseiMagic-Regular",
   },
   patientSignUp: {
     alignSelf: 'stretch',
     alignItems: 'center',
     padding: 10,
-    marginTop: 10,
+    marginTop: 30,
     marginBottom: 10,
     borderWidth: 2,
     width: 200,
@@ -158,8 +177,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 20,
     color: "black",
-    fontFamily:"YuseiMagic-Regular",
+    fontFamily: "YuseiMagic-Regular",
+  },
+  errorMsg: {
+    color: '#FF0000',
+    fontSize: 14,
   },
 });
-    
+
 
