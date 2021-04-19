@@ -30,42 +30,54 @@ const DATA = [
 ];
 const Radiographer = ({ navigation }) => {
   const pressHandler = () => {
-    navigation.push('X-ray')
+    fetch('http://10.0.2.2:3000/retrieve/information/all', {
+        method: 'get',
+    })
+    .then((response) => response.json())
+    .then((responseData) => {
+        console.log(responseData)
+    })
+    .catch((error) => {
+        console.log(error)
+        Alert.alert("Something went wrong. Please try again!")
+    })
+  pressHandler()
+  
   }
-  return (
-    <View style={{ flex: 1, backgroundColor: 'white' }}>
-      <Image
-        source={require('../Images/radiographer-2.gif')}
-        style={{ width: 400, height: 250, alignItems: 'center', justifyContent: 'center', marginTop: 10, }}
-      />
-      <FlatList
-        data={DATA}
-        keyExtractor={item => item.name}
-        renderItem={({ item }) => {
-          return <TouchableOpacity style={{ margin: 10, margin: 20 }}>
-            <View style={{ flex: 1, padding: 10 }}>
+    return (
+        <View style = {{flex:1 ,backgroundColor:'white'}}>
+           <Image 
+                source={require('../Images/radiographer-2.gif')}
+                style={{ width: 400, height: 250 ,alignItems: 'center',justifyContent: 'center', marginTop:10,}}
+            /> 
+          <FlatList
+            data = {DATA}
+            keyExtractor={item => item.name }
+            renderItem={({item}) => {
+              return <TouchableOpacity style = {{margin:10, margin:20}}>
+                <View style = {{flex:1 , padding: 10}}>
+              
+                  <View 
+                    style = {[
+                      StyleSheet.absoluteFillObject,
+                      {backgroundColor:'#b4d8ed', borderRadius:16,}
+                    ]}/>
+                  <Image source={require('../Images/Radiographer.png')}  style = {styles.image} />
+                  <Text style = {styles.name} > {item.name} </Text>
+                  <Text style = {styles.num} > Reg Number - {item.id} </Text>
+                
+                  <TouchableOpacity 
+                    style={styles.button}>
+                    <Text style={styles.buttonText} >Upload</Text>
+                  </TouchableOpacity>
+                    
+                </View>
 
-              <View
-                style={[
-                  StyleSheet.absoluteFillObject,
-                  { backgroundColor: '#b4d8ed', borderRadius: 16, }
-                ]} />
-              <Image source={require('../Images/Radiographer.png')} style={styles.image} />
-              <Text style={styles.name} > {item.name} </Text>
-              <Text style={styles.num} > Reg Number - {item.id} </Text>
-
-              <TouchableOpacity
-                style={styles.button} onPress={pressHandler}>
-                <Text style={styles.buttonText} >Upload</Text>
               </TouchableOpacity>
-
-            </View>
-
-          </TouchableOpacity>
-        }}
-      />
-    </View>
-  )
+            }}
+          />
+        </View>
+    )
 }
 
 export default Radiographer

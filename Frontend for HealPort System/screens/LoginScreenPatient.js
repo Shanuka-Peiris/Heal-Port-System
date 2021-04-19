@@ -3,6 +3,7 @@ import { Alert, KeyboardAvoidingView, StyleSheet, Text, View } from 'react-nativ
 import { StatusBar } from 'expo-status-bar';
 import { Image, Input, Button } from 'react-native-elements';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Font from 'expo-font';
 import AppLoading from 'expo-app-loading';
 
