@@ -46,7 +46,7 @@ const LoginScreenPatient = ({ navigation }) => {
         <KeyboardAvoidingView behavior="padding" style={styles.container}>
            <StatusBar style={"light"} />
            <Image 
-                source={require('../Images/logo-4.png')}
+                source={require('../Images/logo-5.png')}
                style={{ width: 350, height: 250, marginBottom: 40 }}
             />
 

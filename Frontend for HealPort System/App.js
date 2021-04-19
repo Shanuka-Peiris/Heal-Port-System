@@ -23,6 +23,7 @@ import Xray from './screens/Xray';
 import PatientSymptoms from './screens/PatientSymptoms';
 import Doctor from './screens/Doctor';
 import AdmissionOfficer from './screens/AdmissionOfficer';
+import CamaraScreenNew from './screens/Cameraaa'
 
 
 const Stack = createStackNavigator();
@@ -111,8 +112,13 @@ export default function App() {
           component={NonPneumoniaList}
         />
 
-        <Stack.Screen
+        {/* <Stack.Screen
           name="Camera" component={CameraScreen}
+          options={{ headerShown: false }} 
+        /> */}
+
+        <Stack.Screen
+          name="CamaraNew" component={CamaraScreenNew}
           options={{ headerShown: false }} 
         />
 

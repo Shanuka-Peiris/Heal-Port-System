@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native'
 
 const Xray = ({ navigation }) => {
   const pressHandler1 = () => {
-    navigation.push('Camera')
+    navigation.push('CamaraNew')
   }
   const pressHandler2 = () => {
     navigation.push('Gallery')

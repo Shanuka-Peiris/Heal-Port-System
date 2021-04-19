@@ -14,7 +14,7 @@ export default class Splash extends Component {
             <View style={styles.container}>
                 <Image
                     style={styles.tinyLogo}
-                    source={require('../Images/logo-4.png')}
+                    source={require('../Images/logo-5.png')}
                 />
             </View>
         );

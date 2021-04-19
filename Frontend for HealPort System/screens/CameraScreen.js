@@ -42,6 +42,10 @@ const CameraScreen = ({ navigation }) => {
     }
   }
 
+  const upload = () => {
+    
+  }
+
   async function savePicture() {
     const asset = await MediaLibrary.createAssetAsync(capturedPhoto)
       .then(() => {

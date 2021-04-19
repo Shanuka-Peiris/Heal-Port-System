@@ -286,7 +286,6 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: 'white',
         padding: 10,
-        marginTop: 30,
         marginBottom: 40
     },
     titleText: {

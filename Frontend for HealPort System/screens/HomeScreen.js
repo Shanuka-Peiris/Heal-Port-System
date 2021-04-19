@@ -41,7 +41,7 @@ const HomeScreen = ({ navigation }) => {
         <ScrollView showsVerticalScrollIndicator={false}>
         <Image
           style={styles.tinyLogo}
-            source={require('../Images/logo-4.png')}
+            source={require('../Images/logo-5.png')}
         />
 
         <TouchableOpacity style={styles.button} onPress = { pressHandler1}>
@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingLeft: 30,
     paddingRight: 30,
-    backgroundColor: '#7a94a3',
+    backgroundColor: '#e6fcf8',
   },
   tinyLogo: {
     width: 340,
@@ -80,13 +80,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     padding: 6,
-      backgroundColor: '#CAE0DB',
+      backgroundColor: '#33beff',
     //  backgroundColor: 'black',
     marginTop: 50,
     marginBottom: 10,
     borderRadius: 30,
    
-    borderColor: "#004644",
+    borderColor: "#02142b",
     borderWidth: 3,
     width: 200,
     marginLeft: 67,
@@ -96,6 +96,6 @@ const styles = StyleSheet.create({
     // fontWeight: 'bold',
     fontSize: 25, 
     fontFamily:"YuseiMagic-Regular",
-    color:"#004644",
+    color:"#02142b",
   },
 });
