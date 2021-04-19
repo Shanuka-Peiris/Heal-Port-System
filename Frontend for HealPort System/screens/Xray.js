@@ -1,39 +1,4 @@
 import React from 'react'
-<<<<<<< HEAD
-import { StyleSheet, Text, View , TouchableOpacity,Image} from 'react-native'
-
-const Xray = ({ navigation }) => {
-    const pressHandler1 = () => {
-      navigation.push('Camera')
-    }
-    const pressHandler2 = () => {
-        navigation.push('Gallery')
-    }
-    
-
-    return (
-      <View style={styles.Container}>
-        <Image 
-                source={require('../Images/radiographer-4.png')}
-                style={{ width: 350, height: 250 ,alignItems: 'center',justifyContent: 'center', bottom:20, marginBottom:30,marginTop:20}}
-            /> 
-        <TouchableOpacity 
-          style={styles.button} 
-          onPress = { pressHandler1}
-          >
-          <Text style={styles.buttonText}>Camera</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity 
-          style={styles.button} 
-          onPress = { pressHandler2}
-          >
-          <Text style={styles.buttonText}>Gallery</Text>
-        </TouchableOpacity>
-
-      </View>
-    )
-=======
 import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native'
 
 const Xray = ({ navigation }) => {
@@ -67,7 +32,6 @@ const Xray = ({ navigation }) => {
 
     </View>
   )
->>>>>>> Frontend-development-Chandu
 }
 
 export default Xray
@@ -78,11 +42,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     alignItems: 'center',
     justifyContent: 'center',
-<<<<<<< HEAD
-    
-=======
-
->>>>>>> Frontend-development-Chandu
     paddingLeft: 30,
     paddingRight: 30,
   },
@@ -93,20 +52,6 @@ const styles = StyleSheet.create({
     // backgroundColor: '#6e6570',
     marginBottom: 50,
     borderRadius: 200,
-<<<<<<< HEAD
-    borderColor:'#456b82',
-    borderWidth:5,
-  },
-  buttonText: {
-    color: '#456b82',
-    fontSize: 26, 
-    fontWeight: '700',
-
-  },
-  pic1:{
-    height:90,
-    width:90,
-=======
     borderColor: '#456b82',
     borderWidth: 5,
   },
@@ -119,6 +64,5 @@ const styles = StyleSheet.create({
   pic1: {
     height: 90,
     width: 90,
->>>>>>> Frontend-development-Chandu
   },
 })

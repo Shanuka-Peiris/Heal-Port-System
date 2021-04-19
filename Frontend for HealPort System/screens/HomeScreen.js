@@ -17,9 +17,6 @@ const fetchFont = () => {
 
 
 const HomeScreen = ({ navigation }) => {
-<<<<<<< HEAD
-  
-=======
   const [fontLoaded, setfontLoaded] = useState(false);
 
     if(!fontLoaded){
@@ -31,7 +28,6 @@ const HomeScreen = ({ navigation }) => {
         />;
     }
    
->>>>>>> Frontend-development-Chandu
   const pressHandler1 = () => {
     navigation.push('Patient Login')
   }
@@ -72,17 +68,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#7a94a3',
   },
   tinyLogo: {
-<<<<<<< HEAD
-    width: 300,
-    height: 200,
-    marginBottom: 100,
-    marginTop: 50,
-=======
     width: 340,
     height: 250,
     marginBottom: 50,
     marginTop: 100,
->>>>>>> Frontend-development-Chandu
     paddingBottom: 5,
     justifyContent: 'center',
     alignSelf: 'center',
