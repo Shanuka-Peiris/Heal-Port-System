@@ -41,11 +41,11 @@ const DATA = [
     },
 ];
 const AdmissionOfficer = ({ navigation }) => {
-    const pressHandler = () => {
-        navigation.push('Discharge')
-    }
+    // const pressHandler = () => {
+    //     navigation.push('Discharge')
+    // }
     return (
-        <View style={{ flex: 1, backgroundColor: 'white' }}>
+        <View style={{ flex: 1, backgroundColor: '#b4d8ed',marginTop:40 }}>
             {/* <View style = {styles.cover}>
                 <Image 
                 source={require('../Images/AO-2.png')}
@@ -64,7 +64,7 @@ const AdmissionOfficer = ({ navigation }) => {
                             <View
                                 style={[
                                     StyleSheet.absoluteFillObject,
-                                    { backgroundColor: '#b4d8ed', borderRadius: 16, }
+                                    { backgroundColor: '#3EAB90', borderRadius: 16, }
                                 ]} />
                             <Image source={require('../Images/AO-1.png')} style={styles.image} />
                             <Text style={styles.name} > {item.name} </Text>
@@ -96,31 +96,33 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         paddingLeft: 30,
         paddingRight: 30,
+        marginTop:40
     },
     cover: {
         height: 100,
         width: '100%',
         marginBottom: 20,
+        
 
     },
     button: {
         alignSelf: 'stretch',
         alignItems: 'center',
         padding: 6,
-        backgroundColor: '#456b82',
+        backgroundColor: '#b4d8ed',
         width: 100,
         marginBottom: 80,
         borderRadius: 200,
         position: 'absolute',
-        top: 35,
-        right: 10,
+        top: 25,
+        right: 2,
         borderColor: 'white',
         borderWidth: 2,
     },
     buttonText: {
-        color: 'white',
+        color: 'black',
         fontSize: 20,
-        fontWeight: '700',
+        fontFamily:"YuseiMagic-Regular",
     },
     pic1: {
         width: 100,
@@ -137,14 +139,18 @@ const styles = StyleSheet.create({
         fontWeight: '700',
         fontSize: 18,
         left: 60,
+        fontFamily:"YuseiMagic-Regular",
     },
     num: {
         left: 60,
+        fontFamily:"YuseiMagic-Regular",
     },
     nic: {
         left: 60,
+        fontFamily:"YuseiMagic-Regular",
     },
     tel: {
         left: 60,
+        fontFamily:"YuseiMagic-Regular",
     }
 })

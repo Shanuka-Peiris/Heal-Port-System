@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, ScrollView, Modal  } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, ScrollView,Image  } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import * as Font from 'expo-font';
 import AppLoading from 'expo-app-loading';
@@ -28,6 +28,7 @@ const HospitalReg = ({ navigation }) => {
     isValidContact: true,
   });
   const [fontLoaded, setfontLoaded] = useState(false);
+  const [ stafftype, setStaffType ] = useState('');
   
     if(!fontLoaded){
         return <AppLoading startAsync = {fetchFont} 
@@ -39,6 +40,7 @@ const HospitalReg = ({ navigation }) => {
     }
 
   const pressHandler = () => {
+    console.log(stafftype)
     fetch('http://10.0.2.2:3000/staff/signUp', {
             method:"POST",
             headers: {
@@ -81,14 +83,22 @@ const HospitalReg = ({ navigation }) => {
     return (
       <View style={styles.HospitalReg}>
         <ScrollView showsVerticalScrollIndicator={false}>
-          <Text style={styles.header}>REGISTRATION</Text>
+        <View>
+              <Image 
+                    source={require('../Images/reg-2.png')}
+                    style={{ width: 300, height: 160,marginLeft:15,marginTop:80}}                
+              />
+              <Text style={styles.header}>REGISTRATION</Text>    
+            </View>
 
           <View style={styles.container}>
              <Text style={styles.profession}>Select Your Profession</Text>
              <RNPickerSelect
              style={styles.label}
-                 placeholder={{ label: "Select your Profession" ,value: null, color:'black'}}
-                 onValueChange={(value) => console.log(value)}
+                 placeholder={{ label: "Select your Profession" ,value: null, color:'red'}}
+                 placeholderTextColor="red"
+                 onValueChange={(value) => 
+                  setStaffType(value)}
                  
                  items={[
                      { label: "Doctor", value: "Doctor" },
@@ -103,6 +113,7 @@ const HospitalReg = ({ navigation }) => {
             style={styles.textInput}   
             placeholder="First Name" 
             underlineColorAndroid={'black'} 
+            placeholderTextColor= '#4d4d4d'
             type="text"
             value={firstName}
             onChangeText={(text) => setFirstName(text)}
@@ -112,6 +123,7 @@ const HospitalReg = ({ navigation }) => {
             style={styles.textInput}  
             placeholder="Last Name" 
             underlineColorAndroid={'black'}
+            placeholderTextColor= '#4d4d4d'
             type="text"
             value={lastName}
             onChangeText={(text) => setLastName(text)} 
@@ -121,6 +133,7 @@ const HospitalReg = ({ navigation }) => {
             style={styles.textInput}  
             placeholder="User Name" 
             underlineColorAndroid={'black'} 
+            placeholderTextColor= '#4d4d4d'
             type="text"
             value={userName}
             onChangeText={(text) => setUserName(text)}
@@ -130,6 +143,7 @@ const HospitalReg = ({ navigation }) => {
             style={styles.textInput}  
             placeholder="Registration No" 
             underlineColorAndroid={'black'}
+            placeholderTextColor= '#4d4d4d'
             type="text"
             value={registrationNo}
             onChangeText={(text) => setRegistrationNo(text)} 
@@ -140,6 +154,7 @@ const HospitalReg = ({ navigation }) => {
             placeholder="Password" 
             secureTextEntry={true}
             underlineColorAndroid={'black'}
+            placeholderTextColor= '#4d4d4d'
             type="text"
             value={password}
             onChangeText={(text) => setPassword(text)} 
@@ -150,6 +165,7 @@ const HospitalReg = ({ navigation }) => {
             keyboardType='numeric'  
             placeholder="Contact No" 
             underlineColorAndroid={'black'} 
+            placeholderTextColor= '#4d4d4d'
             type="number"
             onChangeText={(text) => setContactNo(text)}
             onEndEditing={(e) => handleValidContact(e.nativeEvent.text)}
@@ -185,7 +201,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: 'black',
     marginBottom: 40,
-    marginTop:35,
+   
     color: "#004644",
     fontFamily:"YuseiMagic-Regular",
   },
@@ -208,26 +224,26 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     alignItems: 'center',
     padding: 10,
-    marginTop: 25,
+    marginTop: 50,
     marginBottom: 10,
     borderWidth: 2,
     width: 200,
-    marginLeft: 60,
+    marginLeft:75,
     textAlign: "center",
-    borderRadius: 10,
-    borderColor: "black",
-    backgroundColor: '#fdeb93',
+    borderRadius: 13,
+    borderColor: "white",
+    backgroundColor: '#3EAB90',
   },
   staffText: {
     textAlign: 'center',
-    fontSize: 20,
-    color: "black",
+    color: 'white',
+    fontSize: 25, 
     fontFamily:"YuseiMagic-Regular",
   },
   label:{
     marginVertical:20,
     fontSize:18,
-    color:'black',
+    color:'red',
     fontFamily:"YuseiMagic-Regular",
     backgroundColor:'black'
   },

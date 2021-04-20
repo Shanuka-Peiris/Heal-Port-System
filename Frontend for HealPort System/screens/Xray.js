@@ -39,7 +39,7 @@ export default Xray
 const styles = StyleSheet.create({
   Container: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: '#CAE0DB',
     alignItems: 'center',
     justifyContent: 'center',
 
@@ -47,20 +47,23 @@ const styles = StyleSheet.create({
     paddingRight: 30,
   },
   button: {
-    alignSelf: 'stretch',
     alignItems: 'center',
-    padding: 12,
-    // backgroundColor: '#6e6570',
-    marginBottom: 50,
-    borderRadius: 200,
-    borderColor: '#456b82',
-    borderWidth: 5,
+    justifyContent: 'center',
+    padding: 6,
+    backgroundColor: '#3EAB90',
+    marginTop: 40,
+    marginBottom: 10,
+    borderRadius: 13,
+    borderColor: "white",
+    borderWidth: 2,
+    width: 200,
+    height:60,
+    marginLeft: 15,
   },
   buttonText: {
-    color: '#456b82',
-    fontSize: 26,
-    fontWeight: '700',
-
+    color: 'white',
+    fontSize: 25, 
+    fontFamily:"YuseiMagic-Regular",
   },
   pic1: {
     height: 90,

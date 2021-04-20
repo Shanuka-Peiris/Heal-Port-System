@@ -45,13 +45,8 @@ const Discharge = ({ navigation }) => {
         navigation.push('X-ray')
     }
     return (
-        <View style={{ flex: 1, backgroundColor: 'white' }}>
-            {/* <View style = {styles.cover}>
-                <Image 
-                source={require('../Images/AO-2.png')}
-                style={{ width: '100%', height: '100%' ,alignItems: 'center',justifyContent: 'center', marginTop:10,}}
-            /> 
-            </View> */}
+        <View style={{ flex: 1, backgroundColor: '#b4d8ed' ,marginTop:40}}>
+            
 
 
             <FlatList
@@ -64,7 +59,7 @@ const Discharge = ({ navigation }) => {
                             <View
                                 style={[
                                     StyleSheet.absoluteFillObject,
-                                    { backgroundColor: '#b4d8ed', borderRadius: 16, }
+                                    { backgroundColor: '#3EAB90', borderRadius: 16, }
                                 ]} />
                             <Image source={require('../Images/AO-3.png')} style={styles.image} />
                             <Text style={styles.name} > {item.name} </Text>
@@ -107,20 +102,20 @@ const styles = StyleSheet.create({
         alignSelf: 'stretch',
         alignItems: 'center',
         padding: 6,
-        backgroundColor: '#456b82',
+        backgroundColor: '#b4d8ed',
         width: 100,
         marginBottom: 80,
         borderRadius: 200,
         position: 'absolute',
         top: 35,
-        right: 10,
+        right: 2,
         borderColor: 'white',
         borderWidth: 2,
     },
     buttonText: {
-        color: 'white',
+        color: 'black',
         fontSize: 18,
-        fontWeight: '700',
+        fontFamily:"YuseiMagic-Regular",
     },
     pic1: {
         width: 100,
@@ -134,17 +129,20 @@ const styles = StyleSheet.create({
         left: 10,
     },
     name: {
-        fontWeight: '700',
-        fontSize: 18,
+        fontSize: 20,
         left: 60,
+        fontFamily:"YuseiMagic-Regular",
     },
     num: {
         left: 60,
+        fontFamily:"YuseiMagic-Regular",
     },
     nic: {
         left: 60,
+        fontFamily:"YuseiMagic-Regular",
     },
     tel: {
         left: 60,
+        fontFamily:"YuseiMagic-Regular",
     }
 })

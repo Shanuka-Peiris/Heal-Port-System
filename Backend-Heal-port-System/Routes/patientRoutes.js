@@ -31,13 +31,13 @@ router.post('/patient/signIn', async (req, res) => {
     
 
     if (!userName || !password) {
-        return res.status(422).send({ error: "Username or password is not valid" });  
+        return res.status(422).send({ error: "Username or password is not valid !!!" });  
     }
 
     const patient = await Patient.findOne({ userName });
 
     if (!patient) {
-        return res.status(422).send({ error: "Username or password is not valid" });
+        return res.status(422).send({ error: "Username or password is not valid !!!!!" });
     }
 
     try {
@@ -45,7 +45,7 @@ router.post('/patient/signIn', async (req, res) => {
         const token = jwt.sign({ userId:patient._id}, jwtKey);
         res.send({ token });
     } catch (err) {
-        return res.status(422).send({ error: "Username or password is not valid" });
+        return res.status(422).send({ error: "Username or password is not valid !!!!!" });
     }
 });
 

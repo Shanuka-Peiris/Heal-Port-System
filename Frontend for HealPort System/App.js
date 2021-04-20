@@ -23,7 +23,8 @@ import Xray from './screens/Xray';
 import PatientSymptoms from './screens/PatientSymptoms';
 import Doctor from './screens/Doctor';
 import AdmissionOfficer from './screens/AdmissionOfficer';
-import CamaraScreenNew from './screens/Cameraaa'
+import CamaraScreenNew from './screens/Cameraaa';
+import AdmissionOfficerScreen from './screens/AdmissionOfficerScreen'
 
 
 const Stack = createStackNavigator();
@@ -55,61 +56,73 @@ export default function App() {
       <Stack.Screen 
         name="Patient Login" 
         component={ LoginScreenPatient } 
+        options={{headerShown: false, title: 'home'}} 
       />
 
       <Stack.Screen 
         name="Staff Login" 
         component={ LoginScreenHospital } 
+        options={{headerShown: false}} 
       />
 
       <Stack.Screen 
         name="Patient Registration" 
         component={ PatientReg } 
+        options={{headerShown: false}} 
       />
 
       <Stack.Screen 
         name="Symptoms" 
         component={PatientSymptoms} 
+        options={{headerShown: false}} 
       />
 
       <Stack.Screen 
         name="Staff Registration" 
         component={ HospitalReg } 
+        options={{headerShown: false}} 
       />
 
       <Stack.Screen 
         name="Staff" 
         component={ StaffMember } 
+        options={{headerShown: false}} 
       />
 
       <Stack.Screen 
         name="Radiographer" 
         component={ Radiographer } 
+        options={{headerShown: false}} 
       />
 
       <Stack.Screen 
         name="Doctor" 
         component={Doctor} 
+        options={{headerShown: false}} 
       />
 
       <Stack.Screen 
         name="Admission Officer" 
         component={AdmissionOfficer} 
+        options={{headerShown: false}} 
       />
 
       <Stack.Screen 
         name="X-ray" 
         component={ Xray } 
+        options={{headerShown: false}} 
       />
 
         <Stack.Screen
           name="PneumoniaList"
           component={PneumoniaList}
+          options={{headerShown: false}} 
         />
 
         <Stack.Screen
           name="NonList"
           component={NonPneumoniaList}
+          options={{headerShown: false}} 
         />
 
         {/* <Stack.Screen
@@ -125,16 +138,25 @@ export default function App() {
         <Stack.Screen
           name="Discharge"
           component={Discharge} 
+          options={{headerShown: false}} 
         />
 
         <Stack.Screen
           name="Gallery"
-          component={GalleryScreen} 
+          component={GalleryScreen}
+          options={{headerShown: false}}  
         />
 
         <Stack.Screen
           name="check"
           component={CheckXray} 
+          options={{headerShown: false}} 
+        />
+
+        <Stack.Screen
+          name="Admission officer new"
+          component={AdmissionOfficerScreen} 
+          options={{headerShown: false}} 
         />
 
 

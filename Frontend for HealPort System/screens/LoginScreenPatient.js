@@ -1,12 +1,11 @@
 import React,  { useState, useLayoutEffect } from 'react'
 import { KeyboardAvoidingView, StyleSheet, Text, View, Alert } from 'react-native'
 import { StatusBar } from 'expo-status-bar';
-import { Image, Input, Button } from 'react-native-elements';
+import { Image, Input} from 'react-native-elements';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import * as Font from 'expo-font';
 import AppLoading from 'expo-app-loading';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
 
 const fetchFont = () => {
   return Font.loadAsync({
@@ -14,8 +13,6 @@ const fetchFont = () => {
     "Sacramento" :  require("../assets/fonts/Sacramento-Regular.ttf"),
     "Vidaloka-Regular" :  require("../assets/fonts/Vidaloka-Regular.ttf"),
     "YuseiMagic-Regular" :  require("../assets/fonts/YuseiMagic-Regular.ttf"),
-
-
   });
 };
 
@@ -34,10 +31,7 @@ const LoginScreenPatient = ({ navigation }) => {
         />;
     }
    
-
     const pressHandler1 = () => {
-        // navigation.push('Symptoms')
-
         fetch("http://10.0.2.2:3000/patient/signIn",{
         method:"POST",
         headers: {
@@ -58,7 +52,7 @@ const LoginScreenPatient = ({ navigation }) => {
                 })
             } catch (e) {
                 console.log("Error", e)
-                Alert.alert("Username or password is incorrect")
+                Alert.alert("Username or password is incorrect !")
             }
         })
     }
@@ -71,15 +65,17 @@ const LoginScreenPatient = ({ navigation }) => {
         <KeyboardAvoidingView behavior="padding" style={styles.container}>
            <StatusBar style={"light"} />
            <Image 
-                source={require('../Images/logo-4.png')}
-               style={{ width: 350, height: 250, marginBottom: 40 }}
+                source={require('../Images/login-1.png')}
+                style={{ width: 300, height: 300, marginBottom: 30, marginLeft: 8,marginTop:5, }}
             />
 
             <View style={styles.inputContainer}>
                 <Input 
                     style={styles.input}
                     placeholder="User Name"
+                    placeholderTextColor= '#4d4d4d'
                     autoFocus
+                    fontSize = {20}
                     type="text"
                     value={userName}
                     onChangeText={(text) => setUserName(text)}
@@ -89,26 +85,27 @@ const LoginScreenPatient = ({ navigation }) => {
                     style={styles.input}
                     placeholder="Password" 
                     secureTextEntry={true}
+                    placeholderTextColor= '#4d4d4d'
+                    fontSize = {20}
                     type="password"
                     value={password}
                     onChangeText={(text) => setPassword(text)}
                 />
             </View>
+                <TouchableOpacity 
+                    activeOpacity={0.5} 
+                    style={styles.buttonLogin}
+                    onPress={pressHandler1}
+                >
+                    <Text style={styles.buttonTextLogin}>Login</Text>
+                </TouchableOpacity>
 
-            <TouchableOpacity 
-                activeOpacity={0.5} 
-                style={styles.buttonLogin}
-                onPress={pressHandler1}
-            >
-                <Text style={styles.buttonTextLogin}>Login</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity 
-                style={styles.buttonRegister}
-                onPress={pressHandler}
-            >
-                <Text style={styles.buttonTextRegister}>Register</Text>
-            </TouchableOpacity>
+                <TouchableOpacity 
+                    style={styles.buttonRegister}
+                    onPress={pressHandler}
+                >
+                    <Text style={styles.buttonTextRegister}>Register</Text>
+                </TouchableOpacity>
 
         </KeyboardAvoidingView>
     )
@@ -122,7 +119,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: 'center',
         padding: 10,
-        backgroundColor: 'white',
+        backgroundColor: '#CAE0DB',
     },
     inputContainer: {
         width: 300,
@@ -134,8 +131,11 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         padding: 10,
         borderWidth: 3,
-        borderColor: "#004644",
-        backgroundColor: '#CAE0DB',
+        borderColor: '#3EAB90',
+        backgroundColor: '#3EAB90',
+        borderRadius: 13,
+        borderColor: "white",
+        borderWidth: 2,
     },
     buttonRegister: {
         width: 200,
@@ -143,20 +143,21 @@ const styles = StyleSheet.create({
         textAlign: "center",
         borderRadius: 10,
         padding: 10,
-        backgroundColor: "#fff",
+        backgroundColor: 'white',
         borderWidth: 3,
-        borderColor: "#004644",
+        borderColor: '#3EAB90',
     },
     buttonTextLogin: {
         textAlign: 'center',
         fontSize: 20,
-        color: "#004644",
         fontFamily:"YuseiMagic-Regular",
+        color: 'white',
+        fontSize: 23, 
     },
     buttonTextRegister: {
         textAlign: 'center',
-        fontSize: 20,
-        color: "#004644",
+        fontSize: 23,
+        color: 'black',
         fontFamily:"YuseiMagic-Regular",
     },
     input: {

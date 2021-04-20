@@ -1,5 +1,16 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { StyleSheet, Text, View, Button, TouchableOpacity, FlatList, Image } from 'react-native';
+import * as Font from 'expo-font';
+import AppLoading from 'expo-app-loading';
+
+const fetchFont = () => {
+    return Font.loadAsync({
+      "Ledger-Regular" : require("../assets/fonts/Ledger-Regular.ttf"),
+      "Sacramento" :  require("../assets/fonts/Sacramento-Regular.ttf"),
+      "Vidaloka-Regular" :  require("../assets/fonts/Vidaloka-Regular.ttf"),
+      "YuseiMagic-Regular" :  require("../assets/fonts/YuseiMagic-Regular.ttf"),
+    });
+  };
 
 const DATA = [
 
@@ -29,11 +40,22 @@ const DATA = [
   },
 ];
 const Radiographer = ({ navigation }) => {
+  const [fontLoaded, setfontLoaded] = useState(false);
+
+    if(!fontLoaded){
+        return <AppLoading startAsync = {fetchFont} 
+        onError = {() => console.log("ERROR")}
+        onFinish = {() => {
+            setfontLoaded(true);
+        }}
+        />;
+    }
+
   const pressHandler = () => {
     navigation.push('X-ray')
   }
   return (
-    <View style={{ flex: 1, backgroundColor: 'white' }}>
+    <View style={{ flex: 1, backgroundColor: 'white', marginTop:25 }}>
       <Image
         source={require('../Images/radiographer-2.gif')}
         style={{ width: 400, height: 250, alignItems: 'center', justifyContent: 'center', marginTop: 10, }}
@@ -48,7 +70,7 @@ const Radiographer = ({ navigation }) => {
               <View
                 style={[
                   StyleSheet.absoluteFillObject,
-                  { backgroundColor: '#b4d8ed', borderRadius: 16, }
+                  { backgroundColor: '#3EAB90', borderRadius: 16, }
                 ]} />
               <Image source={require('../Images/Radiographer.png')} style={styles.image} />
               <Text style={styles.name} > {item.name} </Text>
@@ -73,17 +95,18 @@ export default Radiographer
 const styles = StyleSheet.create({
   Container: {
     flex: 1,
-    backgroundColor: '#b4d8ed',
+    backgroundColor: '#CAE0DB',
     alignItems: 'center',
     justifyContent: 'center',
     paddingLeft: 30,
     paddingRight: 30,
+    
   },
   button: {
     alignSelf: 'stretch',
     alignItems: 'center',
     padding: 6,
-    backgroundColor: '#456b82',
+    backgroundColor: '#CAE0DB',
     width: 100,
     marginBottom: 80,
     borderRadius: 200,
@@ -94,9 +117,9 @@ const styles = StyleSheet.create({
     borderWidth: 2,
   },
   buttonText: {
-    color: 'white',
+    color: 'black',
     fontSize: 20,
-    fontWeight: '700',
+    fontFamily:"YuseiMagic-Regular",
   },
   pic1: {
     width: 100,
@@ -110,12 +133,13 @@ const styles = StyleSheet.create({
     left: 10,
   },
   name: {
-    fontWeight: '700',
+    fontFamily:"YuseiMagic-Regular",
     fontSize: 18,
     left: 60,
   },
   num: {
     left: 60,
+    fontFamily:"YuseiMagic-Regular",
   }
 
 })
