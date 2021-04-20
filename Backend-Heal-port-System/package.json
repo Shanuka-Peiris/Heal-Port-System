@@ -11,10 +11,13 @@
   "dependencies": {
     "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
+    "ejs": "^3.1.6",
+    "engine": "^1.0.0",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.11.17",
     "multer": "^1.4.2",
-    "request-promise": "^4.2.6"
+    "request-promise": "^4.2.6",
+    "view": "^1.1.1"
   }
 }

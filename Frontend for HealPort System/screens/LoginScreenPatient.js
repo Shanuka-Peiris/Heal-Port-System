@@ -57,8 +57,8 @@ const LoginScreenPatient = ({ navigation }) => {
                     paramKey: userName,
                 })
             } catch (e) {
-                console.log("Error", e)
                 Alert.alert("Username or password is incorrect")
+                console.log("Error", e)
             }
         })
     }

@@ -7,6 +7,11 @@ const router = express.Router();
 const upload = multer({ dest: '../X-ray images api/uploads'});
 const fs = require('fs');
 
+
+// const bodyparser = require('body-parser')
+// const express = require("express")
+// const path = require('path')
+
 // Express app
 const app = express();
 
@@ -35,7 +40,7 @@ app.use(express.static('public'));
 app.use("/", router);
 var jsonParser = bodyParser.json()
 app.use(bodyParser.urlencoded({ extended: true }))
-app.use(bodyParser.json({ limit: '2MB' }))
+app.use(bodyParser.json({ limit: '100MB' }))
 
 // using routes of patients and staff
 app.use(patientRoute);
@@ -71,6 +76,10 @@ app.get('/special', (req, res) => {
   res.send("You have received...");
 })
 
+// app.use(express.urlencoded({ extended: true }))
+// app.use(express.json({limit: '525mb'}));
+// app.use(bodyParser.urlencoded({ limit: "50mb", extended: true, parameterLimit: 50000 }))
+// app.use(express.urlencoded({limit: '625mb'}));
 
 // uploading symptoms to data science component
 app.post('/getSymptoms', jsonParser, async (req, res) => {

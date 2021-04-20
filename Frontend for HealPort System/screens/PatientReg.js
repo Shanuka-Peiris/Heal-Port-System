@@ -23,9 +23,9 @@ const PatientReg = ({ navigation }) => {
   const [userName, setUserName] = useState('');
   const [nic, setNic] = useState('');
   const [password, setPassword] = useState('');
-  const [contactNo, setContactNo] = useState({
-    isValidContact: true,
-  });
+  const [contactNo, setContactNo] = useState('');
+    // isValidContact: true,
+  // });
   const [fontLoaded, setfontLoaded] = useState(false);
 
     if(!fontLoaded){
@@ -66,19 +66,19 @@ const PatientReg = ({ navigation }) => {
       })
     }
 
-  const handleValidContact = (val) => {
-      if ( val.length == 10) {
-        setContactNo({
-          ...contactNo,
-          isValidContact: true
-        });
-      } else {
-        setContactNo({
-          ...contactNo,
-          isValidContact: false
-        });
-      }
-  }
+  // const handleValidContact = (val) => {
+  //     if ( val.length == 10) {
+  //       setContactNo({
+  //         ...contactNo,
+  //         isValidContact: true
+  //       });
+  //     } else {
+  //       setContactNo({
+  //         ...contactNo,
+  //         isValidContact: false
+  //       });
+  //     }
+  // }
   
       return (
         <View style={styles.PatientReg}>
@@ -138,7 +138,7 @@ const PatientReg = ({ navigation }) => {
               underlineColorAndroid={'black'}
               type="number"
               onChangeText={(val) => setContactNo(val)}
-              onEndEditing = {(e) => handleValidContact(e.nativeEvent.text)}
+              // onEndEditing = {(e) => handleValidContact(e.nativeEvent.text)}
             />
 
             { contactNo.isValidContact ? null:

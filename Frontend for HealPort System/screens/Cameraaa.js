@@ -17,7 +17,7 @@ const Cameraaa= ({ navigation }) => {
 		return true
 	}
 
-	takeImage = async () => {
+	const takeImage = async () => {
 		// make sure that we have the permission
 		const hasPermission = await askForPermission()
 		if (!hasPermission) {
