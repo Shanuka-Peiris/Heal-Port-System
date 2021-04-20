@@ -37,7 +37,6 @@ const CameraScreen = ({ navigation }) => {
     if (camRef) {
       const data = await camRef.current.takePictureAsync();
       setCapturedPhoto(data.uri);
-      console.log(capturedPhoto)
       setOpen(true);
       console.log(data);
     }
@@ -159,25 +158,6 @@ const styles = StyleSheet.create({
     borderRadius: 32,
     justifyContent: 'center',
     alignItems: 'center',
-
-
-  },
-  snapButton:{
-    width:58,
-    height: 56,
-    borderRadius: 32,
-    borderWidth:3,
-    borderColor:'white',
-    justifyContent:'center',
-    alignItems:'center',
-  },
-  innerButton:{
-    backgroundColor: '#578e91',
-    width:52.8,
-    height:52,
-    borderRadius:32,
-    justifyContent:'center',
-    alignItems:'center',
 
 
   },

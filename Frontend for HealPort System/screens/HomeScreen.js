@@ -74,8 +74,6 @@ const styles = StyleSheet.create({
     marginTop: 100,
     paddingBottom: 5,
     justifyContent: 'center',
-    alignSelf: 'center',
-    alignItems: 'center',
   },
   button: {
     //alignSelf: 'stretch',

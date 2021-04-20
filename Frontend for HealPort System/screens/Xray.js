@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native'
 
 const Xray = ({ navigation }) => {
   const pressHandler1 = () => {
-    navigation.push('camaraNew')
+    navigation.push('CamaraNew')
   }
   const pressHandler2 = () => {
     navigation.push('Gallery')
@@ -42,6 +42,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     alignItems: 'center',
     justifyContent: 'center',
+
     paddingLeft: 30,
     paddingRight: 30,
   },

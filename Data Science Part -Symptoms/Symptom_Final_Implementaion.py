@@ -58,7 +58,7 @@ def postData():
         l2.append(0)
 
     #Training dataset path 
-    df=pd.read_csv(r"D:\IIT Files\Projects\Git Cloned Projects\Heal-Port-System\Data Science Part -Symptoms\Training.csv")
+    df=pd.read_csv(r"D:\IIT Files\Projects\ReactNativeProjects\Heal-Port-System\Data Science Part -Symptoms\Training.csv")
 
     df.replace({'prognosis':{'Fungal infection':0,'Allergy':1,'GERD':2,'Chronic cholestasis':3,'Drug Reaction':4,
     'Peptic ulcer diseae':5,'AIDS':6,'Diabetes ':7,'Gastroenteritis':8,'Bronchial Asthma':9,'Hypertension ':10,
@@ -76,7 +76,7 @@ def postData():
     np.ravel(y)
        
     #Testing dataset path    
-    tr=pd.read_csv(r"D:\IIT Files\Projects\Git Cloned Projects\Heal-Port-System\Data Science Part -Symptoms\Testing.csv")
+    tr=pd.read_csv(r"D:\IIT Files\Projects\ReactNativeProjects\Heal-Port-System\Data Science Part -Symptoms\Testing.csv")
     tr.replace({'prognosis':{'Fungal infection':0,'Allergy':1,'GERD':2,'Chronic cholestasis':3,'Drug Reaction':4,
         'Peptic ulcer diseae':5,'AIDS':6,'Diabetes ':7,'Gastroenteritis':8,'Bronchial Asthma':9,'Hypertension ':10,
         'Migraine':11,'Cervical spondylosis':12,

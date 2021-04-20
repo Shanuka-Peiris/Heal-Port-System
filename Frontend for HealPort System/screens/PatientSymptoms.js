@@ -1,5 +1,5 @@
 import React, { useState, useEffect, setServerData } from 'react';
-import { SafeAreaView, StyleSheet, Text, View, FlatList, TouchableOpacity, Button } from 'react-native';
+import { SafeAreaView, StyleSheet, Text, View, FlatList, Alert,  TouchableOpacity, Button } from 'react-native';
 import MultiSelect from 'react-native-multiple-select';
 import * as Font from 'expo-font';
 import AppLoading from 'expo-app-loading';
@@ -166,11 +166,16 @@ const DATA = [
     },
 ];
 
-const PatientSymptoms = ({ route, navigation }) => {
+const PatientSymptoms = ({ route }) => {
+
+    var disease;
     
    
     // Data Source for the SearchableDropdown
     const [selectedItems, setSelectedItems] = useState([]);
+    const [ diseaseList, setDiseaseList ] = useState([]);
+
+    var name = route.params.paramKey
 
     const onSelectedItemsChange = (selectedItems) => {
         // Set Selected Items
@@ -180,26 +185,109 @@ const PatientSymptoms = ({ route, navigation }) => {
 
     const submitSymptoms = () => {
         // navigation.push('Admission Officer')
-        fetch('http://10.0.2.2:3000/getSymptoms', {
-            method: 'Post',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                userName: "Test123",
-                symptoms: selectedItems
+        console.log(name)
+        if (selectedItems.length != 0) {
+            console.log("is not empty")
+
+            fetch('http://10.0.2.2:3000/getSymptoms', {
+                method: 'Post',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body :JSON.stringify({
+                    userName: name,
+                    symptoms: selectedItems
+                }) 
             })
-        })
             .then((response) => response.json())
             .then((responseData) => {
-                console.log(responseData)
-
+                // setDiseaseList(responseData)
+                disease = responseData
+                console.log(disease)
+                
+                saveSymptoms();
             })
             .catch((error) => {
                 console.log(error)
                 Alert.alert("Something went wrong. Please try again!")
             })
+        } else {
+            console.log("is empty")
+            Alert.alert("Please add symptoms before click submit")
+
+        }
     }
+
+    const saveSymptoms = () => {
+        fetch("http://10.0.2.2:3000/save/Symptoms",{
+            method:"post",
+            headers:{
+                'Content-Type': 'application/json'
+            },
+        body:JSON.stringify({
+                userName: name,
+                symptoms: selectedItems
+            })
+        })
+        .then(res=>res.json())
+        .then(data=>{
+            Alert.alert("Data saved successfully")
+            navigation.navigate("Home")
+        })
+        .catch(err=>{
+            Alert.alert("Something went wrong")
+        })
+    }
+
+    const getUserDetails = () => {
+        fetch('http://10.0.2.2:3000/retrieve/information/patientInfo', {
+            method: 'Post',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body :JSON.stringify({
+                userName: name,
+                
+            }) 
+        })
+        .then((response) => response.json())
+        .then((responseData) => {
+            // setDiseaseList(responseData)
+            console.log(responseData)
+            // admitUser(responseData)
+            admitPatient(responseData)
+        })
+        .catch((error) => {
+            console.log(error)
+            Alert.alert("Something went wrong while retreving data")
+        })
+
+
+        const admitPatient = (responseData) => {
+            fetch("http://10.0.2.2:3000/save/admitPatient", {
+                method:"post",
+                headers:{
+                    'Content-Type': 'application/json'
+                },
+                body:JSON.stringify({
+                    userName: name,
+                    firstName: responseData.firstName,
+                    lastName: responseData.lastName,
+                    nicNumber: responseData.niceNumber,
+                    contactNumber: responseData.contactNumber
+                })
+            })
+            .then((response) => response.json())
+            .then((responseData) => {
+                console.log(responseData)
+                if (responseData == "Successful") {
+                    Alert.alert("Admission successful")
+                } 
+            })
+            .catch((error) => {
+                Alert.alert("Error while admitting patient")
+            })
+        }
 
     const [fontLoaded, setfontLoaded] = useState(false);
 
@@ -215,6 +303,7 @@ const PatientSymptoms = ({ route, navigation }) => {
     const pressHandler = () => {
         navigation.push('Admission Officer')
     }
+}
 
     return (
         <SafeAreaView style={styles.container}>
@@ -244,6 +333,7 @@ const PatientSymptoms = ({ route, navigation }) => {
                     title="Submit"
                     onPress={submitSymptoms}
                 />
+
                 <Text style={styles.heading}>Diseases</Text>
 
                 <FlatList
@@ -271,7 +361,7 @@ const PatientSymptoms = ({ route, navigation }) => {
 
             <TouchableOpacity
                 style={styles.button} 
-                onPress={pressHandler}>
+                onPress={getUserDetails}>
                 <Text style={styles.buttonText} >Admit</Text>
             </TouchableOpacity>
         </SafeAreaView>

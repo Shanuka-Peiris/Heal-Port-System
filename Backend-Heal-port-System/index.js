@@ -5,6 +5,7 @@ const request = require('request-promise');
 const multer = require('multer');
 const router = express.Router();
 const upload = multer({ dest: '../X-ray images api/uploads'});
+const fs = require('fs');
 
 // Express app
 const app = express();
@@ -33,6 +34,8 @@ app.use(bodyParser.json());
 app.use(express.static('public'));
 app.use("/", router);
 var jsonParser = bodyParser.json()
+app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.json({ limit: '2MB' }))
 
 // using routes of patients and staff
 app.use(patientRoute);
@@ -103,35 +106,65 @@ app.post('/getSymptoms', jsonParser, async (req, res) => {
     res.send(returnData);
 })
 
-// uploading image to data science component
-app.post('/upload', jsonParser, async (req, res) => {
+// // uploading image to data science component
+// app.post('/upload', jsonParser, async (req, res) => {
 
-  console.log("req.body : ", req.body)
-  console.log(req.body.selectedImage.Location)
+//   console.log("req.body : ", req.body)
+//   console.log(req.body.selectedImage.Location)
 
-  var sendingData = {
-    Location: req.body.selectedImage.Location
-  }
+//   var sendingData = {
+//     Location: req.body.selectedImage.Location
+//   }
 
-  var option = {
-      method: 'POST',
-      uri: 'http://127.0.0.1:8080/api/v1/resources/x-ray/image',
-      body: sendingData,
-      json: true
-    }
+//   var option = {
+//       method: 'POST',
+//       uri: 'http://127.0.0.1:8080/api/v1/resources/x-ray/image',
+//       body: sendingData,
+//       json: true
+//     }
   
+//     var returnInfo;
+//     var sendRequest = await request(option)
+//     .then(function (parserBody) {
+//       console.log(parserBody)
+//       returnInfo = parserBody;
+//     })
+//     .catch(function (err) {
+//       console.log(err)
+//     })
+//       console.log(returnInfo)
+//       res.send(returnInfo)
+//   })
+
+app.post('/upload', (req, res) => {
+  console.log('in method')
+	fs.writeFile('./out.jpeg', req.body.imgsource, 'base64', (err) => {
+		if (err) throw err
+	})
+    var sendingdata = {
+        Location: "D:\IIT Files\Projects\ReactNativeProjects\Heal-Port-System\Backend-Heal-port-System\out.jpeg"
+    }
+
+    var option = {
+        method: 'POST',
+        uri: 'http://127.0.0.1:8080/api/v1/resources/x-ray/image',
+        body: sendingdata,
+        json: true
+    }
+    
     var returnInfo;
-    var sendRequest = await request(option)
+    var sendRequest =  request(option)
     .then(function (parserBody) {
-      console.log(parserBody)
-      returnInfo = parserBody;
+        console.log(parserBody)
+        returnInfo = parserBody;
     })
     .catch(function (err) {
-      console.log(err)
+        console.log(err)
     })
-      console.log(returnInfo)
-      res.send(returnInfo)
-  })
+    console.log(returnInfo)
+    res.send(returnInfo)
+	res.status(200)
+})
 
 // Saving a patients symptoms
 app.post('/save/Symptoms', (req, res) => {

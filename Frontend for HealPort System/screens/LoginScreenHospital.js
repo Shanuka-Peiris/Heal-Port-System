@@ -1,12 +1,11 @@
 import React,  { useState, useLayoutEffect } from 'react'
-import { Alert, KeyboardAvoidingView, StyleSheet, Text, View } from 'react-native'
+import { KeyboardAvoidingView, StyleSheet, Text, View, Alert } from 'react-native'
 import { StatusBar } from 'expo-status-bar';
 import { Image, Input, Button } from 'react-native-elements';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
 import * as Font from 'expo-font';
 import AppLoading from 'expo-app-loading';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const fetchFont = () => {
@@ -57,7 +56,7 @@ const LoginScreenHospital = ({ navigation }) => {
                 })
             } catch (e) {
                 console.log("Error", e)
-                Alert.alert(e)
+                Alert.alert("Username or password is incorrect")
             }
         })
     }

@@ -1,4 +1,5 @@
 import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 
@@ -21,7 +22,8 @@ import Radiographer from './screens/Radiographer';
 import Xray from './screens/Xray';
 import PatientSymptoms from './screens/PatientSymptoms';
 import Doctor from './screens/Doctor';
-import Cameraaa from './screens/Cameraaa'
+import AdmissionOfficer from './screens/AdmissionOfficer';
+import CamaraScreenNew from './screens/Cameraaa'
 
 
 const Stack = createStackNavigator();
@@ -110,13 +112,14 @@ export default function App() {
           component={NonPneumoniaList}
         />
 
-        <Stack.Screen
+        {/* <Stack.Screen
           name="Camera" component={CameraScreen}
           options={{ headerShown: false }} 
-        />
+        /> */}
 
-        <Stack.Screen 
-          name ="camaraNew" component = {Cameraaa}
+        <Stack.Screen
+          name="CamaraNew" component={CamaraScreenNew}
+          options={{ headerShown: false }} 
         />
 
         <Stack.Screen
@@ -138,6 +141,13 @@ export default function App() {
       </Stack.Navigator>
     </NavigationContainer>
   );
-}
+} 
 
-
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});
