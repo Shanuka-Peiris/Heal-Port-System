@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, ScrollView  } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, ScrollView, Alert,Image  } from 'react-native';
 import * as Font from 'expo-font';
 import AppLoading from 'expo-app-loading';
-import * as Animatable from 'react-native-animatable';
-
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const fetchFont = () => {
   return Font.loadAsync({
@@ -11,8 +10,6 @@ const fetchFont = () => {
     "Sacramento" :  require("../assets/fonts/Sacramento-Regular.ttf"),
     "Vidaloka-Regular" :  require("../assets/fonts/Vidaloka-Regular.ttf"),
     "YuseiMagic-Regular" :  require("../assets/fonts/YuseiMagic-Regular.ttf"),
-
-
   });
 };
 
@@ -24,8 +21,6 @@ const PatientReg = ({ navigation }) => {
   const [nic, setNic] = useState('');
   const [password, setPassword] = useState('');
   const [contactNo, setContactNo] = useState('');
-    // isValidContact: true,
-  // });
   const [fontLoaded, setfontLoaded] = useState(false);
 
     if(!fontLoaded){
@@ -38,9 +33,7 @@ const PatientReg = ({ navigation }) => {
     }
 
     const pressHandler = () => {
-      // navigation.push('Patient Login')
-  
-      fetch('http://10.0.2.2:3000/patient/signUp', {
+      fetch('http://192.168.249.152:3000/patient/signUp', {
         method:"POST",
         headers: {
             'Content-Type': 'application/json'
@@ -83,12 +76,18 @@ const PatientReg = ({ navigation }) => {
       return (
         <View style={styles.PatientReg}>
           <ScrollView showsVerticalScrollIndicator={false}>
-            <Text style={styles.header}>REGISTRATION</Text>
-  
+            <View>
+              <Image 
+                    source={require('../Images/reg-2.png')}
+                    style={{ width: 300, height: 160,marginLeft:15,marginTop:80}}                
+              />
+              <Text style={styles.header}>REGISTRATION</Text>    
+            </View>
             <TextInput
               style={styles.textInput}
               placeholder="First Name"
               underlineColorAndroid={'black'}
+              placeholderTextColor= '#4d4d4d'
               type="text"
               value={firstName}
               onChangeText={(text) => setFirstName(text)}
@@ -98,6 +97,7 @@ const PatientReg = ({ navigation }) => {
               style={styles.textInput}
               placeholder="Last Name"
               underlineColorAndroid={'black'}
+              placeholderTextColor= '#4d4d4d'
               type="text"
               value={lastName}
               onChangeText={(text) => setLastName(text)}
@@ -107,15 +107,28 @@ const PatientReg = ({ navigation }) => {
               style={styles.textInput}
               placeholder="User Name"
               underlineColorAndroid={'black'}
+              placeholderTextColor= '#4d4d4d'
               type="text"
               value={userName}
               onChangeText={(text) => setUserName(text)}
             /> 
+
+            <TextInput
+              style={styles.textInput}
+              keyboardType='numeric'
+              placeholder="Contact No"
+              underlineColorAndroid={'black'}
+              placeholderTextColor= '#4d4d4d'
+              type="number"
+              onChangeText={(val) => setContactNo(val)}
+              // onEndEditing = {(e) => handleValidContact(e.nativeEvent.text)}
+            />
   
             <TextInput
               style={styles.textInput}
               placeholder="NIC"
               underlineColorAndroid={'black'}
+              placeholderTextColor= '#4d4d4d'
               type="text"
               value={nic}
               onChangeText={(text) => setNic(text)}
@@ -126,26 +139,17 @@ const PatientReg = ({ navigation }) => {
               placeholder="Password"
               secureTextEntry={true}
               underlineColorAndroid={'black'}
+              placeholderTextColor= '#4d4d4d'
               type="text"
               value={password}
               onChangeText={(text) => setPassword(text)}
             />
 
-            <TextInput
-              style={styles.textInput}
-              keyboardType='numeric'
-              placeholder="Contact No"
-              underlineColorAndroid={'black'}
-              type="number"
-              onChangeText={(val) => setContactNo(val)}
-              // onEndEditing = {(e) => handleValidContact(e.nativeEvent.text)}
-            />
-
-            { contactNo.isValidContact ? null:
+            {/* { contactNo.isValidContact ? null:
               <Animatable.View animation="fadeInLeft" duration={500}>
                 <Text style = {styles.errorMsg}>Contact number should have 10 digits.</Text>
               </Animatable.View>
-            }
+            } */}
   
 
             <TouchableOpacity style={styles.patientSignUp}>
@@ -172,7 +176,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: 'black',
     marginBottom: 40,
-    marginTop:35,
     color: "#004644",
     fontFamily:"YuseiMagic-Regular",
   },
@@ -188,20 +191,20 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     alignItems: 'center',
     padding: 10,
-    marginTop: 30,
+    marginTop: 50,
     marginBottom: 10,
     borderWidth: 2,
     width: 200,
-    marginLeft: 60,
+    marginLeft:75,
     textAlign: "center",
-    borderRadius: 10,
-    borderColor: "black",
-    backgroundColor: '#fdeb93',
+    borderRadius: 13,
+    borderColor: "white",
+    backgroundColor: '#3EAB90',
   },
   patientText: {
     textAlign: 'center',
-    fontSize: 20,
-    color: "black",
+    color: 'white',
+    fontSize: 25, 
     fontFamily:"YuseiMagic-Regular",
   },
   errorMsg: {

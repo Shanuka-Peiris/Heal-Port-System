@@ -21,8 +21,9 @@ const PORT = 3000;
 // Requiring model
 require('./Models/Patient');
 require('./Models/staff');
-require('./Models/userSymptoms')
-require('./Models/admittingPatients')
+require('./Models/userSymptoms');
+require('./Models/admittingPatients');
+require('./Models/admissionOfficerAdmit');
 
 // Tokens for patient and staff
 const patientToken = require('./Middleware/patientToken');
@@ -33,7 +34,8 @@ const patientRoute = require('./Routes/patientRoutes');
 const staffRoute = require('./Routes/staffRoutes');
 const userSymptoms = mongoose.model("userSymptoms");
 const admittingPatients = mongoose.model("admitPatientList");
-const patientInfo = mongoose.model("Patient")
+const patientInfo = mongoose.model("Patient");
+const admissionOfficerAdmit = mongoose.model("admittedPatientList");
 
 app.use(bodyParser.json());
 app.use(express.static('public'));
@@ -146,12 +148,11 @@ app.post('/getSymptoms', jsonParser, async (req, res) => {
 //   })
 
 app.post('/upload', (req, res) => {
-  console.log('in method')
 	fs.writeFile('./out.jpeg', req.body.imgsource, 'base64', (err) => {
 		if (err) throw err
 	})
     var sendingdata = {
-        Location: "D:\IIT Files\Projects\ReactNativeProjects\Heal-Port-System\Backend-Heal-port-System\out.jpeg"
+        Location: "something"
     }
 
     var option = {
@@ -216,21 +217,74 @@ app.post('/save/admitPatient', (req, res) => {
   })
 })
 
+// Saving admitting patients by admission officer
+app.post('/save/admitPatient/officer', (req, res) => {
+  const savePatientsOfficer = new admissionOfficerAdmit ({
+    userName: req.body.userName,
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    nicNumber: req.body.nicNumber,
+    contactNumber: req.body.contactNumber
+  })
+
+  var success = {
+    Success: "Successful"
+  }
+
+  var unsucess = "UnSuccessful" 
+
+  savePatientsOfficer.save()
+  .then(data => {
+    res.send(success)
+  }) 
+  .catch(err => {
+    console.log(unsucess)
+  })
+})
+
 // Retrieving all admitting patients details list
-app.get('/retrieve/information/all', (req, res) => {
+app.post('/retrieve/information/all', (req, res) => {
   admittingPatients.find({}, function (err, result) {
     if (err) {
       res.send(err)
     } else {
-
       res.send(result)
+    }
+  })
+})
 
+// Finding a patient is already requested
+app.post('/retrieve/requested',  (req, res) => {
+
+  let name = req.body.userName
+
+  admittingPatients.findOne({ userName: name }, function (err, result) {
+    if (err) {
+      res.send(err)
+    } else {
+      console.log(result)
+
+      var sending = {
+        send: "null"
+      }
+
+      var sendingNew = {
+        send: userName
+      }
+
+      if (result == null) {
+        res.send(sending)
+      } else {
+        res.send(sendingNew)
+      }
+
+      
     }
   })
 })
 
 // Retrieving a particular admitted patient's information
-app.post('/retrieve/information/', (req, res) => {
+app.post('/retrieve/information', (req, res) => {
   let name = req.body.userName
 
   admittingPatients.find({ userName: name }, function (err, result) {
@@ -255,6 +309,34 @@ app.post('/retrieve/information/', (req, res) => {
 
       console.log(sendingData)
       res.send(sendingData);
+    }
+  })
+})
+
+// Retrieving all admit requested patients list
+app.post('/retrieve/information/requested', (req, res) => {
+  let name = req.body.userName
+  console.log(name)
+
+  admittingPatients.find({}, function(err, result)  {
+    if (err) {
+      res.send(err)
+    } else {
+      res.send(result)
+    }
+  })
+})
+
+// Retrieving all admission officer admitted patients list
+app.post('/retrieve/information/admitted', (req, res) => {
+  let name = req.body.userName
+  console.log(name)
+
+  admissionOfficerAdmit.find({}, function(err, result)  {
+    if (err) {
+      res.send(err)
+    } else {
+      res.send(result)
     }
   })
 })

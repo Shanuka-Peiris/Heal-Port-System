@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const admitPatientsSchema = new mongoose.Schema({
+const officerAdmittedSchema = new mongoose.Schema({
     userName: {
         type: String,
         unique: true,
@@ -24,4 +24,4 @@ const admitPatientsSchema = new mongoose.Schema({
     }
 })
 
-mongoose.model('admitPatientList', admitPatientsSchema);
+mongoose.model('admittedPatientList', officerAdmittedSchema);

@@ -1,7 +1,7 @@
-import React,  { useState, useLayoutEffect } from 'react'
+import React,  { useState} from 'react'
 import { KeyboardAvoidingView, StyleSheet, Text, View, Alert } from 'react-native'
 import { StatusBar } from 'expo-status-bar';
-import { Image, Input, Button } from 'react-native-elements';
+import { Image, Input} from 'react-native-elements';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import * as Font from 'expo-font';
 import AppLoading from 'expo-app-loading';
@@ -14,11 +14,8 @@ const fetchFont = () => {
     "Sacramento" :  require("../assets/fonts/Sacramento-Regular.ttf"),
     "Vidaloka-Regular" :  require("../assets/fonts/Vidaloka-Regular.ttf"),
     "YuseiMagic-Regular" :  require("../assets/fonts/YuseiMagic-Regular.ttf"),
-
-
   });
 };
-
 
 const LoginScreenHospital = ({ navigation }) => {
 
@@ -36,7 +33,7 @@ const LoginScreenHospital = ({ navigation }) => {
     }
 
     const pressHandler = () => {
-        fetch('http://10.0.2.2:3000/staff/signIn', {
+        fetch('http://192.168.249.152:3000/staff/signIn', {
             method:"POST",
             headers: {
                 'Content-Type': 'application/json'
@@ -59,6 +56,7 @@ const LoginScreenHospital = ({ navigation }) => {
                 Alert.alert("Username or password is incorrect")
             }
         })
+        // navigation.replace('Staff')
     }
 
     const pressHandler1 = () => {
@@ -69,15 +67,17 @@ const LoginScreenHospital = ({ navigation }) => {
         <KeyboardAvoidingView behavior="padding" style={styles.container}>
            <StatusBar style={"light"} />
            <Image 
-                source={require('../Images/logo-4.png')}
-
-                style={{ width: 350, height: 250, marginBottom: 40 }}            />
+                source={require('../Images/login-1.png')}
+                style={{ width: 300, height: 300, marginBottom: 30, marginLeft: 8,marginTop:5, }}         
+            />
 
             <View style={styles.inputContainer}>
                 <Input 
                     style={styles.input}
                     placeholder="User Name"
+                    placeholderTextColor= '#4d4d4d'
                     autoFocus
+                    fontSize = {20}
                     type="text"
                     value={userName}
                     onChangeText={(text) => setUserName(text)}
@@ -86,7 +86,9 @@ const LoginScreenHospital = ({ navigation }) => {
                 <Input 
                     style={styles.input}
                     placeholder="Password" 
+                    placeholderTextColor= '#4d4d4d'
                     secureTextEntry={true}
+                    fontSize = {20}
                     type="password" 
                     value={password}
                     onChangeText={(text) => setPassword(text)}
@@ -120,7 +122,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: 'center',
         padding: 10,
-        backgroundColor: 'white',
+        backgroundColor: '#CAE0DB',
     },
     inputContainer: {
         width: 300,
@@ -132,8 +134,11 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         padding: 10,
         borderWidth: 3,
-        borderColor: "#004644",
-        backgroundColor: '#CAE0DB',
+        borderColor: '#3EAB90',
+        backgroundColor: '#3EAB90',
+        borderRadius: 13,
+        borderColor: "white",
+        borderWidth: 2,
     },
     buttonRegister: {
         width: 200,
@@ -141,24 +146,25 @@ const styles = StyleSheet.create({
         textAlign: "center",
         borderRadius: 10,
         padding: 10,
-        backgroundColor: "#fff",
+        backgroundColor: 'white',
         borderWidth: 3,
-        borderColor: "#004644",
+        borderColor: '#3EAB90',
     },
     buttonTextLogin: {
         textAlign: 'center',
         fontSize: 20,
-        color: "#004644",
         fontFamily:"YuseiMagic-Regular",
+        color: 'white',
+        fontSize: 23, 
     },
     buttonTextRegister: {
         textAlign: 'center',
-        fontSize: 20,
-        color: "#004644",
+        fontSize: 23,
+        color: 'black',
         fontFamily:"YuseiMagic-Regular",
     },
     input: {
         fontFamily:"YuseiMagic-Regular",
         color:'black'
     },
-});
+}); 

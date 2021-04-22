@@ -1,13 +1,92 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native'
+import * as ImagePicker from 'expo-image-picker'
+import * as Permissions from 'expo-permissions'
 
 const Xray = ({ navigation }) => {
-  const pressHandler1 = () => {
-    navigation.push('CamaraNew')
-  }
-  const pressHandler2 = () => {
-    navigation.push('Gallery')
-  }
+
+  const [image, setImage] = useState(null);
+
+  useEffect(() => {
+    (async () => {
+      if (Platform.OS !== 'web') {
+        const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (status !== 'granted') {
+          alert('Sorry, we need camera roll permissions to make this work!');
+        }
+      }
+    })();
+  }, []);
+
+  const askForPermission = async () => {
+		const permissionResult = await Permissions.askAsync(Permissions.CAMERA)
+		if (permissionResult.status !== 'granted') {
+			Alert.alert('no permissions to access camera!', [{ text: 'ok' }])
+			return false
+		}
+		return true
+	}
+
+	const takeImage = async () => {
+		// make sure that we have the permission
+		const hasPermission = await askForPermission()
+		if (!hasPermission) {
+			return
+		} else {
+			// launch the camera with the following settings
+			let image = await ImagePicker.launchCameraAsync({
+				mediaTypes: ImagePicker.MediaTypeOptions.Images,
+				allowsEditing: true,
+				aspect: [3, 3],
+				quality: 1,
+				base64: true,
+			
+			})
+
+      console.log(image)
+
+			// make sure a image was taken:
+			if (!image.cancelled) {
+				fetch("http://192.168.249.152:3000/upload", {
+					method: 'POST',
+					headers: {
+						Accept: 'application/json',
+						'Content-Type': 'application/json',
+					},
+					// send our base64 string as POST request
+					body: JSON.stringify({
+						imgsource: image.base64,
+					}),
+				})
+			}
+		}
+	}
+
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+				allowsEditing: true,
+				aspect: [3, 3],
+				quality: 1,
+				base64: true,
+    });
+
+    console.log(result)
+
+    if (!result.cancelled) {
+      fetch("http://192.168.249.152:3000/upload", {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        // send our base64 string as POST request
+        body: JSON.stringify({
+          imgsource: result.base64,
+        }),
+      })
+    }
+  };
 
 
   return (
@@ -18,14 +97,14 @@ const Xray = ({ navigation }) => {
       />
       <TouchableOpacity
         style={styles.button}
-        onPress={pressHandler1}
+        onPress= {takeImage}
       >
         <Text style={styles.buttonText}>Camera</Text>
       </TouchableOpacity>
 
       <TouchableOpacity
         style={styles.button}
-        onPress={pressHandler2}
+        onPress = {pickImage}
       >
         <Text style={styles.buttonText}>Gallery</Text>
       </TouchableOpacity>
@@ -34,12 +113,13 @@ const Xray = ({ navigation }) => {
   )
 }
 
+
 export default Xray
 
 const styles = StyleSheet.create({
   Container: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: '#CAE0DB',
     alignItems: 'center',
     justifyContent: 'center',
 
@@ -47,20 +127,23 @@ const styles = StyleSheet.create({
     paddingRight: 30,
   },
   button: {
-    alignSelf: 'stretch',
     alignItems: 'center',
-    padding: 12,
-    // backgroundColor: '#6e6570',
-    marginBottom: 50,
-    borderRadius: 200,
-    borderColor: '#456b82',
-    borderWidth: 5,
+    justifyContent: 'center',
+    padding: 6,
+    backgroundColor: '#3EAB90',
+    marginTop: 40,
+    marginBottom: 10,
+    borderRadius: 13,
+    borderColor: "white",
+    borderWidth: 2,
+    width: 200,
+    height:60,
+    marginLeft: 15,
   },
   buttonText: {
-    color: '#456b82',
-    fontSize: 26,
-    fontWeight: '700',
-
+    color: 'white',
+    fontSize: 25, 
+    fontFamily:"YuseiMagic-Regular",
   },
   pic1: {
     height: 90,

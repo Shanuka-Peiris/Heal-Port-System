@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, Button, TouchableOpacity, FlatList, Image } from 'react-native';
 
-const Discharge = ({ navigation }) => {
+const AdmitList = ({ navigation }) => {
 
-    const [discharge, setDischarge] = useState([]);
-    const [ state, setState ] = useState(0)
+    const [admit, setAdmit] = useState([]);
+    const [ state, setState ] = useState();
 
-    const getAdmittedPatients = () => {
-        fetch('http://192.168.249.152:3000/retrieve/information/admitted', {
+    const getRequestToAdmitList = () => {
+        
+        fetch('http://192.168.249.152:3000/retrieve/information/requested', {
             method: 'Post',
             headers: {
                 'Content-Type': 'application/json',
@@ -19,8 +20,8 @@ const Discharge = ({ navigation }) => {
         .then ((response) => response.json())
         .then ((responseData) => {
             console.log(responseData)
-            const dischargeList = responseData;
-            setDischarge(dischargeList)
+            const admitList = responseData;
+            setAdmit(admitList)
         })
         .catch ((err) => {
             console.log(err)
@@ -32,19 +33,17 @@ const Discharge = ({ navigation }) => {
             console.log("State is 1 now")
         } else {
             setState(1)
-            getAdmittedPatients()
+            getRequestToAdmitList()
         }
     }
 
     changeState();
 
     return (
-        <View style={{ flex: 1, backgroundColor: '#b4d8ed' ,marginTop:40}}>
-            
-
+        <View style={{ flex: 1, backgroundColor: '#b4d8ed',marginTop:40 }}>
 
             <FlatList
-                data={discharge}
+                data={admit}
                 keyExtractor={item => item.firstName}
                 renderItem={({ item }) => {
                     return <TouchableOpacity style={{ margin: 10, margin: 20 }}>
@@ -55,16 +54,15 @@ const Discharge = ({ navigation }) => {
                                     StyleSheet.absoluteFillObject,
                                     { backgroundColor: '#3EAB90', borderRadius: 16, }
                                 ]} />
-                            <Image source={require('../Images/AO-3.png')} style={styles.image} />
+                            <Image source={require('../Images/AO-1.png')} style={styles.image} />
                             <Text style={styles.name} > {item.firstName + " " + item.lastName} </Text>
                             <Text style={styles.display} > User Name - {item.userName} </Text>
                             <Text style={styles.display} > NIC - {item.nicNumber} </Text>
                             <Text style={styles.display} > Contact No - {item.contactNumber.toString()} </Text>
 
                             <TouchableOpacity
-                                style={styles.button}
-                                >
-                                <Text style={styles.buttonText} >Discharge</Text>
+                                style={styles.button}>
+                                <Text style={styles.buttonText} >Admit</Text>
                             </TouchableOpacity>
 
                         </View>
@@ -76,7 +74,7 @@ const Discharge = ({ navigation }) => {
     )
 }
 
-export default Discharge
+export default AdmitList
 
 const styles = StyleSheet.create({
     Container: {
@@ -86,11 +84,13 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         paddingLeft: 30,
         paddingRight: 30,
+        marginTop:40
     },
     cover: {
         height: 100,
         width: '100%',
         marginBottom: 20,
+        
 
     },
     button: {
@@ -98,18 +98,18 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         padding: 6,
         backgroundColor: '#b4d8ed',
-        width: 120,
+        width: 100,
         marginBottom: 80,
         borderRadius: 200,
         position: 'absolute',
-        top: 80,
-        right: 1,
+        top: 75,
+        right: 2,
         borderColor: 'white',
         borderWidth: 2,
     },
     buttonText: {
         color: 'black',
-        fontSize: 18,
+        fontSize: 20,
         fontFamily:"YuseiMagic-Regular",
     },
     pic1: {
@@ -124,7 +124,8 @@ const styles = StyleSheet.create({
         left: 10,
     },
     name: {
-        fontSize: 20,
+        fontWeight: '700',
+        fontSize: 18,
         left: 60,
         fontFamily:"YuseiMagic-Regular",
     },

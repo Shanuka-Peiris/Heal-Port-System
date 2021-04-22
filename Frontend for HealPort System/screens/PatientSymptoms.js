@@ -1,21 +1,19 @@
-import React, { useState, useEffect, setServerData } from 'react';
-import { SafeAreaView, StyleSheet, Text, View, FlatList, Alert,  TouchableOpacity, Button } from 'react-native';
+import React, { useState } from 'react'
+import { SafeAreaView, StyleSheet, Text, View, Image, ScrollView,  TouchableOpacity, Button,FlatList, Alert } from 'react-native';
 import MultiSelect from 'react-native-multiple-select';
 import * as Font from 'expo-font';
 import AppLoading from 'expo-app-loading';
 
-
 const fetchFont = () => {
-  return Font.loadAsync({
-    "Ledger-Regular" : require("../assets/fonts/Ledger-Regular.ttf"),
-    "Sacramento" :  require("../assets/fonts/Sacramento-Regular.ttf"),
-    "Vidaloka-Regular" :  require("../assets/fonts/Vidaloka-Regular.ttf"),
-    "YuseiMagic-Regular" :  require("../assets/fonts/YuseiMagic-Regular.ttf"),
+    return Font.loadAsync({
+        "Ledger-Regular" : require("../assets/fonts/Ledger-Regular.ttf"),
+        "Sacramento" :  require("../assets/fonts/Sacramento-Regular.ttf"),
+        "Vidaloka-Regular" :  require("../assets/fonts/Vidaloka-Regular.ttf"),
+        "YuseiMagic-Regular" :  require("../assets/fonts/YuseiMagic-Regular.ttf"),
 
 
-  });
+    });
 };
-
 
 const items = [
     { id: "itching", name: 'Itching' },
@@ -145,37 +143,34 @@ const items = [
 ];
 
 const DATA = [
-
-    {
-        name: "aaa"
-    },
-    {
-        name: "bbb ",
-    },
-    {
-        name: "Pneumonia",
-    },
-    {
-        name: "ccc",
-    },
-    {
-        name: "ddd",
-    },
-    {
-        name: "eee",
-    },
+{ name: "aaa" },
+{ name: "bbb ", },
+{ name: "Pneumonia", },
+{ name: "ccc", },
+{ name: "ddd", },
+{ name: "eee", },
 ];
 
-const PatientSymptoms = ({ route }) => {
-
-    var disease;
-    
-   
-    // Data Source for the SearchableDropdown
-    const [selectedItems, setSelectedItems] = useState([]);
-    const [ diseaseList, setDiseaseList ] = useState([]);
+const PatientSymptoms = ({ route, navigation }) => {
+    const [ selectedItems, setSelectedItems ] = useState([]);
 
     var name = route.params.paramKey
+
+    const pressHandler1 = () => {
+
+        if (selectedItems.length > 3 && selectedItems.length <= 15) {
+            console.log(name)
+            navigation.push('Disease', {
+                paramKey: name,
+                paramKey1: selectedItems
+            })
+        } else {
+            Alert.alert("Please add between 3 to 15 symptoms to continue")
+        }
+    }
+
+    
+    var disease;
 
     const onSelectedItemsChange = (selectedItems) => {
         // Set Selected Items
@@ -183,243 +178,84 @@ const PatientSymptoms = ({ route }) => {
         console.log(selectedItems)
     };
 
-    const submitSymptoms = () => {
-        // navigation.push('Admission Officer')
-        console.log(name)
-        if (selectedItems.length != 0) {
-            console.log("is not empty")
-
-            fetch('http://10.0.2.2:3000/getSymptoms', {
-                method: 'Post',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body :JSON.stringify({
-                    userName: name,
-                    symptoms: selectedItems
-                }) 
-            })
-            .then((response) => response.json())
-            .then((responseData) => {
-                // setDiseaseList(responseData)
-                disease = responseData
-                console.log(disease)
-                
-                saveSymptoms();
-            })
-            .catch((error) => {
-                console.log(error)
-                Alert.alert("Something went wrong. Please try again!")
-            })
-        } else {
-            console.log("is empty")
-            Alert.alert("Please add symptoms before click submit")
-
-        }
-    }
-
-    const saveSymptoms = () => {
-        fetch("http://10.0.2.2:3000/save/Symptoms",{
-            method:"post",
-            headers:{
-                'Content-Type': 'application/json'
-            },
-        body:JSON.stringify({
-                userName: name,
-                symptoms: selectedItems
-            })
-        })
-        .then(res=>res.json())
-        .then(data=>{
-            Alert.alert("Data saved successfully")
-            navigation.navigate("Home")
-        })
-        .catch(err=>{
-            Alert.alert("Something went wrong")
-        })
-    }
-
-    const getUserDetails = () => {
-        fetch('http://10.0.2.2:3000/retrieve/information/patientInfo', {
-            method: 'Post',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body :JSON.stringify({
-                userName: name,
-                
-            }) 
-        })
-        .then((response) => response.json())
-        .then((responseData) => {
-            // setDiseaseList(responseData)
-            console.log(responseData)
-            // admitUser(responseData)
-            admitPatient(responseData)
-        })
-        .catch((error) => {
-            console.log(error)
-            Alert.alert("Something went wrong while retreving data")
-        })
-
-
-        const admitPatient = (responseData) => {
-            fetch("http://10.0.2.2:3000/save/admitPatient", {
-                method:"post",
-                headers:{
-                    'Content-Type': 'application/json'
-                },
-                body:JSON.stringify({
-                    userName: name,
-                    firstName: responseData.firstName,
-                    lastName: responseData.lastName,
-                    nicNumber: responseData.niceNumber,
-                    contactNumber: responseData.contactNumber
-                })
-            })
-            .then((response) => response.json())
-            .then((responseData) => {
-                console.log(responseData)
-                if (responseData == "Successful") {
-                    Alert.alert("Admission successful")
-                } 
-            })
-            .catch((error) => {
-                Alert.alert("Error while admitting patient")
-            })
-        }
-
-    const [fontLoaded, setfontLoaded] = useState(false);
-
-    if(!fontLoaded){
-        return <AppLoading startAsync = {fetchFont} 
-        onError = {() => console.log("ERROR")}
-        onFinish = {() => {
-            setfontLoaded(true);
-        }}
-        />;
-    }
-
-    const pressHandler = () => {
-        navigation.push('Admission Officer')
-    }
-}
-
     return (
-        <SafeAreaView style={styles.container}>
-            <View style={styles.container}>
-
-                <MultiSelect
-                    hideTags
-                    items={items}
-                    uniqueKey="id"
-                    onSelectedItemsChange={onSelectedItemsChange}
-                    selectedItems={selectedItems}
-                    selectText="Select Symptoms"
-                    searchInputPlaceholderText="Search Symptoms...."
-                    onChangeInput={(text) => console.log(text)}
-                    tagRemoveIconColor="#CCC"
-                    tagBorderColor="#CCC"
-                    tagTextColor="#CCC"
-                    selectedItemTextColor="#FF0000"
-                    selectedItemIconColor="#FF0000"
-                    itemTextColor="#0000ff"
-                    displayKey="name"
-                    searchInputStyle={{ color: '#000' }}
-                    hideSubmitButton
-                />
-
-                <Button
-                    title="Submit"
-                    onPress={submitSymptoms}
-                />
-
-                <Text style={styles.heading}>Diseases</Text>
-
-                <FlatList
-                    data={DATA}
-                    keyExtractor={item => item.name}
-                    renderItem={({ item }) => {
-                        return <TouchableOpacity style={{ margin: 10, margin: 5 }}>
-                            <View style={{ flex: 1, padding: 5 }}>
-
-                                <View
-                                    style={[
-                                        StyleSheet.absoluteFillObject,
-                                        { backgroundColor: '#b4d8ed', borderRadius: 16, }
-                                    ]} />
-                                <Text style={styles.name} > {item.name} </Text>
-
-                            </View>
-
-                        </TouchableOpacity>
-                    }}
+        <SafeAreaView style = {styles.container}>
+            <View style = {styles.selectView}>
+                <Image 
+                    source={require('../Images/search-1.png')}
+                    style={{ width: 400, height: 200, marginBottom:90, }}
                 />
                 
-
-            </View>
-
-            <TouchableOpacity
-                style={styles.button} 
-                onPress={getUserDetails}>
-                <Text style={styles.buttonText} >Admit</Text>
-            </TouchableOpacity>
+                <MultiSelect
+                    items = { items }
+                    uniqueKey = "id"
+                    onSelectedItemsChange = { onSelectedItemsChange }
+                    selectedItems = { selectedItems }
+                    selectText = "    Select Symptoms"
+                    searchInputPlaceholderText = " "
+                    searchInputStyle= {{}}
+                    hideSubmitButton
+                    onChangeInput = {(text) => console.log(text)}
+                    hideTags = {true}
+                    backgroundColor = "#3EAB90"
+                    fontFamily = {"YuseiMagic-Regular"}
+                    itemFontFamily = {"YuseiMagic-Regular"}
+                    itemFontSize = {18}
+                    fontSize = {18}
+                    selectedItemTextColor="#0cafcc"
+                    selectedItemIconColor="#0cafcc"
+                    selectedItemFontFamily = {"YuseiMagic-Regular"}
+                    itemTextColor="#01631c"
+                    searchInputStyle={{ color: 'black' }}
+                    displayKey = "name"
+                />
+                <View style = {styles.buttonView}>
+                        <TouchableOpacity
+                            style={styles.button}
+                            onPress={pressHandler1}
+                        >
+                            <Text style={styles.buttonText} >Submit Symptoms</Text>
+                        </TouchableOpacity>   
+                </View> 
+            </View>           
         </SafeAreaView>
-    );
-};
+    )
+}
 
 export default PatientSymptoms
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'white',
+        backgroundColor: '#CAE0DB',
         padding: 10,
-        marginTop: 30,
-        marginBottom: 40
+        marginTop:30,
     },
-    titleText: {
-        padding: 8,
-        fontSize: 16,
-        textAlign: 'center',
-        //fontWeight: 'bold',
-        fontFamily:"YuseiMagic-Regular",
+    selectView: {
+        height: 200,
+        marginTop: 20,
     },
-    headingText: {
-        padding: 8,
-        fontFamily:"YuseiMagic-Regular",
+    buttonView:{
+        marginTop:110,
+        marginBottom:6,
     },
     button: {
-        alignSelf: 'stretch',
-        alignItems: 'center',
-        padding: 6,
-        backgroundColor: '#456b82',
-        width: 100,
-        marginBottom: 10,
-        borderRadius: 200,
-        position: 'absolute',
-        top: 570,
-        right: 150,
-        borderColor: 'white',
+        width: 200,
+        marginLeft: 90,
+        textAlign: "center",
+        borderRadius: 10,
+        padding: 10,
+        borderWidth: 3,
+        borderColor: '#3EAB90',
+        backgroundColor: '#3EAB90',
+        borderRadius: 13,
+        borderColor: "white",
         borderWidth: 2,
     },
     buttonText: {
-        color: 'white',
-        fontSize: 20,
-        //fontWeight: '700',
-        fontFamily:"YuseiMagic-Regular",
-    },
-    name: {
-        //fontWeight: '700',
-        fontSize: 18,
-        left: 60,
-        fontFamily:"YuseiMagic-Regular",
-    },
-    heading: {
-        //fontWeight: 'bold',
-        fontSize: 20,
         textAlign: 'center',
-        marginTop: 50,
-        marginBottom: 10,
-    }
-});
+        fontSize: 20,
+        fontFamily:"YuseiMagic-Regular",
+        color: 'white', 
+    },
+})

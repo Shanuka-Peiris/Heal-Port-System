@@ -26,19 +26,19 @@ def upload_file():
 		# # Save the image as jpeg
 		# temp_img.save(secure_filename("temp_image.jpeg"))
 		# 
-		locationData = request.get_json(); 
-		
-		location = locationData['Location']
-
-		#Declare img by loading an image
-		# img = image.load_img(location, target_size=(224,224)) 
-
 		# locationData = request.get_json(); 
 		
 		# location = locationData['Location']
 
 		#Declare img by loading an image
-		img = image.load_img(location, target_size=(224,224))
+		# img = image.load_img(location, target_size=(224,224)) 
+
+		locationData = request.get_json(); 
+		
+		location = locationData['Location']
+
+		#Declare img by loading an image
+		img = image.load_img('../Backend-Heal-port-System/out.jpeg', target_size=(224,224))
 		#Pre-process the image
 		img = np.asarray(img)
 		plt.imshow(img)

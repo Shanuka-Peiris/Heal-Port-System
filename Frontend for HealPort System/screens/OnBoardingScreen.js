@@ -3,6 +3,7 @@ import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import OnBoarding from 'react-native-onboarding-swiper';
 import * as Font from 'expo-font';
 import AppLoading from 'expo-app-loading';
+import { StatusBar } from 'expo-status-bar';
 
 
 const fetchFont = () => {
@@ -36,6 +37,7 @@ const OnBoardingScreen = ({ navigation }) => {
     }
 
     return (
+        
         <OnBoarding
             DoneButtonComponent={Done}
             onDone={() => navigation.navigate("Home")}

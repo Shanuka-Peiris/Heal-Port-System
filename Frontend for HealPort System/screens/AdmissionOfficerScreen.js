@@ -1,47 +1,36 @@
 import React from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity,Image, ScrollView } from 'react-native';
+import { StyleSheet, Text, View,TouchableOpacity,Image, ScrollView } from 'react-native';
 
 const StaffMember = ({ navigation }) => {
 
   const pressHandler1 = () => {
-    navigation.push('Doctor')
+    navigation.push('Admit')
   }
 
   const pressHandler2 = () => {
-    navigation.push('Radiographer')
+    navigation.push('Discharge')
   }
-
-  const pressHandler3 = () => {
-    navigation.push('Admission officer new')
-  } 
 
     return (
       <View style={styles.StaffMember}>
         <ScrollView showsVerticalScrollIndicator={false}>
         <Image
             style={styles.tinyLogo}
-            source={require('./../Images/staff-1.gif')}
+            source={require('./../Images/A-Officer.png')}
         />
 
         <TouchableOpacity 
           style={styles.button} 
           onPress = { pressHandler1}
         >
-            <Text style={styles.buttonText}>Doctor</Text>
+            <Text style={styles.buttonText}>Admit Patient</Text>
         </TouchableOpacity>
 
         <TouchableOpacity 
           style={styles.button} 
           onPress = { pressHandler2}
         >
-            <Text style={styles.buttonText}>Radiographer</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity 
-          style={styles.button} 
-          onPress = { pressHandler3}
-        >
-            <Text style={styles.buttonText}>Admission Officer</Text>
+            <Text style={styles.buttonText}>Discharge Patient</Text>
         </TouchableOpacity>
 
         </ScrollView>

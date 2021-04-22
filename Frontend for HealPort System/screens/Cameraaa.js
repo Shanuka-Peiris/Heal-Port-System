@@ -17,7 +17,7 @@ const Cameraaa= ({ navigation }) => {
 		return true
 	}
 
-	const takeImage = async () => {
+	takeImage = async () => {
 		// make sure that we have the permission
 		const hasPermission = await askForPermission()
 		if (!hasPermission) {
@@ -34,7 +34,7 @@ const Cameraaa= ({ navigation }) => {
 			})
 			// make sure a image was taken:
 			if (!image.cancelled) {
-				fetch("http://10.0.2.2:3000/upload", {
+				fetch("http://192.168.8.112:3000/upload", {
 					method: 'POST',
 					headers: {
 						Accept: 'application/json',

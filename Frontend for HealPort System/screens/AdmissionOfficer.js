@@ -41,8 +41,30 @@ const DATA = [
     },
 ];
 const AdmissionOfficer = ({ navigation }) => {
+    
+    const requestPendingPatients = () => {
+        fetch("http://192.168.249.152:3000/retrieve/information/all",{
+            method:"post",
+            headers:{
+                'Content-Type': 'application/json'
+            },
+        body:JSON.stringify({
+                userName: "something",
+            })
+        })
+        .then(res=>res.json())
+        .then(data=>{
+            console.log(data)
+        })
+        .catch(err=>{
+            console.log(err)
+        })
+    }
+    
+
     const pressHandler = () => {
-        navigation.push('Discharge')
+        // navigation.push('Discharge')
+        requestPendingPatients()
     }
     return (
         <View style={{ flex: 1, backgroundColor: 'white' }}>
