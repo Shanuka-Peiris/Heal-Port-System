@@ -43,8 +43,6 @@ const Xray = ({ navigation }) => {
 			
 			})
 
-      console.log(image)
-
 			// make sure a image was taken:
 			if (!image.cancelled) {
 				fetch("http://192.168.249.152:3000/upload", {
@@ -58,6 +56,19 @@ const Xray = ({ navigation }) => {
 						imgsource: image.base64,
 					}),
 				})
+        .then ((response) => response.json())
+        .then ((responseData) => {
+          console.log(responseData)
+
+          if (responseData.state == "PNEUMONIA") {
+            console.log("yes")
+          } else {
+            console.log("No")
+          }
+        })
+        .catch ((err) => {
+          console.log(err)
+        })
 			}
 		}
 	}
@@ -71,8 +82,6 @@ const Xray = ({ navigation }) => {
 				base64: true,
     });
 
-    console.log(result)
-
     if (!result.cancelled) {
       fetch("http://192.168.249.152:3000/upload", {
         method: 'POST',
@@ -84,6 +93,19 @@ const Xray = ({ navigation }) => {
         body: JSON.stringify({
           imgsource: result.base64,
         }),
+      })
+      .then ((response) => response.json())
+      .then ((responseData) => {
+        console.log(responseData)
+
+          if (responseData.state == "PNEUMONIA") {
+            console.log("yes")
+          } else {
+            console.log("No")
+          }
+      })
+      .catch ((err) => {
+        console.log(err)
       })
     }
   };

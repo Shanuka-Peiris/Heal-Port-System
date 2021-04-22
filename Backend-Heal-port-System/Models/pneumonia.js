@@ -1,10 +1,10 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 
-const officerAdmittedSchema = new mongoose.Schema({
+const pneumoniaSchema = new mongoose.Schema ({
     userName: {
         type: String,
-        unique: true,
         required: true,
+        unique: true
     },
 
     firstName: {
@@ -15,13 +15,12 @@ const officerAdmittedSchema = new mongoose.Schema({
     lastName: {
         type: String,
         required: true,
-    }, 
+    },
 
     nicNumber: {
         type: String,
-        unique: true,
         required: true,
-    }, 
+    },
 
     contactNumber: {
         type: Number,
@@ -29,4 +28,4 @@ const officerAdmittedSchema = new mongoose.Schema({
     }
 })
 
-mongoose.model('admittedPatientList', officerAdmittedSchema);
+mongoose.model('pneumoniaList', pneumoniaSchema);

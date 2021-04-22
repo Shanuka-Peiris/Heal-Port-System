@@ -39,6 +39,15 @@ const AdmitList = ({ navigation }) => {
 
     changeState();
 
+    const saveAdmit = (ex1, ex2, ex3, ex4, ex5) => {
+       console.log(ex1)
+       console.log(ex2)
+       console.log(ex3)
+       console.log(ex4)
+       console.log(ex5)
+       
+    }
+
     return (
         <View style={{ flex: 1, backgroundColor: '#b4d8ed',marginTop:40 }}>
 
@@ -61,10 +70,12 @@ const AdmitList = ({ navigation }) => {
                             <Text style={styles.display} > Contact No - {item.contactNumber.toString()} </Text>
 
                             <TouchableOpacity
-                                style={styles.button}>
+                                style={styles.button}
+                                onPress = {() => saveAdmit(item.username, item.firstName, item.lastName, item.contactNumber, item.nicNumber)}    
+                            >
                                 <Text style={styles.buttonText} >Admit</Text>
                             </TouchableOpacity>
-
+                            
                         </View>
 
                     </TouchableOpacity>

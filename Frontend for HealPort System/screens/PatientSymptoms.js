@@ -2,7 +2,8 @@ import React, { useState } from 'react'
 import { SafeAreaView, StyleSheet, Text, View, Image, ScrollView,  TouchableOpacity, Button,FlatList, Alert } from 'react-native';
 import MultiSelect from 'react-native-multiple-select';
 import * as Font from 'expo-font';
-import AppLoading from 'expo-app-loading';
+// import AppLoading from 'expo-app-loading';
+
 
 const fetchFont = () => {
     return Font.loadAsync({
@@ -142,15 +143,6 @@ const items = [
     { id: "blister", name: 'Blister' }
 ];
 
-const DATA = [
-{ name: "aaa" },
-{ name: "bbb ", },
-{ name: "Pneumonia", },
-{ name: "ccc", },
-{ name: "ddd", },
-{ name: "eee", },
-];
-
 const PatientSymptoms = ({ route, navigation }) => {
     const [ selectedItems, setSelectedItems ] = useState([]);
 
@@ -158,14 +150,13 @@ const PatientSymptoms = ({ route, navigation }) => {
 
     const pressHandler1 = () => {
 
-        if (selectedItems.length > 3 && selectedItems.length <= 15) {
-            console.log(name)
+        if (selectedItems.length > 3) {
             navigation.push('Disease', {
                 paramKey: name,
                 paramKey1: selectedItems
             })
         } else {
-            Alert.alert("Please add between 3 to 15 symptoms to continue")
+            Alert.alert("Please add atleast 3 symptoms to continue")
         }
     }
 

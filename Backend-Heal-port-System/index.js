@@ -24,6 +24,8 @@ require('./Models/staff');
 require('./Models/userSymptoms');
 require('./Models/admittingPatients');
 require('./Models/admissionOfficerAdmit');
+require('./Models/pneumonia');
+require('./Models/nonPneumonia');
 
 // Tokens for patient and staff
 const patientToken = require('./Middleware/patientToken');
@@ -36,6 +38,8 @@ const userSymptoms = mongoose.model("userSymptoms");
 const admittingPatients = mongoose.model("admitPatientList");
 const patientInfo = mongoose.model("Patient");
 const admissionOfficerAdmit = mongoose.model("admittedPatientList");
+const pneumoniaList = mongoose.model('pneumoniaList');
+const nonPneumoniaList = mongoose.model('nonPneumoniaList');
 
 app.use(bodyParser.json());
 app.use(express.static('public'));
@@ -78,11 +82,6 @@ app.get('/special', (req, res) => {
   res.send("You have received...");
 })
 
-// app.use(express.urlencoded({ extended: true }))
-// app.use(express.json({limit: '525mb'}));
-// app.use(bodyParser.urlencoded({ limit: "50mb", extended: true, parameterLimit: 50000 }))
-// app.use(express.urlencoded({limit: '625mb'}));
-
 // uploading symptoms to data science component
 app.post('/getSymptoms', jsonParser, async (req, res) => {
     console.log("req.body : ", req.body)
@@ -117,36 +116,7 @@ app.post('/getSymptoms', jsonParser, async (req, res) => {
     res.send(returnData);
 })
 
-// // uploading image to data science component
-// app.post('/upload', jsonParser, async (req, res) => {
-
-//   console.log("req.body : ", req.body)
-//   console.log(req.body.selectedImage.Location)
-
-//   var sendingData = {
-//     Location: req.body.selectedImage.Location
-//   }
-
-//   var option = {
-//       method: 'POST',
-//       uri: 'http://127.0.0.1:8080/api/v1/resources/x-ray/image',
-//       body: sendingData,
-//       json: true
-//     }
-  
-//     var returnInfo;
-//     var sendRequest = await request(option)
-//     .then(function (parserBody) {
-//       console.log(parserBody)
-//       returnInfo = parserBody;
-//     })
-//     .catch(function (err) {
-//       console.log(err)
-//     })
-//       console.log(returnInfo)
-//       res.send(returnInfo)
-//   })
-
+// Upload X-ray images to data science
 app.post('/upload', (req, res) => {
 	fs.writeFile('./out.jpeg', req.body.imgsource, 'base64', (err) => {
 		if (err) throw err
@@ -165,15 +135,17 @@ app.post('/upload', (req, res) => {
     var returnInfo;
     var sendRequest =  request(option)
     .then(function (parserBody) {
-        console.log(parserBody)
-        returnInfo = parserBody;
+        console.log("parser body : ", parserBody)
+        var sendJson = JSON.stringify({
+          state: parserBody
+        })
+        res.send(sendJson)
     })
     .catch(function (err) {
         console.log(err)
     })
-    console.log(returnInfo)
-    res.send(returnInfo)
-	res.status(200)
+    console.log("returned info : ",returnInfo)
+    // res.send(returnInfo)
 })
 
 // Saving a patients symptoms
@@ -242,6 +214,36 @@ app.post('/save/admitPatient/officer', (req, res) => {
   })
 })
 
+// saving pneumonia patients list
+app.post('/save/pneumonia/patients', (req, res) => {
+  const savePneumoniaPatients = new pneumoniaList ({
+    userName: req.body.userName,
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    nicNumber: req.body.nicNumber,
+    contactNumber: req.body.contactNumber
+  })
+  savePneumoniaPatients.save()
+  .then(data => {
+    res.send()
+  })
+})
+
+// saving nonPneumonia list
+app.post('/save/nonPneumonia/patients', (req, res) => {
+  const saveNonPneumoniaPatients = new nonPneumoniaList ({
+    userName: req.body.userName,
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    nicNumber: req.body.nicNumber,
+    contactNumber: req.body.contactNumber
+  })
+  saveNonPneumoniaPatients.save()
+  .then(data => {
+    res.send()
+  })
+})
+
 // Retrieving all admitting patients details list
 app.post('/retrieve/information/all', (req, res) => {
   admittingPatients.find({}, function (err, result) {
@@ -291,9 +293,9 @@ app.post('/retrieve/information', (req, res) => {
     if (err) {
       res.send(err)
     } else {
-      console.log(result)
+      console.log(result.length)
 
-      var userName = name
+      var userName = result[0].userName
       var firstName = result[0].firstName
       var lastName = result[0].lastName
       var niceNumber = result[0].nicNumber
@@ -358,6 +360,7 @@ app.post('/retrieve/information/patientInfo', (req, res) => {
       var contactNumber = result[0].contactNumber
       
       var sendingData = {
+        name,
         firstName,
         lastName,
         niceNumber,

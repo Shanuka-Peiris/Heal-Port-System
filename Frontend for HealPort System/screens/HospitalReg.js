@@ -25,9 +25,7 @@ const HospitalReg = ({ navigation }) => {
   const [userName, setUserName] = useState('');
   const [registrationNo, setRegistrationNo] = useState('');
   const [password, setPassword] = useState('');
-  const [contactNo, setContactNo] = useState({
-    isValidContact: true,
-  });
+  const [contactNo, setContactNo] = useState();
   const [fontLoaded, setfontLoaded] = useState(false);
   const [ stafftype, setStaffType ] = useState('');
   
@@ -60,26 +58,26 @@ const HospitalReg = ({ navigation }) => {
         .then(async (data) => {
           try {
             await AsyncStorage.setItem('token',data.token)
-            navigation.push('Staff Login')
+            navigation.replace('Staff Login')
           } catch (e) {
             console.log("Error", e)
           }
         })
   }
 
-  const handleValidContact = (val) => {
-    if (val.length == 10) {
-      setContactNo({
-        ...contactNo,
-        isValidContact: true
-      });
-    } else {
-      setContactNo({
-        ...contactNo,
-        isValidContact: false
-      });
-    }
-  }
+  // const handleValidContact = (val) => {
+  //   if (val.length == 10) {
+  //     setContactNo({
+  //       ...contactNo,
+  //       isValidContact: true
+  //     });
+  //   } else {
+  //     setContactNo({
+  //       ...contactNo,
+  //       isValidContact: false
+  //     });
+  //   }
+  // }
 
     return (
       <View style={styles.HospitalReg}>
@@ -169,14 +167,9 @@ const HospitalReg = ({ navigation }) => {
             placeholderTextColor= '#4d4d4d'
             type="number"
             onChangeText={(text) => setContactNo(text)}
-            onEndEditing={(e) => handleValidContact(e.nativeEvent.text)}
+            // onChangeText={(text) => setContactNo(text)}
+            // onEndEditing={(e) => handleValidContact(e.nativeEvent.text)}
           />
-
-          {contactNo.isValidContact ? null :
-            <Animatable.View animation="fadeInLeft" duration={500}>
-              <Text style={styles.errorMsg}>Contact number should have 10 digits.</Text>
-            </Animatable.View>
-          }
 
           <TouchableOpacity style={styles.staffSignUp}>
               <Text style={styles.staffText} onPress={pressHandler}>Sign up</Text>
