@@ -1,380 +1,451 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
-const request = require('request-promise');
-const multer = require('multer');
-const router = express.Router();
-const upload = multer({ dest: '../X-ray images api/uploads'});
-const fs = require('fs');
+// imports
+const express = require("express");
+const mongoose = require("mongoose");
+const cors = require("cors");
+const request = require("request-promise");
+const fs = require("fs");
+const multer = require("multer");
+const upload = multer({ dest: "../X-ray images api/uploads" });
+const path = require("path");
+const bodyParser = require("body-parser");
 
-
-// const bodyparser = require('body-parser')
-// const express = require("express")
-// const path = require('path')
-
-// Express app
+// app config
 const app = express();
+const port = process.env.PORT || 3000;
 
-// Server Running port number
-const PORT = 3000;
+app.use(express.json());
+app.use(cors());
 
-// Requiring model
-require('./Models/Patient');
-require('./Models/staff');
-require('./Models/userSymptoms');
-require('./Models/admittingPatients');
-require('./Models/admissionOfficerAdmit');
-require('./Models/pneumonia');
-require('./Models/nonPneumonia');
+// requiring Models
+require("./Models/Patient");
+require("./Models/staff");
+require("./Models/userSymptoms");
+require("./Models/admittingPatients");
+require("./Models/admissionOfficerAdmit");
+require("./Models/pneumonia");
+require("./Models/nonPneumonia");
 
-// Tokens for patient and staff
-const patientToken = require('./Middleware/patientToken');
-const staffToken = require('./Middleware/staffToken');
+// tokens for auth
+const patientToken = require("./Middleware/patientToken");
+const staffToken = require("./Middleware/staffToken");
 
-// Routing for patient and staff
-const patientRoute = require('./Routes/patientRoutes');
-const staffRoute = require('./Routes/staffRoutes');
+// routing of models
+const patientRoute = require("./Routes/patientRoutes");
+const staffRoute = require("./Routes/staffRoutes");
 const userSymptoms = mongoose.model("userSymptoms");
 const admittingPatients = mongoose.model("admitPatientList");
 const patientInfo = mongoose.model("Patient");
+const staffInfo = mongoose.model("Staff");
 const admissionOfficerAdmit = mongoose.model("admittedPatientList");
-const pneumoniaList = mongoose.model('pneumoniaList');
-const nonPneumoniaList = mongoose.model('nonPneumoniaList');
-
-app.use(bodyParser.json());
-app.use(express.static('public'));
-app.use("/", router);
-var jsonParser = bodyParser.json()
-app.use(bodyParser.urlencoded({ extended: true }))
-app.use(bodyParser.json({ limit: '100MB' }))
+const pneumoniaList = mongoose.model("pneumoniaList");
+const nonPneumoniaList = mongoose.model("nonPneumoniaList");
 
 // using routes of patients and staff
 app.use(patientRoute);
 app.use(staffRoute);
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json({ limit: "100MB" }));
 
-
-// connect to mongodb
-const dbURI = 'mongodb+srv://heal-port-admin:WNj4nvpUosFDwNzJ@heal-port-system.b4i5i.mongodb.net/Authentication-Base?retryWrites=true&w=majority';
-mongoose.connect(dbURI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
+// DB config
+const dbUrl =
+	"mongodb+srv://heal-port-admin:WNj4nvpUosFDwNzJ@heal-port-system.b4i5i.mongodb.net/Authentication-Base?retryWrites=true&w=majority";
+mongoose.connect(dbUrl, {
+	useCreateIndex: true,
+	useNewUrlParser: true,
+	useUnifiedTopology: true,
 });
 
-// Success massage when connected to database
-mongoose.connection.on('connected', () => {
-    console.log("Connected to Database...");
+const db = mongoose.connection;
+
+db.once("open", () => {
+	console.log("DB is connected");
 });
 
-// Error massage when connected to database
-mongoose.connection.on('error', () => {
-  console.log('An  error has occurred', err);
+// *** api routes *** //
+app.get("/", (req, res) => res.status(200).send("hello world"));
+
+// Patient Api Routes
+
+// getting Symptoms
+app.post("/app/v1/requests/patient/disease", async (req, res) => {
+	const symptomList = req.body.symptoms;
+
+	const requestML = {
+		Symptoms: symptomList,
+	};
+
+	console.log(requestML);
+
+	const options = {
+		method: "POST",
+		uri: "http://127.0.0.1:5000/sendDisease",
+		body: requestML,
+		json: true,
+	};
+
+	var returnData;
+	var sendRequest = await request(options)
+		.then(function (parserBody) {
+			console.log(parserBody);
+			returnData = parserBody;
+		})
+		.catch(function (err) {
+			console.log(err);
+		});
+
+	res.send(returnData);
 });
 
-app.get('/patient', patientToken, (req, res) => {
-    res.send('Your username is ' + req.patient.userName + " Your password is " + req.patient.password) + " Your Name is " + req.patient.firstName;
+// checking particular patient is admitted
+app.post("/app/v1/requests/patient/admitDetails", (req, res) => {
+	const name = req.body.userName;
+
+	console.log(name);
+
+	admittingPatients.find({ userName: name }, function (err, result) {
+		if (err) {
+			console.log(err);
+			res.send(err);
+		} else {
+			console.log(result.length);
+			const response = result.length;
+			res.status(200).send(response.toString());
+		}
+	});
 });
 
-app.get('/staff', staffToken, (req, res) => {
-    res.send('Your username is ' + req.staff.userName + " Your password is " + req.staff.password);
+// saving symptoms to db
+app.post("/app/v1/requests/patient/symptom/save", (req, res) => {
+	const patientSymptoms = new userSymptoms({
+		userName: req.body.userName,
+		symptoms: req.body.symptoms,
+	});
+
+	patientSymptoms
+		.save()
+		.then((data) => {
+			res.status(200).send(data);
+			console.log("data", data);
+		})
+		.catch((err) => {
+			res.send(err);
+			console.log(err);
+		});
 });
 
-app.get('/special', (req, res) => {
-  res.send("You have received...");
-})
+// retrieving a particular patient's information
+app.post("/app/v1/requests/patient/details", (req, res) => {
+	const name = req.body.userName;
 
-// uploading symptoms to data science component
-app.post('/getSymptoms', jsonParser, async (req, res) => {
-    console.log("req.body : ", req.body)
-    
-    var userName = req.body.userName
-    var symptoms = req.body.symptoms
-
-    var sendingData = {
-      Symptoms: symptoms
-    }
-
-    console.log(userName)
-    console.log(symptoms)
-
-    var options = {
-      method: 'POST',
-      uri: 'http://127.0.0.1:5000/sendDisease',
-      body: sendingData,
-      json: true
-    }
-
-    var returnData;
-    var sendRequest = await request(options)
-    .then(function (parserBody) {
-      console.log(parserBody)
-      returnData = parserBody;
-    })
-    .catch (function (err) {
-      console.log(err)
-    })
-
-    res.send(returnData);
-})
-
-// Upload X-ray images to data science
-app.post('/upload', (req, res) => {
-	fs.writeFile('./out.jpeg', req.body.imgsource, 'base64', (err) => {
-		if (err) throw err
-	})
-    var sendingdata = {
-        Location: "something"
-    }
-
-    var option = {
-        method: 'POST',
-        uri: 'http://127.0.0.1:8080/api/v1/resources/x-ray/image',
-        body: sendingdata,
-        json: true
-    }
-    
-    var returnInfo;
-    var sendRequest =  request(option)
-    .then(function (parserBody) {
-        console.log("parser body : ", parserBody)
-        var sendJson = JSON.stringify({
-          state: parserBody
-        })
-        res.send(sendJson)
-    })
-    .catch(function (err) {
-        console.log(err)
-    })
-    console.log("returned info : ",returnInfo)
-    // res.send(returnInfo)
-})
-
-// Saving a patients symptoms
-app.post('/save/Symptoms', (req, res) => {
-  const saveSymptoms = new userSymptoms ({
-    userName: req.body.userName,
-    symptoms: req.body.symptoms
-  })
-
-  saveSymptoms.save()
-  .then(data => {
-    console.log(data)
-    res.send(data)
-  }) .catch (err => {
-    console.log(err)
-  })
-})
-
-// Saving admitting patients information
-app.post('/save/admitPatient', (req, res) => {
-  const saveAdmitPatients = new admittingPatients ({
-    userName: req.body.userName,
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
-    nicNumber: req.body.nicNumber,
-    contactNumber: req.body.contactNumber
-  })
-
-  var success = {
-    Success: "Successful"
-  }
-
-  var unsucess = "UnSuccessful" 
-
-  saveAdmitPatients.save()
-  .then(data => {
-    res.send(success)
-  }) 
-  .catch(err => {
-    console.log(unsucess)
-  })
-})
-
-// Saving admitting patients by admission officer
-app.post('/save/admitPatient/officer', (req, res) => {
-  const savePatientsOfficer = new admissionOfficerAdmit ({
-    userName: req.body.userName,
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
-    nicNumber: req.body.nicNumber,
-    contactNumber: req.body.contactNumber
-  })
-
-  var success = {
-    Success: "Successful"
-  }
-
-  var unsucess = "UnSuccessful" 
-
-  savePatientsOfficer.save()
-  .then(data => {
-    res.send(success)
-  }) 
-  .catch(err => {
-    console.log(unsucess)
-  })
-})
-
-// saving pneumonia patients list
-app.post('/save/pneumonia/patients', (req, res) => {
-  const savePneumoniaPatients = new pneumoniaList ({
-    userName: req.body.userName,
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
-    nicNumber: req.body.nicNumber,
-    contactNumber: req.body.contactNumber
-  })
-  savePneumoniaPatients.save()
-  .then(data => {
-    res.send()
-  })
-})
-
-// saving nonPneumonia list
-app.post('/save/nonPneumonia/patients', (req, res) => {
-  const saveNonPneumoniaPatients = new nonPneumoniaList ({
-    userName: req.body.userName,
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
-    nicNumber: req.body.nicNumber,
-    contactNumber: req.body.contactNumber
-  })
-  saveNonPneumoniaPatients.save()
-  .then(data => {
-    res.send()
-  })
-})
-
-// Retrieving all admitting patients details list
-app.post('/retrieve/information/all', (req, res) => {
-  admittingPatients.find({}, function (err, result) {
-    if (err) {
-      res.send(err)
-    } else {
-      res.send(result)
-    }
-  })
-})
-
-// Finding a patient is already requested
-app.post('/retrieve/requested',  (req, res) => {
-
-  let name = req.body.userName
-
-  admittingPatients.findOne({ userName: name }, function (err, result) {
-    if (err) {
-      res.send(err)
-    } else {
-      console.log(result)
-
-      var sending = {
-        send: "null"
-      }
-
-      var sendingNew = {
-        send: userName
-      }
-
-      if (result == null) {
-        res.send(sending)
-      } else {
-        res.send(sendingNew)
-      }
-
-      
-    }
-  })
-})
-
-// Retrieving a particular admitted patient's information
-app.post('/retrieve/information', (req, res) => {
-  let name = req.body.userName
-
-  admittingPatients.find({ userName: name }, function (err, result) {
-    if (err) {
-      res.send(err)
-    } else {
-      console.log(result.length)
-
-      var userName = result[0].userName
-      var firstName = result[0].firstName
-      var lastName = result[0].lastName
-      var niceNumber = result[0].nicNumber
-      var contactNumber = result[0].contactNumber
-
-      var sendingData = {
-        userName,
-        firstName,
-        lastName,
-        niceNumber,
-        contactNumber
-      }
-
-      console.log(sendingData)
-      res.send(sendingData);
-    }
-  })
-})
-
-// Retrieving all admit requested patients list
-app.post('/retrieve/information/requested', (req, res) => {
-  let name = req.body.userName
-  console.log(name)
-
-  admittingPatients.find({}, function(err, result)  {
-    if (err) {
-      res.send(err)
-    } else {
-      res.send(result)
-    }
-  })
-})
-
-// Retrieving all admission officer admitted patients list
-app.post('/retrieve/information/admitted', (req, res) => {
-  let name = req.body.userName
-  console.log(name)
-
-  admissionOfficerAdmit.find({}, function(err, result)  {
-    if (err) {
-      res.send(err)
-    } else {
-      res.send(result)
-    }
-  })
-})
-
-// Retrieving a particular patient's information
-app.post('/retrieve/information/patientInfo', (req, res) => {
-
-  let name = req.body.userName
-  console.log(name)
-
-  patientInfo.find({ userName: name }, function(err, result) {
-    if (err) {
-      res.send(err);
-    } else {
-
-      var firstName = result[0].firstName
-      var lastName = result[0].lastName
-      var niceNumber = result[0].nicNumber
-      var contactNumber = result[0].contactNumber
-      
-      var sendingData = {
-        name,
-        firstName,
-        lastName,
-        niceNumber,
-        contactNumber
-      }
-
-      console.log(sendingData)
-
-      res.send(sendingData);
-    }
-  })
-})
-
-// Notifying that server is listing on port 3000...
-app.listen(PORT, () => {
-    console.log("Server running on " + PORT);
+	patientInfo.find({ userName: name }, function (err, result) {
+		if (err) {
+			console.log(err);
+			res.send(err);
+		} else {
+			console.log(result);
+			res.status(200).send(result);
+		}
+	});
 });
+
+// queueing admission requested patients
+app.post("/app/v1/requests/patient/add/queue", (req, res) => {
+	const saveAdmitPatients = new admittingPatients({
+		userName: req.body.userName,
+		firstName: req.body.firstName,
+		lastName: req.body.lastName,
+		nicNumber: req.body.nicNumber,
+		contactNumber: req.body.contactNumber,
+	});
+
+	saveAdmitPatients
+		.save()
+		.then((result) => {
+			console.log("result", result);
+		})
+		.catch((err) => {
+			console.log(err);
+		});
+});
+
+// Staff Api Routes
+
+// retrieving a particular patient's information
+app.post("/app/v1/requests/staff/details", (req, res) => {
+	const name = req.body.userName;
+
+	staffInfo.find({ userName: name }, function (err, result) {
+		if (err) {
+			console.log(err);
+			res.send(err);
+		} else {
+			result.map((e) => {
+				res.status(200).send(e.staffType);
+			});
+			// res.status(200).send(result);
+		}
+	});
+});
+
+// retrieving admit requested patients list
+app.get("/app/v1/requests/staff/admin/officer/pending", (req, res) => {
+	admittingPatients.find((err, data) => {
+		if (err) {
+			res.status(500).send(err);
+		} else {
+			res.status(200).send(data);
+		}
+	});
+});
+
+// retrieving admitted patients list
+app.get("/app/v1/requests/staff/admin/officer/admitted", (req, res) => {
+	admissionOfficerAdmit.find((err, result) => {
+		if (err) {
+			res.status(500).send(err);
+		} else {
+			res.status(200).send(result);
+		}
+	});
+});
+
+// relocating admission completed patients
+app.post("/app/v1/requests/staff/admin/officer/accepted", (req, res) => {
+	const saveAdmittedPatients = new admissionOfficerAdmit({
+		userName: req.body.userName,
+		firstName: req.body.firstName,
+		lastName: req.body.lastName,
+		nicNumber: req.body.nicNumber,
+		contactNumber: req.body.contactNumber,
+	});
+
+	saveAdmittedPatients
+		.save()
+		.then((result) => {
+			res.status(200).send(result);
+		})
+		.catch((err) => {
+			res.status(500).send(err);
+		});
+});
+
+// remove from admit queue
+app.post("/app/v1/requests/staff/admin/officer/removing", (req, res) => {
+	const name = req.body.userName;
+
+	admittingPatients.deleteOne({ userName: name }, (err, result) => {
+		if (err) {
+			res.status(500).send(err);
+		} else {
+			res.status(200).send(result);
+		}
+	});
+});
+
+// discharging patient
+app.post("/app/v1/requests/staff/admin/officer/discharging", (req, res) => {
+	const name = req.body.userName;
+
+	admissionOfficerAdmit.deleteOne({ userName: name }, (err, result) => {
+		if (err) {
+			console.log(err);
+			res.status(500).send(err);
+		} else {
+			console.log(result);
+			res.status(200).send(result);
+		}
+	});
+});
+
+// removing from pneumonia list
+app.post(
+	"/app/v1/requests/staff/admin/doctor/pneumonia/positive/remove",
+	(req, res) => {
+		const name = req.body.userName;
+
+		pneumoniaList.deleteOne({ userName: name }, (err, result) => {
+			if (err) {
+				console.log(err);
+				res.status(500).send(err);
+			} else {
+				console.log(result);
+				res.status(200).send(result);
+			}
+		});
+	},
+);
+
+// removing from nonPneumonia list
+app.post(
+	"/app/v1/requests/staff/admin/doctor/pneumonia/negative/remove",
+	(req, res) => {
+		const name = req.body.userName;
+
+		nonPneumoniaList.deleteOne({ userName: name }, (err, result) => {
+			if (err) {
+				console.log(err);
+				res.status(500).send(err);
+			} else {
+				console.log(result);
+				res.status(200).send(result);
+			}
+		});
+	},
+);
+
+// adding patient to pneumonia positive list
+app.post(
+	"/app/v1/requests/staff/admin/doctor/pneumonia/positive/add",
+	upload.single("image"),
+	(req, res) => {
+		const obj = new pneumoniaList({
+			userName: req.body.userName,
+			img: {
+				data: fs.readFileSync(path.join(__dirname + "/out.jpeg")),
+				contentType: "image/jpeg",
+			},
+		});
+		obj
+			.save()
+			.then((data) => {
+				console.log(data);
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	},
+);
+
+// adding patient to pneumonia negative list
+app.post(
+	"/app/v1/requests/staff/admin/doctor/pneumonia/negative/add",
+	upload.single("image"),
+	(req, res) => {
+		const obj = new nonPneumoniaList({
+			userName: req.body.userName,
+			img: {
+				data: fs.readFileSync(path.join(__dirname + "/out.jpeg")),
+				contentType: "image/jpeg",
+			},
+		});
+		obj
+			.save()
+			.then((data) => {
+				console.log(data);
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	},
+);
+
+// retrieving pneumonia positive list
+app.get(
+	"/app/v1/requests/staff/admin/doctor/pneumonia/positive",
+	(req, res) => {
+		pneumoniaList.find((err, result) => {
+			if (err) {
+				res.status(500).send(err);
+			} else {
+				res.status(200).send(result);
+			}
+		});
+	},
+);
+
+// retrieving pneumonia negative list
+app.get(
+	"/app/v1/requests/staff/admin/doctor/pneumonia/negative",
+	(req, res) => {
+		nonPneumoniaList.find((err, result) => {
+			if (err) {
+				res.status(500).send(err);
+			} else {
+				res.status(200).send(result);
+			}
+		});
+	},
+);
+
+// Image Classification
+app.post("/upload", (req, res) => {
+	fs.writeFile("./out.jpeg", req.body.imgsource, "base64", (err) => {
+		if (err) throw err;
+	});
+	var sendingdata = {
+		Location: "something",
+	};
+
+	var option = {
+		method: "POST",
+		uri: "http://127.0.0.1:8080/api/v1/resources/x-ray/image",
+		body: sendingdata,
+		json: true,
+	};
+
+	var returnInfo;
+	var sendRequest = request(option)
+		.then(function (parserBody) {
+			console.log("parser body : ", parserBody);
+			var sendJson = JSON.stringify({
+				state: parserBody,
+			});
+			res.send(sendJson);
+		})
+		.catch(function (err) {
+			console.log(err);
+		});
+	console.log("returned info : ", returnInfo);
+	// res.send(returnInfo)
+});
+
+app.post(
+	"/app/v1/requests/staff/admin/doctor/pneumonia/positive/remove",
+	upload.single("image"),
+	(req, res) => {
+		const obj = new pneumoniaList({
+			userName: req.body.userName,
+			img: {
+				data: fs.readFileSync(path.join(__dirname + "./out.jpeg")),
+				contentType: "image/jpeg",
+			},
+		});
+		obj
+			.save()
+			.then((data) => {
+				console.log(data);
+				res.status(200).send(data);
+			})
+			.catch((err) => {
+				console.log(err);
+				res.send(err).status(500);
+			});
+	},
+);
+
+app.post(
+	"/app/v1/requests/staff/admin/doctor/pneumonia/negative/remove",
+	upload.single("image"),
+	(req, res) => {
+		const obj = new pneumoniaList({
+			userName: req.body.userName,
+			img: {
+				data: fs.readFileSync(path.join(__dirname + "./out.jpeg")),
+				contentType: "image/jpeg",
+			},
+		});
+		obj
+			.save()
+			.then((data) => {
+				console.log(data);
+				res.status(200).send(data);
+			})
+			.catch((err) => {
+				console.log(err);
+				res.send(err).status(500);
+			});
+	},
+);
+
+// listen
+app.listen(port, () => console.log(`Listening on localhost:${port}`));

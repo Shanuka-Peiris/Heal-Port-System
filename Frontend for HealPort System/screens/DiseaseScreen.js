@@ -1,251 +1,277 @@
-import React, { useState } from 'react'
-import { StyleSheet, Text, View,TouchableOpacity, Alert , Image, ActivityIndicator} from 'react-native'
-import { ScrollView } from 'react-native-gesture-handler'
+import React, { useEffect, useState } from "react";
+import {
+	StyleSheet,
+	Text,
+	View,
+	TouchableOpacity,
+	Alert,
+	Image,
+	ActivityIndicator,
+} from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
+import axios from "./axios";
 
-const DiseaseScreen = ({ route, navigation}) => {
+const DiseaseScreen = ({ route, navigation }) => {
+	var name = route.params.paramKey;
+	var symptoms = route.params.paramKey1;
 
-    var name = route.params.paramKey
-    var symptoms = route.params.paramKey1
+	const [disease, setDisease] = useState([]);
+	// const [state, setState] = useState(false);
+	const [animating, setAnimating] = useState(true);
+	const [btnState, setBtnState] = useState(true);
+	const [userDetails, setUserDetails] = useState();
+	const [patientName, setPatientName] = useState();
 
-    const [ disease, setDisease ] = useState([]);
-    const [ state, setState ] = useState(0);
-    const [ animating, setAnimating ] = useState(true)
-    const [ btnState, setBtnState ] = useState(false)
+	// ---------------------------------------------------------------------------------
 
-    // ---------------------------------------------------------------------------------
-    const submitSymptoms = () => {
-    
-        fetch('http://192.168.249.152:3000/getSymptoms', {
-            method: 'Post',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body :JSON.stringify({
-                userName: name,
-                symptoms: symptoms
-            }) 
-        })
-        .then ((response) => response.json())
-        .then ((responseData) => {
-            setAnimating(false)
-            const diseaseList = responseData;
-            setDisease(diseaseList)
+	useEffect(() => {
+		setPatientName(name);
+		// console.log("name", patientName);
 
-            if (responseData.includes("Pneumonia")) {
-                console.log("is pneumonia")
-            } else{ 
-                setBtnState(true)
-            }
-        })
-        .catch ((err) => {
-            console.log(err)
-        })   
-    }
+		async function fetchDisease() {
+			axios
+				.post("/app/v1/requests/patient/disease", {
+					userName: name,
+					symptoms: symptoms,
+				})
+				.then((res) => {
+					setAnimating(false);
+					setDisease(res.data);
 
-    const changeState = () => {
-        if (state == 1) {
-            console.log("State is now one")
-        } else {
-            setState(1)
-            submitSymptoms()
-        }
-    }
+					const response = res.data;
 
-    changeState()
+					if (response.includes("Pneumonia")) {
+						console.log("Pneumonia positive");
+						setBtnState(false);
+						console.log("button state in disease", btnState);
+					} else {
+						console.log("negative");
+						setBtnState(true);
+					}
+				})
+				.catch((err) => {
+					console.log(err);
+				});
+		}
 
-    // ---------------------------------------------------------------------------------
-    
-    const getDetails = () => {
-        // fetch('http://192.168.249.152:3000/retrieve/information/patientInfo', {
-        fetch('http://192.168.249.152:3000/retrieve/information', {
-            method: 'Post',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body :JSON.stringify({
-                userName: name,
-            }) 
-        })
-        .then((response) => response.json())
-        .then((responseData) => {
-            // setDiseaseList(responseData)
-            console.log(responseData)
-            if (responseData.name == name) {
-                setBtnState(true)
-            } else {
-                // admitPatient(responseData)
-                // saveSymptoms();
-            }
-            // admitUser(responseData)
-            // admitPatient(responseData)
-            // saveSymptoms();
-        })
-        .catch((error) => {
-            console.log(error)
-            // Alert.alert("Something went wrong while retrieving data")
-        })
-    }
+		async function fetchUserInQueueDetails() {
+			axios
+				.post("/app/v1/requests/patient/admitDetails", {
+					userName: name,
+				})
+				.then((res) => {
+					// console.log("here", res.data);
 
-    getDetails()
-    
-    // ---------------------------------------------------------------------------------
-    
-    const saveSymptoms = () => {
-        fetch("http://192.168.249.152:3000/save/Symptoms",{
-            method:"post",
-            headers:{
-                'Content-Type': 'application/json'
-            },
-        body:JSON.stringify({
-                userName: name,
-                symptoms: symptoms
-            })
-        })
-        .then(res=>res.json())
-        .then(data=>{
-            navigation.replace("Symptoms")
-        })
-        .catch(err=>{
-            Alert.alert("Something went wrong")
-        })
-    }
+					if (res.data == 1) {
+						if (btnState == false) {
+							setBtnState(true);
+							console.log("button state in queue", btnState);
+						}
 
-    const admitPatient = (responseData) => {
-        fetch("http://192.168.249.152:3000/save/admitPatient", {
-            method:"post",
-            headers:{
-                'Content-Type': 'application/json'
-            },
-            body:JSON.stringify({
-                userName: name,
-                firstName: responseData.firstName,
-                lastName: responseData.lastName,
-                nicNumber: responseData.niceNumber,
-                contactNumber: responseData.contactNumber
-            })
-        })
-        .then((response) => response.json())
-        .then((responseData) => {
-            console.log(responseData)
-            if (responseData == "Successful") {
-                Alert.alert("Admission successful")
-            } 
-        })
-        .catch((error) => {
-            Alert.alert("Error while admitting patient")
-        })
-    }
+						// } else {
+						// 	if (btnState == true) {
+						// 		setBtnState(false);
+						// 	}
+					}
+				})
+				.catch((err) => {
+					console.log(err);
+				});
+		}
 
-    const requestToAdmit = () => {
-        fetch('http://192.168.249.152:3000/retrieve/information/patientInfo', {
-            method: 'Post',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body :JSON.stringify({
-                userName: name,
-            }) 
-        })
-        .then((response) => response.json())
-        .then((responseData) => {
-            console.log(responseData)
+		async function fetchUserDetails() {
+			axios
+				.post("/app/v1/requests/patient/details", {
+					userName: name,
+				})
+				.then((res) => {
+					// console.log(res.data);
+					setUserDetails(res.data);
+					// console.log("userDetails", userDetails);
 
-            admitPatient(responseData)
-            saveSymptoms();
-        })
-        .catch((error) => {
-            console.log(error)
-        })
-    }
+					// userDetails.map((e) => {
+					// 	console.log(e.contactNumber);
+					// });
+				})
+				.catch((err) => {
+					console.log(err);
+				});
+		}
 
+		console.log("button state", btnState);
 
-    return (
-        <View style = {styles.container}>
-            <Image 
-                    source={require('../Images/disease.png')}
-                    style={{ width: 400, height: 155,  }}
-            />
-            <Text style= {styles.header}> DISEASES </Text>
-            
-            
-            <ScrollView backgroundColor = "#9fc9c0" borderColor = "white" borderWidth =  {5} >
-                <View style = {styles.loader}>
-                    <ActivityIndicator
-                    animating = {animating}
-                    color = "white"
-                    size = "large"
-                    />
-                
-                {disease && disease.map((d, index) => <Text style={styles.diseaseText} key={index}>{d}</Text>)}
-                </View>
-            </ScrollView>
-               
-            <TouchableOpacity
-                style={styles.button}
-                onPress={requestToAdmit}
-                disabled = {btnState}
-            >
-                <Text style={styles.buttonText} >Admit</Text>
-            </TouchableOpacity> 
-            
-        </View>
-    )
-}
+		fetchUserDetails();
+		fetchUserInQueueDetails();
+		fetchDisease();
+	}, []);
 
-export default DiseaseScreen
+	const saveSymptoms = () => {
+		axios
+			.post("/app/v1/requests/patient/symptom/save", {
+				userName: name,
+				symptoms: symptoms,
+			})
+			.then((res) => {
+				console.log("response from submitting symptoms", res.data);
+
+				if (btnState == false && res.status == 200) {
+					setBtnState(true);
+				}
+			})
+			.catch((err) => {
+				console.log("err", err);
+			});
+	};
+
+	const requestToAdmit = () => {
+		if (btnState == false) {
+			setBtnState(true);
+		}
+		saveSymptoms();
+
+		// adding patient to queue
+		var userName;
+		var firstName;
+		var lastName;
+		var nicNumber;
+		var contactNumber;
+
+		userDetails.map((e) => {
+			userName = e.userName;
+			firstName = e.firstName;
+			lastName = e.lastName;
+			nicNumber = e.nicNumber;
+			contactNumber = e.contactNumber;
+		});
+
+		// console.log(userName + " " + firstName + " " + lastName);
+
+		axios
+			.post("/app/v1/requests/patient/add/queue", {
+				userName,
+				firstName,
+				lastName,
+				nicNumber,
+				contactNumber,
+			})
+			.then((res) => {
+				console.log("last", res);
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	};
+
+	return (
+		<View style={styles.container}>
+			<Image
+				source={require("../Images/disease.png")}
+				style={{ width: 400, height: 155 }}
+			/>
+			<Text style={styles.header}> DISEASES </Text>
+
+			<ScrollView backgroundColor="#9fc9c0" borderColor="white" borderWidth={5}>
+				<View style={styles.loader}>
+					<ActivityIndicator animating={animating} color="white" size="large" />
+
+					{disease &&
+						disease.map((d, index) => (
+							<Text style={styles.diseaseText} key={index}>
+								{d}
+							</Text>
+						))}
+				</View>
+			</ScrollView>
+
+			{btnState ? (
+				<Text
+					style={[
+						{
+							textAlign: "center",
+							fontSize: 20,
+							fontFamily: "YuseiMagic-Regular",
+							color: "white",
+							padding: 5,
+							borderWidth: 3,
+							borderColor: "#3EAB90",
+							backgroundColor: "#3EAB90",
+							borderRadius: 13,
+							marginTop: 10,
+						},
+						!animating && { display: "none" },
+					]}
+				>
+					Hello {patientName} your results will appear above. Thank you for your
+					patience.
+				</Text>
+			) : (
+				<TouchableOpacity
+					style={styles.button}
+					disabled={btnState}
+					onPress={requestToAdmit}
+				>
+					<Text style={styles.buttonText}>Admit</Text>
+				</TouchableOpacity>
+			)}
+		</View>
+	);
+};
+
+export default DiseaseScreen;
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#CAE0DB',
-        padding: 10,
-        marginTop:35,
-    },
-    header:{
-        fontSize: 35,
-        textAlign: 'center',
-        color: 'black',
-        marginBottom: 20,
-        color: "#004644",
-        fontFamily:"YuseiMagic-Regular",
-    },
-    diseaseText:{
-        height: 50,
-        width: 200,
-        backgroundColor:'white',
-        fontFamily:"YuseiMagic-Regular",
-        fontSize: 20,
-        textAlign: "center",
-        marginTop: 40,
-        borderRadius: 10,
-        marginLeft:90,
-        padding: 10,
-    },
-    button: {
-        width: 200,
-        marginLeft: 90,
-        marginBottom :20,
-        marginTop:40,
-        textAlign: "center",
-        borderRadius: 10,
-        padding: 10,
-        borderWidth: 3,
-        borderColor: '#3EAB90',
-        backgroundColor: '#3EAB90',
-        borderRadius: 13,
-        borderColor: "white",
-        borderWidth: 3,
-    },
-    buttonText: {
-        textAlign: 'center',
-        fontSize: 20,
-        fontFamily:"YuseiMagic-Regular",
-        color: 'white', 
-    },
-    loader:{
-        height: 500,
-        width: 355,
-        textAlign: 'center',
-        marginTop:20,
-    }
-})
+	container: {
+		flex: 1,
+		backgroundColor: "#CAE0DB",
+		padding: 10,
+		marginTop: 35,
+	},
+	header: {
+		fontSize: 35,
+		textAlign: "center",
+		color: "black",
+		marginBottom: 20,
+		color: "#004644",
+		fontFamily: "YuseiMagic-Regular",
+	},
+	diseaseText: {
+		height: 50,
+		width: 200,
+		backgroundColor: "white",
+		fontFamily: "YuseiMagic-Regular",
+		fontSize: 20,
+		textAlign: "center",
+		marginTop: 40,
+		borderRadius: 10,
+		marginLeft: 90,
+		padding: 10,
+	},
+	button: {
+		width: 200,
+		marginLeft: 90,
+		marginBottom: 20,
+		marginTop: 40,
+		textAlign: "center",
+		borderRadius: 10,
+		padding: 10,
+		borderWidth: 3,
+		borderColor: "#3EAB90",
+		backgroundColor: "#3EAB90",
+		borderRadius: 13,
+		borderColor: "white",
+		borderWidth: 3,
+	},
+	buttonText: {
+		textAlign: "center",
+		fontSize: 20,
+		fontFamily: "YuseiMagic-Regular",
+		color: "white",
+	},
+	negative: {},
+	loader: {
+		height: 500,
+		width: 355,
+		textAlign: "center",
+		marginTop: 20,
+	},
+});
